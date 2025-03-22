@@ -24,3 +24,6 @@ const crimeDetailsSchema = new Schema({
 
     crimeDetailsSchema.plugin(AutoIncrement, { inc_field: "crimeID" });
     crimeDetailsSchema.index({ location: "2dsphere" });
+
+    const crimeDetails = mongoose.model("crimeDetails", crimeDetailsSchema);
+    module.exports = crimeDetails;
