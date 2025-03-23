@@ -20,7 +20,7 @@ function header(){
                         <a href="">STAY AWARE</a>
                         <a href="">QUICK REPORT</a>
                         <a href="">SECURE PASS</a>
-                        <a href="">QUICK REPORT</a>
+                        <a href="">RISK SCOPE</a>
 
                     </div>
                 </div>
