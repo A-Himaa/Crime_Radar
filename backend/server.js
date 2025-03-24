@@ -36,7 +36,8 @@ app.use("/report",reportRouter)
 
 
 //Taviii
-const crimeMap = require("routes")
+const locationRoutes = require("./routes/locations.js");
+app.use("/crimes", locationRoutes);
 
 
 // server port allocation & server start

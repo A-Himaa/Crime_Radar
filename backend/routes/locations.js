@@ -1,27 +1,14 @@
 const router = require("express").Router();
+const Location = require("../models/location");
 
-let location = require("../models/location");
+router.route("/newLocation").post((req, res) => {
+    const { location, latitude, longitude } = req.body;
 
-//Fetching data from the frontend
-router.route("/newLocation").post((req,res) =>{
-    const location = req.body.location;
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
+    const newLocation = new Location({ location, latitude, longitude });
 
-
-    const newLocation = new location({
-        location,
-        latitude,
-        longitude
-    })
-
-    //Passing data to database(Create)
-    newLocation.save().then(()=>{
-        res.json("Location Added Successfully")
-    }).catch((err)=>{
-        console.log(err);
-    })
-
-})
+    newLocation.save()
+        .then(() => res.status(201).json({ message: "Location Added Successfully" }))
+        .catch((err) => res.status(500).json({ error: err.message }));
+});
 
 module.exports = router;
