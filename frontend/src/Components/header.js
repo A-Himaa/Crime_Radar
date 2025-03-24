@@ -7,12 +7,12 @@ import logo from "../Images/Logo.png";
 function header(){
     return(
         <div className="headerbody">
-            <nav className="bg-transparent fixed top-0 left-0 w-full h-[15vh] pl-12 pr-10">
+            <nav className="bg-transparent bg-[#5a250c] bg-opacity-50 backdrop-blur-md fixed top-0 left-0 w-full h-[15vh] pl-12 pr-10">
 
                 <div className="max-w-7xl flex justify-between ">
 
                     {/*---------Logo---------*/}
-                    <a href="/"><img src={logo} alt="" className="w-[10vw] max-w-xs mx-5 my-2" /></a>
+                    <a href="/"><img src={logo} alt="" className="w-[10vw] max-w-xs mx-5 " /></a>
 
                     {/*----------Navigation Links----------------- */}
                     <div className="flex  space-x-20 text-white text-lg my-12">
