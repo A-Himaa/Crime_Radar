@@ -6,7 +6,7 @@ import anp from "../Images/anp.png";
 import law from "../Images/law.png";
 import police from "../Images/img1.jpg";
 import mess from "../Images/img2.jpg";
-
+import ImageSlider from "../Components/imageSlider.js";
 
 
 function home(){
@@ -49,7 +49,7 @@ function home(){
         {/*---------Scroll Button--------- */}
         <div className="absolute text-lg pl-3 pt-64 left-16">
         <a href="/">
-            <button className="py-2 px-6 border-2 border-white bg-transparent text-white">Scroll To Know More</button>
+            <button className="py-2 px-6 border-2 border-white bg-transparent text-white hover:bg-amber-800 hover:text-white transition-colors duration-300">Scroll To Know More</button>
         </a>
        </div>
 
@@ -141,9 +141,9 @@ function home(){
         </div>
 
         {/* Second Row */}
-        <div className="flex items-center justify-center w-[90vw] -mt-10">
+        <div className="flex items-center justify-center w-full -mt-10">
 
-          <p className="text-left text-xl max-w-[50vw] -ml-10 pr-28">
+          <p className="text-left text-xl max-w-[50vw]  pr-28">
           <span className="text-3xl font-bold ">C</span>rime Radar prioritizes your well-being by offering real-time alerts about nearby 
             criminal activity. The app keeps you informed about potential dangers, helping you make 
             safer decisions in your daily routine.
@@ -161,7 +161,10 @@ function home(){
           <span className="text-amber-600">D</span>on't Be the <span className="text-amber-600">N</span>ext Target !</h1>
         </div>
 
-        <div></div>
+        {/*--------------Image Slider-----------*/}
+        <div >
+        <ImageSlider />
+        </div>
       </div>
 
 
