@@ -19,8 +19,8 @@ const CrimeMap = function () {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 rounded-2xl shadow-lg bg-white">
-      <h2 className="text-xl font-semibold text-center mb-4">Crime Map</h2>
+    <div className="w-full max-w-4xl mx-auto p-6 rounded-2xl shadow-lg bg-gray-100 m-2">
+      <h1 className="text-xl font-semibold text-center mb-4 p-4">Crime Map</h1>
       <MapContainer
         center={[6.9271, 79.8612]}
         zoom={12}
@@ -43,8 +43,7 @@ const CrimeMap = function () {
         ))}
       </MapContainer>
       <div class="relative flex justify-end p-5">
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Button
-  </button>
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"><a href="/newLocation">New Location</a></button>
 </div>
 
     </div>
