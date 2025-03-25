@@ -49,11 +49,12 @@ const LocationForm = ({ onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] relative">
         <h2 className="text-2xl font-semibold mb-4 text-center text-gray-700">
-          Get Your Location
+          New Location
         </h2>
+        
         <button
           onClick={getLocation}
-          className="w-full py-2 mb-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition"
+          className="w-full py-2 mb-4 bg-gray-500 text-white font-semibold rounded hover:bg-gray-800 transition"
         >
           Get Location
         </button>
@@ -85,7 +86,7 @@ const LocationForm = ({ onClose }) => {
           </div>
           <button
             type="submit"
-            className="w-full py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition"
+            className="w-full py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 transition"
           >
             Save Location
           </button>
