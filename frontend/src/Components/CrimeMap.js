@@ -22,7 +22,7 @@ const CrimeMap = function () {
   }, []);
 
   return (
-    <div className="w-[90vw] mx-auto p-6 rounded-1xl shadow-lg bg-gray-100 m-2 relative">
+    <div className="w-[90vw] mx-auto p-6 rounded-1xl shadow-lg bg-gray-100 m-2 relative z-10">
       <MapContainer
         center={[6.9271, 79.8612]}
         zoom={12}
@@ -45,7 +45,7 @@ const CrimeMap = function () {
         ))}
       </MapContainer>
 
-      <div className="relative flex justify-end p-5 ">
+      <div className="relative flex justify-end p-5 z-0">
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => setShowForm(true)}
@@ -55,7 +55,8 @@ const CrimeMap = function () {
       </div>
 
       {/* Show the location form when button is clicked */}
-      {showForm && <LocationForm onClose={() => setShowForm(false)} />}
+      {showForm 
+       && <LocationForm onClose={() => setShowForm(false)} />}
     </div>
   );
 };
