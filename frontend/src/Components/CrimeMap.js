@@ -36,12 +36,13 @@ const CrimeMap = function () {
   }, []);
 
   return (
-    <div className="w-[90vw] mx-auto p-6 rounded-1xl shadow-lg bg-gray-100 m-2 relative z-10">
+    <div className="w-[90vw] mx-auto p-2 rounded-1xl shadow-lg bg-gray-100 m-2 relative z-10">
       <MapContainer
         center={userLocation}
         zoom={12}
-        className="w-full h-[500px] rounded-1xl overflow-hidden"
+        className="w-full h-[500px] rounded-1xl overflow-hidden relative z-[0]"
       >
+
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {crimes.map((crime, index) => (
           <CircleMarker

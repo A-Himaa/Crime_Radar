@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header1 from "./Components/header";
 import Home from "./Components/home";
 
+
+
 function App() {
   return (
     <Router>
