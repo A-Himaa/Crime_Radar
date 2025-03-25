@@ -35,7 +35,9 @@ const reportRouter = require("./routes/report_route.js");
 app.use("/report",reportRouter)
 
 
-
+//Taviii
+const locationRoutes = require("./routes/locationRoutes.js");
+app.use("/api/locationForm", locationRoutes);
 
 
 // server port allocation & server start

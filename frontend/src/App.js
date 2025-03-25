@@ -1,10 +1,9 @@
+import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 
 //Importing Header
 import Header1 from "./Components/header";
-import Home from "./Components/home"
-
+import Home from "./Components/home";
 
 function App() {
   return (
@@ -12,17 +11,9 @@ function App() {
       <div className="App">
         <Home />
         <Header1/>
-
-      {/* <Routes>
-        <Route path="/home" element={<Home />} />
-      </Routes> */}
-      
       </div>
-    </Router>
-    
+    </Router> 
   );
 }
 
 export default App;
-
-

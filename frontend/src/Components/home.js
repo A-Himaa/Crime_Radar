@@ -7,6 +7,8 @@ import law from "../Images/law.png";
 import police from "../Images/img1.jpg";
 import mess from "../Images/img2.jpg";
 import ImageSlider from "../Components/imageSlider.js";
+import CrimeMap from "./CrimeMap.js";
+import LocationForm from "./LocationForm.jsx";
 
 
 function home(){
@@ -157,21 +159,20 @@ function home(){
 
       <div>
         <div>
-          <h1 className="text-4xl pl-10 pt-8 font-bold text-gray-800 pb-5 text-center pt-8">
+          <h1 className="text-4xl pl-10 pt-8 font-bold text-gray-800 pb-5 text-center">
           <span className="text-amber-600">D</span>on't Be the <span className="text-amber-600">N</span>ext Target !</h1>
         </div>
 
         {/*--------------Image Slider-----------*/}
         <div >
-        <ImageSlider />
+          <ImageSlider />
+          <div>
+              <CrimeMap />
+              
+            </div>
         </div>
       </div>
-
-
- 
     </div>
-      
-
     );
 }
 
