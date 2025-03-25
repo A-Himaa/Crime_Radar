@@ -12,16 +12,17 @@ const getColor = (severity) => {
 
 const CrimeMap = function () {
   const [crimes, setCrimes] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/crimes")
+    axios
+      .get("http://localhost:5000/api/crimes")
       .then((response) => setCrimes(response.data))
       .catch((error) => console.error("Error fetching crime data:", error));
   }, []);
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-6 rounded-1xl shadow-lg bg-gray-100 m-2">
-      
+    <div className="w-[90vw] mx-auto p-6 rounded-1xl shadow-lg bg-gray-100 m-2 relative">
       <MapContainer
         center={[6.9271, 79.8612]}
         zoom={12}
@@ -43,10 +44,18 @@ const CrimeMap = function () {
           </CircleMarker>
         ))}
       </MapContainer>
-      <div class="relative flex justify-end p-5">
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"><a href="/riskScope/LocationForm">New Location</a></button>
-</div>
 
+      <div className="relative flex justify-end p-5">
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => setShowForm(true)}
+        >
+          New Location
+        </button>
+      </div>
+
+      {/* Show the location form when button is clicked */}
+      {showForm && <LocationForm onClose={() => setShowForm(false)} />}
     </div>
   );
 };

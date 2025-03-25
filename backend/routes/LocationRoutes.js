@@ -5,8 +5,8 @@ const Location = require("../models/Location");
 //POST: Save location Data
 router.post("/addLocation", async (req,res) => {
     try{
-        const {name, latitude, longitude } = req.body;
-        const newLocation = new Location ({name, latitude, longitude});
+        const {location, latitude, longitude } = req.body;
+        const newLocation = new Location ({location, latitude, longitude});
         await newLocation.save();
         res.status(201).json({message:"Location saved successfully"});
     }catch (error){
