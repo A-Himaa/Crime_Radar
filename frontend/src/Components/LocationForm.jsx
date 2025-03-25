@@ -6,7 +6,7 @@ const LocationForm = ({ onClose }) => {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
 
-  // Get location using Geolocation API
+  // Function to get location using Geolocation API
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -24,35 +24,41 @@ const LocationForm = ({ onClose }) => {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = async (e) => {
+  // Function to handle form submission
+  const sendLocation = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/locationForm/addLocation",
-        { location, latitude, longitude }
-      );
-      alert(response.data.message);
-      onClose(); // Close the form after submission
-    } catch (error) {
-      console.error("Error saving location:", error);
-      alert("Failed to save location.");
-    }
+
+    const newLocation = {
+      location,
+      latitude,
+      longitude
+    };
+
+    axios.post("http://localhost:3000/api/location/addLocation", newLocation)
+      .then(() => {
+        alert("Location Added");
+        onClose();
+      })
+      .catch((err) => {
+        alert("Failed to save location");
+        console.error(err);
+      });
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] relative">
         <h2 className="text-2xl font-semibold mb-4 text-center text-gray-700">
-          Get Your Location
+          New Location
         </h2>
+        
         <button
           onClick={getLocation}
-          className="w-full py-2 mb-4 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition"
+          className="w-full py-2 mb-4 bg-gray-500 text-white font-semibold rounded hover:bg-gray-800 transition"
         >
           Get Location
         </button>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={sendLocation} className="space-y-4">
           <div>
             <input
               type="text"
@@ -80,7 +86,7 @@ const LocationForm = ({ onClose }) => {
           </div>
           <button
             type="submit"
-            className="w-full py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition"
+            className="w-full py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 transition"
           >
             Save Location
           </button>

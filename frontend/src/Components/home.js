@@ -8,7 +8,7 @@ import police from "../Images/img1.jpg";
 import mess from "../Images/img2.jpg";
 import ImageSlider from "../Components/imageSlider.js";
 import CrimeMap from "./CrimeMap.js";
-import LocationForm from "./LocationForm.jsx";
+
 
 
 function home(){

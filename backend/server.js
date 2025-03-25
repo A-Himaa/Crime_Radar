@@ -36,7 +36,7 @@ app.use("/report",reportRouter)
 
 
 //Taviii
-const locationRoutes = require("./routes/locationRoutes.js");
+const locationRoutes = require("./routes/LocationRoutes.js");
 app.use("/api/locationForm", locationRoutes);
 
 
