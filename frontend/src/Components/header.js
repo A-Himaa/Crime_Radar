@@ -20,6 +20,7 @@ function header(){
                         <a href="" className="hover:underline transition-all duration-300">QUICK REPORT</a>
                         <a href="" className="hover:underline transition-all duration-300">STAY AWARE</a>
                         <a href="" className="hover:underline transition-all duration-300">INSIGHTS</a>
+                        <a href="" className="hover:underline transition-all duration-300">RISK SCOPE</a>
 
                         <a href="">
                             <button className="border-2 -mr-12 p-2 pl-10 pr-10 hover:bg-amber-800 hover:text-white transition-colors duration-300">LOGIN</button>
