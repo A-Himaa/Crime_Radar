@@ -45,7 +45,7 @@ const CrimeMap = function () {
         ))}
       </MapContainer>
 
-      <div className="relative flex justify-end p-5">
+      <div className="relative flex justify-end p-5 ">
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => setShowForm(true)}
