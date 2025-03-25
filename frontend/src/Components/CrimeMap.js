@@ -13,8 +13,22 @@ const getColor = (severity) => {
 const CrimeMap = function () {
   const [crimes, setCrimes] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [userLocation, setUserLocation] = useState([6.9271, 79.8612]); // Default to Colombo
 
   useEffect(() => {
+    // Get user's current location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation([latitude, longitude]);
+        },
+        (error) => console.error("Error getting location:", error),
+        { timeout: 10000 }
+      );
+    }
+
+    // Fetch crime data
     axios
       .get("http://localhost:5000/api/crimes")
       .then((response) => setCrimes(response.data))
@@ -24,7 +38,7 @@ const CrimeMap = function () {
   return (
     <div className="w-[90vw] mx-auto p-6 rounded-1xl shadow-lg bg-gray-100 m-2 relative z-10">
       <MapContainer
-        center={[6.9271, 79.8612]}
+        center={userLocation}
         zoom={12}
         className="w-full h-[500px] rounded-1xl overflow-hidden"
       >
@@ -55,8 +69,7 @@ const CrimeMap = function () {
       </div>
 
       {/* Show the location form when button is clicked */}
-      {showForm 
-       && <LocationForm onClose={() => setShowForm(false)} />}
+      {showForm && <LocationForm onClose={() => setShowForm(false)} />}
     </div>
   );
 };
