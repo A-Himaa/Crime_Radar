@@ -5,13 +5,23 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header1 from "./Components/header";
 import Home from "./Components/home";
 
+//Crime Report
+import Report from "./Components/Report.js";
+
 function App() {
   return (
     <Router>
       <div className="App">
-        <Home />
         <Header1/>
       </div>
+
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/newreport" element={<Report />} />
+      </Routes>
+
+
     </Router> 
   );
 }
