@@ -3,6 +3,9 @@ import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import LocationForm from "./LocationForm";
+import locationList from "./LocationList";
+import { Link } from "react-router-dom";
+
 
 const getColor = (severity) => {
   if (severity === "High") return "red";
@@ -30,13 +33,13 @@ const CrimeMap = function () {
 
     // Fetch crime data
     axios
-      .get("http://localhost:5000/api/crimes")
+      .get("http://localhost:3000/api/crimes")
       .then((response) => setCrimes(response.data))
       .catch((error) => console.error("Error fetching crime data:", error));
   }, []);
 
   return (
-    <div className="w-[90vw] mx-auto p-2 rounded-1xl shadow-lg bg-gray-100 m-2 relative z-10">
+    <div className="w-[90vw] mx-auto p-2 rounded-1xl shadow-lg bg-gray-800 m-2 relative z-10">
       <MapContainer
         center={userLocation}
         zoom={12}
@@ -61,12 +64,8 @@ const CrimeMap = function () {
       </MapContainer>
 
       <div className="relative flex justify-end p-5 z-0">
-        <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => setShowForm(true)}
-        >
-          New Location
-        </button>
+        <Link to="/locationList"><button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">Location List</button></Link>
+        <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded" onClick={() => setShowForm(true)}>New Location</button>
       </div>
 
       {/* Show the location form when button is clicked */}
