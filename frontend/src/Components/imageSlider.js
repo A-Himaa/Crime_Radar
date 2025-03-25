@@ -9,7 +9,7 @@ import rob from "../Images/robbery.jpg";
 
 
 const imgArray = [
-  { src: violence, text: "Violations",link: "/violence" },
+  { src: violence, text: "Violent Crimes",link: "/violence" },
   { src: cyber, text: "Cyber Crimes",link: "/cyber" },
   { src: property, text: "Property Crimes",link: "/property" },
   { src: drug, text: "Drug-Related Crimes",link: "/drug" },
