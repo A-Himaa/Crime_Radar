@@ -7,7 +7,7 @@ import logo from "../Images/Logo.png";
 function header(){
     return(
         <div className="headerbody">
-            <nav className="bg-transparent bg-opacity-50 backdrop-blur-md fixed top-0 left-0 w-full h-[15vh] bg-[#5a250c] ">
+            <nav className="bg-transparent bg-opacity-50 backdrop-blur-md fixed top-0 left-0 w-full h-[15vh] bg-[#5a250d] z-50 ">
 
                 <div className="max-w-7xl h-[15vh] flex justify-between ">
 
