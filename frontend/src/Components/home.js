@@ -158,7 +158,7 @@ function home(){
       <div>
         <div>
 
-          <h1 className="text-4xl pl-10 pt-8 font-bold text-gray-800 pb-5 text-center pt-8">
+          <h1 className="text-4xl pl-10 pt-8 font-bold text-gray-800 pb-5 text-center">
 
           <span className="text-amber-600">D</span>on't Be the <span className="text-amber-600">N</span>ext Target !</h1>
         </div>
