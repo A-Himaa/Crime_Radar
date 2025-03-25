@@ -11,7 +11,7 @@ function header(){
 
                 <div className="max-w-7xl h-[15vh] flex justify-between ">
 
-                    {/---------Logo---------/}
+                    {/*---------Logo---------*/}
                     <a href="/"><img src={logo} alt="" className="w-[12vw] max-w-xs pl-8" /></a>
 
                     {/*----------Navigation Links----------------- */}
