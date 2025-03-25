@@ -5,7 +5,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header1 from "./Components/header";
 import Home from "./Components/home";
 
-
+//Crime Report
+import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
 import CrimeMap from "./Components/CrimeMap";
 
@@ -21,6 +22,14 @@ function App() {
           <Route path="/locationList" element={<LocationList />} />
         </Routes>
       </div>
+
+
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/newreport" element={<Report />} />
+      </Routes>
+
+
     </Router> 
   );
 }
