@@ -50,7 +50,7 @@ const Profile = () => {
           <div className="flex mb-8 border">
             <button
               className={`w-1/2 px-6 py-2 text-lg font-medium ${
-                activeTab === "me" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+                activeTab === "me" ? "bg-amber-500 text-white" : "bg-gray-200 text-gray-700"
               } focus:outline-none rounded-l-lg`}
               onClick={() => setActiveTab("me")}
             >
@@ -58,7 +58,7 @@ const Profile = () => {
             </button>
             <button
               className={`w-1/2 px-6 py-2 text-lg font-medium ${
-                activeTab === "trustedPerson" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+                activeTab === "trustedPerson" ? "bg-amber-500 text-white" : "bg-gray-200 text-gray-700"
               } focus:outline-none rounded-r-lg`}
               onClick={() => setActiveTab("trustedPerson")}
             >
@@ -110,7 +110,7 @@ const Profile = () => {
 
           {/* Edit and Delete Buttons */}
           <div className="flex space-x-4 justify-center mt-6">
-            <button className="bg-blue-600 text-white py-2 px-6 rounded-lg text-lg hover:bg-blue-700 focus:outline-none">
+            <button className="bg-green-600 text-white py-2 px-6 rounded-lg text-lg hover:bg-green-700 focus:outline-none">
               Edit
             </button>
             <button className="bg-red-600 text-white py-2 px-6 rounded-lg text-lg hover:bg-red-700 focus:outline-none">

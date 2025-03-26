@@ -236,7 +236,7 @@ const SignUp = () => {
               <div className="flex justify-end w-full">
                 <button
                   onClick={handleNextClick}
-                  className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+                  className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5"
                 >
                   Next
                 </button>
@@ -252,7 +252,7 @@ const SignUp = () => {
                 </button>
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+                  className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5"
                 >
                   Submit
                 </button>

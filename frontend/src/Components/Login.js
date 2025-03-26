@@ -102,7 +102,7 @@ const Login = () => {
             Forgot Password?
           </div>
 
-          <button type="submit" className="w-full bg-green-600 text-white p-2 mt-4 rounded hover:bg-green-700">
+          <button type="submit" className="w-full bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">
             Login
           </button>
         </form>
