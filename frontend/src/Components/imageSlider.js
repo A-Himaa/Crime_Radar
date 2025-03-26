@@ -32,7 +32,7 @@ const ImageSlider = () => {
   };
 
   return (
-    <div className="relative w-[85vw] h-[vh] mx-auto overflow-hidden mb-20 mt-10 p-4">
+    <div className="relative w-[90vw] h-[vh] mx-auto overflow-hidden mb-20 mt-10 p-4">
       <div
         className="flex transition-transform duration-200"
         style={{ transform: `translateX(-${currIndex * 33}%)` }}
