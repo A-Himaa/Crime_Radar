@@ -34,7 +34,7 @@ const LocationForm = ({ onClose }) => {
       longitude
     };
 
-    axios.post("http://localhost:3000/api/location/addLocation", newLocation)
+    axios.post("http://localhost:3000/location/addLocation", newLocation) //8070
       .then(() => {
         alert("Location Added");
         onClose();
