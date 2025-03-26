@@ -11,6 +11,7 @@ import CrimeMap from "./CrimeMap.js";
 
 
 
+
 function home(){
     return(
     <div className="relative w-full overflow-hidden">
@@ -167,9 +168,14 @@ function home(){
         <div >
           <ImageSlider />
           <div>
-              <CrimeMap />
-              
+            <div>
+              <h1 className="text-4xl pl-10 pt-8 font-bold text-gray-800 pb-5 text-center">
+                <span className="text-amber-600">L</span>ook Closer to <span className="text-amber-600">S</span>pot Hazards !</h1>
             </div>
+
+            <CrimeMap />
+              
+          </div>
         </div>
       </div>
     </div>

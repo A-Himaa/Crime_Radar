@@ -10,7 +10,6 @@ import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
 import CrimeMap from "./Components/CrimeMap";
 
-
 function App() {
   return (
     <Router>
@@ -25,7 +24,6 @@ function App() {
 
 
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/newreport" element={<Report />} />
       </Routes>
 
