@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
-import LocationForm from "./LocationForm";
-import { Link } from "react-router-dom";
 
 
 const getColor = (severity) => {
@@ -11,9 +9,8 @@ const getColor = (severity) => {
   return severity === "High" ? "red" : severity === "Medium" ? "orgnge" : "green";
 };
 
-const CrimeMap = function () {
+const CrimeMap2 = function () {
   const [crimes, setCrimes] = useState([]);
-  const [showForm, setShowForm] = useState(false);
   const [userLocation, setUserLocation] = useState([6.9271, 79.8612]); // Default to Colombo
 
   useEffect(() => {
@@ -37,7 +34,7 @@ const CrimeMap = function () {
   }, []);
 
   return (
-    <div className="w-[90vw] mx-auto p-2 rounded-1xl shadow-lg bg-gray-600 m-2 relative z-10">
+    <div className="w-[45vw] mx-auto p-2 rounded-1xl shadow-lg bg-gray-600 m-2 relative z-10">
       <MapContainer
         center={userLocation}
         zoom={12}
@@ -60,16 +57,8 @@ const CrimeMap = function () {
           </CircleMarker>
         ))}
       </MapContainer>
-
-      <div className="relative flex justify-end p-5 z-0">
-        <Link to="/locationList"><button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">Location List</button></Link>
-        <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded" onClick={() => setShowForm(true)}>New Location</button>
-      </div>
-
-      {/* Show the location form when button is clicked */}
-      {showForm && <LocationForm onClose={() => setShowForm(false)} />}
     </div>
   );
 };
 
-export default CrimeMap;
+export default CrimeMap2;

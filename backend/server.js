@@ -15,7 +15,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // database link variable decleartion
-const URL = process.env.mongodb;
+const URL = process.env.MONGODB_URI;
 
 mongoose.connect(URL, {
   //   useCreateIndex: true,
@@ -37,11 +37,11 @@ app.use("/report",reportRouter)
 
 //Taviii
 const locationRoutes = require("./routes/LocationRoutes.js");
-app.use("/api/locationForm", locationRoutes);
+app.use("/locationList", locationRoutes);
 
 
 // server port allocation & server start
 app.listen(PORT, () => {
-    console.log(`🚀Server is up and running at port: ${PORT}`);
+    console.log('🚀Server is up and running at port: ${PORT}');
   });
 
