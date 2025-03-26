@@ -36,9 +36,10 @@ app.use("/report",reportRouter)
 
 
 //Taviii
-const locationRoutes = require("./routes/LocationRoutes.js");
-app.use("/locationList", locationRoutes);
+const locationRouter = require("./routes/locations.js");
+app.use("/location", locationRouter);
 
+console.log("📌 Location routes are mounted at: /locationList"); 
 
 // server port allocation & server start
 app.listen(PORT, () => {

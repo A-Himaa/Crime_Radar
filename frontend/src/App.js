@@ -9,6 +9,7 @@ import Home from "./Components/home";
 import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
 import CrimeMap from "./Components/CrimeMap";
+import LocationForm from "./Components/LocationForm.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/crimeMap" element={<CrimeMap />} />
           <Route path="/locationList" element={<LocationList />} />
+          <Route path="/addLocation" element={<LocationForm />} />
         </Routes>
       </div>
 

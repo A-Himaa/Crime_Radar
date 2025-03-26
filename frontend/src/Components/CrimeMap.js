@@ -31,7 +31,7 @@ const CrimeMap = function () {
 
     // Fetch crime data
     axios
-      .get("http://localhost:3000/api/crimes")
+      .get("http://localhost:8070/api/crimes")
       .then((response) => setCrimes(response.data))
       .catch((error) => console.error("Error fetching crime data:", error));
   }, []);
