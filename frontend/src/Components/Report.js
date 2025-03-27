@@ -2,38 +2,58 @@ import React,{useState} from "react";
 import axios from "axios";
 
 function Report(){
+    const [anonymous, setAnonymous] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [contactNo, setcontactNo] = useState("");
-    const [nic, setnic] = useState("");
+    const [NIC, setnic] = useState("");
+    const [type, setType] = useState("");
+    const [severity, setSevere] = useState("");
+    const [datetime, setDatetime] = useState("");
+    const [district, setDistrict] = useState("");
+    const [description, setDescription] = useState("");
+    const [image, setImage] = useState("");
+
+    function submit(e){
+        e.preventDefault();
+
+        const newReport = {
+            anonymous,
+            name,
+            email,
+            contactNo,
+            NIC,
+            type,
+            severity,
+            datetime,
+            district,
+            description,
+            image,
+        };
+
+
+//Function to create a new report
+
+axios.post("http://localhost:8070/report/newCrime", newReport )
+        .then(() => {
+            alert("Report Successfully Added");
+            window.location.reload();
+        })
+        .catch((err) =>{
+            alert(err);
+        });
+
+    }
 
 
 
-    const handleKeyDown = (e) => {
-        const key = e.key;
-        const isNumber = /^[0-9]$/.test(key);
-        const isBackspace = key === "Backspace" || key === "Delete";
-        const isV = key === "V" || key === "v";
-    
-        // Check length dynamically
-        const currentLength = nic.length; 
-    
-        const isValid = isNumber || isBackspace || (isV && currentLength === 9);
-    
-        if (!isValid) {
-            e.preventDefault();
-        }
-    };
-    
-    const handleChange = (e) => {
-        const inputNic = e.target.value; 
-    
-        // Enforce max length (12 for new NIC, 10 for old NIC)
-        if (/^\d{0,9}[Vv]?$|^\d{0,12}$/.test(inputNic)) {
-            setnic(inputNic);
-        }
-    };
-    
+
+
+
+
+
+
+
 
 
 
@@ -60,15 +80,19 @@ function Report(){
             <div className="flex justify-between">
             <h2 className="p-3 font-bold text-xl">User Information</h2>
 
-            <div className="p-3 flex items-center">
-                    <input type="checkbox" className="w-5 h-5"/>
+            <div className={`p-3 rounded-md transition duration-300 ${anonymous ? "opacity-50" : "opacity-100"}`}>
+                    <input type="checkbox"
+                           checked={anonymous}
+                           onChange={(e) => setAnonymous(e.target.checked)}
+                           className="w-5 h-5"/>
+
                     <label className="pl-3 font-semibold">Anonymous</label>
                 </div>
             </div>
 
                 
             {/*---------1st Row---------*/}
-                <div className="flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3 ">
+                <div className={`flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3  ${anonymous ? "opacity-50" : ''}`}>
                     <label className="font-semibold">Name :</label>
                     <label className="font-semibold">Email :</label>
 
@@ -77,7 +101,7 @@ function Report(){
                         value={name}
                         onKeyDown={(e) => {
                             const key = e.key;
-                            const isLetter = /^[a-zA-z]$/.test(key);
+                            const isLetter = /^[a-zA-z ]$/.test(key);
                             const isBackspace = key === 'Backspace';
 
                             const isValid = isLetter || isBackspace;
@@ -94,7 +118,7 @@ function Report(){
                                 setName(rname);
                             }
                         }}                     
-                    className="border border-gray-300 rounded-md w-full p-2" placeholder="Enter Your Name" />
+                    className="border border-gray-300 rounded-md w-full p-2" placeholder="Enter Your Name" disabled={anonymous} required />
 
 
                     {/* Email validation */}
@@ -121,12 +145,12 @@ function Report(){
                                 setEmail(newVal);
                             }
                         }}                 
-                    className="border border-gray-300 rounded-md w-full p-2" placeholder="xxxxx@gmail.com" /> 
+                    className="border border-gray-300 rounded-md w-full p-2" placeholder="xxxxx@gmail.com" disabled={anonymous} required /> 
 
                 </div>
 
             {/*---------2nd Row---------*/}
-            <div className="flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3 ">
+            <div className={`flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3 ${anonymous ? "opacity-50" : ''}`}>
                     <label className="font-semibold">Contact No. :</label>
                     <label className="font-semibold">NIC :</label>
 
@@ -155,18 +179,36 @@ function Report(){
 
                         minLength={10}
                         maxLength={10}               
-                    className="border border-gray-300 rounded-md w-full p-2" placeholder="0312369850" />   
+                    className="border border-gray-300 rounded-md w-full p-2" placeholder="0312369850" disabled={anonymous} required />   
 
 
                     {/* NIC validation */}
                     <input type="text"
-                           value={nic}
-                           onKeyDown={handleKeyDown}
-                           onChange={handleChange}
-                           maxLength={12}
-                    
-                    
-                    className="border border-gray-300 rounded-md w-full p-2" />         
+                           value={NIC}
+                           onKeyDown={(e) => {
+                            const key = e.key;
+                            const isnicDigit = /^[0-9Vv]$/.test(key);
+                            const isBackspace = key === 'Backspace';
+
+                            const isValid = isBackspace || isnicDigit;
+
+                            if(!isValid){
+                                e.preventDefault();
+                            }
+                        }}
+
+                        onChange={(e) => {
+                            const validNic = e.target.value;
+                            
+                            if(/^[0-9Vv]*$/.test(validNic)){
+                                setnic(validNic);
+                            }
+                        }}
+
+                        minLength={10}
+                        maxLength={12}
+                        placeholder="Enter your NIC"
+                        className="border border-gray-300 rounded-md w-full p-2" disabled={anonymous} required />         
                 </div>
 
                 {/* <hr className="border-gray-400 opacity-50 mt-5 " /> */}
@@ -181,7 +223,7 @@ function Report(){
                     <label className="font-semibold">Severity :</label>
 
                     {/* Crime Type */}
-                    <select className="border border-gray-300 rounded-md w-full p-2 ">
+                    <select className="border border-gray-300 rounded-md w-full p-2 " onChange={(e) => setType(e.target.value)} required>
                         <option value=""/>
                         <option value="violence">Violence</option>
                         <option value="cyber">Cyber</option>
@@ -193,7 +235,7 @@ function Report(){
                     </select>
 
                     {/* Severity */}
-                    <select className="border border-gray-300 rounded-md w-full p-2 ">
+                    <select className="border border-gray-300 rounded-md w-full p-2 " onChange={(e) => setSevere(e.target.value)} required>
                         <option value=""/>
                         <option value="high">High</option>
                         <option value="medium">Medium</option>
@@ -207,10 +249,10 @@ function Report(){
                     <label className="font-semibold">Date & Time :</label>
                     <label className="font-semibold">District :</label>
 
-                    <input type="datetime-local" className="border border-gray-300 rounded-md w-full p-2" />  
+                    <input type="datetime-local" className="border border-gray-300 rounded-md w-full p-2" onChange={(e) => setDatetime(e.target.value)} required />  
 
                     {/*--------Location-------*/}
-                    <select className="border border-gray-300 rounded-md w-full p-2 ">
+                    <select className="border border-gray-300 rounded-md w-full p-2 " onChange={(e) => setDistrict(e.target.value)} required >
                             <option value=""/>
                             <option value="colombo">Colombo</option>
                             <option value="gampaha">Gampaha</option>
@@ -235,7 +277,7 @@ function Report(){
                             <option value="kegalle">Kegalle</option>
                             <option value="kurunegala">Kurunegala</option>
                             <option value="anuradhapura">Anuradhapura</option>
-                            <option value="matar">Matara</option>
+                            <option value="matara">Matara</option>
                             <option value="puttalam">Puttalam</option>
 
                         
@@ -245,22 +287,22 @@ function Report(){
                 {/*---------3rd Row---------*/}
                 <div className="pl-3 pr-3 pt-3">
                     <label className="font-semibold">Description :</label>
-                    <textarea className="border border-gray-300 rounded-md w-full p-2 mt-3" placeholder="Description about the incident" />                    
+                    <textarea className="border border-gray-300 rounded-md w-full p-2 mt-3" placeholder="Description about the incident" onChange={(e) => setDescription(e.target.value)} required />                    
                 </div>
 
                 {/*---------4th Row---------*/}
                 <div className="pl-3 pr-3 pb-3">
                     <label className="font-semibold">Images :</label>
-                    <input type="file" className="border border-gray-300 rounded-md w-full p-4 mt-3" placeholder="Description about the incident" />                    
+                    <input type="file" className="border border-gray-300 rounded-md w-full p-4 mt-3" placeholder="Description about the incident" onChange={(e) => setImage(e.target.value)} />                    
                 </div>
 
                 <div className="p-3 flex items-center">
-                    <input type="checkbox" className="w-5 h-5"/>
+                    <input type="checkbox" className="w-5 h-5" required/>
                     <label className="pl-3">I hereby confirm that all the information provided is accurate and true to the best of my knowledge</label>
                 </div>
 
                 <div className="flex justify-end">
-                <button className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105 mr-3 mt-4">
+                <button value={submit} onClick={submit} className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105 mr-3 mt-4">
                     Submit
                 </button>
 </div>
