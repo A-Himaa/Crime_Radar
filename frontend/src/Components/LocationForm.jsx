@@ -35,7 +35,7 @@ function LocationForm({ onClose }) {
     };
 
     axios
-      .post("http://localhost:8070/addLocation", newLocation)
+      .post("http://localhost:/addLocation", newLocation)
       .then(() => {
         alert("Location Added");
         onClose();

@@ -3,7 +3,7 @@ import { Eye, EyeOff } from "lucide-react";
 import backgroundvid from "../Images/background.mp4";
 import axios from "axios"; // Ensure axios is installed
 
-const SignUp = () => {
+const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showTrustedForm, setShowTrustedForm] = useState(false);
@@ -28,6 +28,7 @@ const SignUp = () => {
     nic: "",
   });
 
+  
   // Handle input change for both forms
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -87,20 +88,10 @@ const SignUp = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-center h-screen bg-black overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full">
-        <video
-          autoPlay
-          loop
-          muted
-          className="w-full h-full object-cover blur-[14px]"
-        >
-          <source src={backgroundvid} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
+    <div className="relative flex justify-center items-center h-full bg-amber-100 ">
+     
 
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-[600px] z-10">
+      <div className="relative bg-white p-8 rounded-lg shadow-lg w-[600px] z-10 mt-[20vh] mb-[5vh]">
         <h2 className="text-4xl font-bold text-center mb-2">
           {showTrustedForm ? "Trusted Person Details" : "Sign Up"}
         </h2>
@@ -265,4 +256,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Signup;

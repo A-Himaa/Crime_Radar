@@ -4,6 +4,7 @@ import axios from "axios"; // Import axios for making HTTP requests
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import backgroundvid from "../Images/background.mp4";
 
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState(""); // State for email
@@ -107,9 +108,10 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="text-center mt-4 text-sm">
-          Not registered yet? <span className="text-blue-600 cursor-pointer">Create an Account</span>
-        </p>
+        {/* <p className="text-center mt-4 text-sm">
+          Not registered yet? <span onClick={() => navigate("/signup")} className="text-blue-600 cursor-pointer">Create an Account</span>
+        </p> */}
+        <p className="text-center mt-4 text-sm">Not registered yet ? <a href="/signup" className="text-blue-600 ">Create an account</a></p>
       </div>
     </div>
   );

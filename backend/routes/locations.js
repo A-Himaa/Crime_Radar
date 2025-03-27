@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const location = require("../models/location");
+const Location = require("../models/location");
 
 // Create location
 router.route("/addLocation").post((req,res) =>{
@@ -8,7 +8,7 @@ router.route("/addLocation").post((req,res) =>{
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
 
-    const newLocation = new location({ 
+    const newLocation = new Location({ 
         locationName, 
         latitude, 
         longitude 
