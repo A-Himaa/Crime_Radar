@@ -22,14 +22,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/crimeMap" element={<CrimeMap />} />
           <Route path="/locationList" element={<LocationList />} />
+          <Route path="/addLocation" element={<LocationForm />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/newreport" element={<Report />} />
         </Routes>
       </div>
-
-
-
-
-
     </Router> 
   );
 }
