@@ -43,12 +43,12 @@ const Header = () => {
           <a href="#" className="hover:underline transition-all duration-300">
             STAY AWARE
           </a>
-          <a href="#" className="hover:underline transition-all duration-300">
+          <a href="/locationList" className="hover:underline transition-all duration-300">
             INSIGHTS
           </a>
 
           {/* Login Button */}
-          <a href="#">
+          <a href="/login">
             <button className="border-2 p-2 px-10 hover:bg-amber-800 hover:text-white transition-colors duration-300 rounded-lg">
               LOGIN
             </button>

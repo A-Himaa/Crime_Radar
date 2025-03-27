@@ -29,18 +29,25 @@ connection.once("open", () => {
   console.log("🍃MongoDB Connection Success !");
 });
 
+//Chiyaan
+const authRouter = require("./routes/auth.js");
+app.use("/auth", authRouter);
 
+const userRouter = require("./routes/user.js");
+app.use("/signup", userRouter);
 
 //Himaa
 const reportRouter = require("./routes/report_route.js");
-app.use("/report", reportRouter);
+app.use("/report",reportRouter);
 
 
+//Taviii
+const locationRouter = require("./routes/locations.js");
+app.use("/locations", locationRouter);
 
-
+console.log("📌 Location routes are mounted at: /locationList"); 
 
 // server port allocation & server start
 app.listen(PORT, () => {
     console.log(`🚀Server is up and running at port: ${PORT}`);
   });
-

@@ -47,7 +47,7 @@ const LocationList = () => {
   );
 
   return (
-    <div className="p-12">
+    <div className="p-12 bg-gradient-to-b from-stone-200 to-orange-50">
   <h1 className="text-4xl font-bold text-gray-800 text-center mb-6">
     <span className="text-amber-600">L</span>ocation <span className="text-amber-600">L</span>ist
   </h1>

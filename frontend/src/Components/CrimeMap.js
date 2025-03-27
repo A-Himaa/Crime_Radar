@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, Popup, useMap} from "react-leaflet";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import LocationForm from "./LocationForm";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
+// Function to update the map view dynamically
+const ChangeView = ({ center }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(center, 12); // Update view when center changes
+  }, [center, map]);
+  return null;
+};
 
 const getColor = (severity) => {
   if (!severity) return "gray";
-  return severity === "High" ? "red" : severity === "Medium" ? "orgnge" : "green";
+  return severity === "High" ? "red" : severity === "Medium" ? "orange" : "green";
 };
 
 const CrimeMap = function () {
@@ -19,7 +27,7 @@ const CrimeMap = function () {
   useEffect(() => {
     // Get user's current location
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
+      navigator.geolocation.getCurrentPosition  (
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation([latitude, longitude]);
@@ -31,7 +39,7 @@ const CrimeMap = function () {
 
     // Fetch crime data
     axios
-      .get("http://localhost:3000/api/crimes")
+      .get("http://localhost:8070/api/crimes")
       .then((response) => setCrimes(response.data))
       .catch((error) => console.error("Error fetching crime data:", error));
   }, []);
@@ -44,7 +52,15 @@ const CrimeMap = function () {
         className="w-full h-[500px] rounded-1xl overflow-hidden relative z-[0]"
       >
 
+      <ChangeView center={userLocation} /> {/* Updates map center dynamically */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+        {/* Display user location */}
+        <CircleMarker center={userLocation} radius={10} color="red">
+          <Popup>You are here 🚩</Popup>
+        </CircleMarker>
+
+        {/* Display crime locations */}
         {crimes.map((crime, index) => (
           <CircleMarker
             key={index}
