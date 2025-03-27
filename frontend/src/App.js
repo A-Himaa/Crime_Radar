@@ -9,6 +9,7 @@ import Home from "./Components/home";
 import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
 import CrimeMap from "./Components/CrimeMap";
+import CrimeDetails from "./Components/crimeDetails.js";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/crimeMap" element={<CrimeMap />} />
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/newreport" element={<Report />} />
+          <Route path="/crimedetails" element={<CrimeDetails />} />
         </Routes>
       </div>
 
