@@ -57,7 +57,7 @@ const CrimeMap = function () {
 
         {/* Display user location */}
         <CircleMarker center={userLocation} radius={10} color="red">
-          <Popup>You are here</Popup>
+          <Popup>You are here 🚩</Popup>
         </CircleMarker>
 
         {/* Display crime locations */}

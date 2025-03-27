@@ -53,18 +53,18 @@ const Login = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-center h-full bg-amber-100 ">
+    <div className="relative flex justify-center items-center h-full bg-black">
       {/* Video Background */}
-      {/* <div className="absolute top-0 left-0 w-full h-full">
+      <div className="absolute top-0 left-0 w-full h-full">
         <video autoPlay loop muted className="w-full h-full object-cover blur-[14px]">
           <source src={backgroundvid} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      </div> */}
+      </div> 
 
       {/* Form Container */}
       <div className="relative bg-white p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh]">
-        <h2 className="text-5xl font-bold text-center mb-2">Login</h2>
+        <h2 className="text-5xl font-bold text-center mb-2"><span className ="text-amber-600">L</span>ogin</h2>
         <p className="text-center text-xl text-gray-600 mb-4">Welcome Back! Login to get started</p>
 
         {/* Error message */}
@@ -99,11 +99,11 @@ const Login = () => {
             </span>
           </div>
 
-          <div className="text-right text-sm text-blue-600 mt-2 cursor-pointer">
+          <div className="text-right text-sm text-blue-600 mt-2 cursor-pointer p-2">
             Forgot Password?
           </div>
 
-          <button type="submit" className="w-full bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">
+          <button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">
             Login
           </button>
         </form>
