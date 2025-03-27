@@ -1,19 +1,35 @@
 const router = require("express").Router();
 
-let Report = require("../models/c_report");
+let ReportModel = require("../models/c_report.js");
 
 
 //Fetching data from the frontend
 router.route("/newcrime").post((req,res) =>{
+    const anonymous = req.body.anonymous;
     const name = req.body.name;
-    const phone = req.body.phone;
-    const gender = req.body.gender;
+    const email = req.body.email;
+    const contactNo = req.body.contactNo;
+    const nic = req.body.nic;
+    const type = req.body.type;
+    const severity = req.body.severity;
+    const datetime = req.body.datetime;
+    const district = req.body.district;
+    const description = req.body.description;
+    const image = req.body.image;
 
 
-    const newCrime = new Report({
-        name,
-        phone,
-        gender
+    const newCrime = new ReportModel({
+            anonymous,
+            name,
+            email,
+            contactNo,
+            nic,
+            type,
+            severity,
+            datetime,
+            district,
+            description,
+            image,
     })
 
 
@@ -28,7 +44,7 @@ router.route("/newcrime").post((req,res) =>{
 
 //Retrive crime data
 router.route("/crimedata").get((req,res)=>{
-    Report.find().then((data)=>{
+    ReportModel.find().then((data)=>{
         res.json(data)
     }).catch((err)=>{
         console.log(err)
