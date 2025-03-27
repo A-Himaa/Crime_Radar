@@ -53,17 +53,17 @@ const Login = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-center h-screen bg-black overflow-hidden">
+    <div className="relative flex justify-center items-center h-full bg-amber-100 ">
       {/* Video Background */}
-      <div className="absolute top-0 left-0 w-full h-full">
+      {/* <div className="absolute top-0 left-0 w-full h-full">
         <video autoPlay loop muted className="w-full h-full object-cover blur-[14px]">
           <source src={backgroundvid} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      </div>
+      </div> */}
 
       {/* Form Container */}
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-96 z-10">
+      <div className="relative bg-white p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh]">
         <h2 className="text-5xl font-bold text-center mb-2">Login</h2>
         <p className="text-center text-xl text-gray-600 mb-4">Welcome Back! Login to get started</p>
 
