@@ -10,8 +10,7 @@ router.route("/addLocation").post((req,res) =>{
 
     const newLocation = new Location({ 
         locationName, 
-        latitude, 
-        longitude 
+        coordinates: [latitude, longitude],
     })
 
     newLocation.save().then(() => {
@@ -22,13 +21,15 @@ router.route("/addLocation").post((req,res) =>{
 });
 
 // Read all locations
-router.route("/").get(async(req,res)=>{
-    location.find().then((locations)=>{
+router.route("/locationList").get(async (req, res) => {
+    try {
+        const locations = await Location.find();
         res.json(locations);
-    }).catch((err)=>{
+    } catch (err) {
         console.log(err);
-    })
-})
+        res.status(500).send("Error retrieving locations");
+    }
+});
 
 // Update location
 router.route("/updateLocation/:id").put(async (req, res) => {
@@ -37,12 +38,11 @@ router.route("/updateLocation/:id").put(async (req, res) => {
 
     const updateLocation = {
         locationName,
-        latitude,
-        longitude
+        coordinates: [latitude, longitude]
     };
 
     try {
-        const update = await location.findByIdAndUpdate(id, updateLocation);
+        const update = await Location.findByIdAndUpdate(id, updateLocation);
         if (!update) {
             return res.status(404).send({ status: "Location not found" });
         }
@@ -71,13 +71,13 @@ router.route("/getLocation/:id").get(async (req, res) => {
 // Delete location
 router.route("/delete/:id").delete(async (req, res) => {
     let locationId = req.params.id;
-    await location.findByIdAndDelete(locationId)
+    await Location.findByIdAndDelete(locationId)
     .then(()=> {
         res.status(200).send({status: "Location Deleted"});
     }).catch((err)=>{
         console.log(err.message);
         res.status(500).send({stats: "Error with deleting location", error:err.message});
     })
- })
+ });
 
 module.exports = router;

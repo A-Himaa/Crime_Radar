@@ -45,7 +45,7 @@ app.use("/report",reportRouter);
 const locationRouter = require("./routes/locations.js");
 app.use("/locations", locationRouter);
 
-console.log("📌 Location routes are mounted at: /locationList"); 
+//console.log("📌 Location routes are mounted at: /locationList"); 
 
 // server port allocation & server start
 app.listen(PORT, () => {

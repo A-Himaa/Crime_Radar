@@ -12,7 +12,7 @@ const LocationList = () => {
 
   useEffect(() => {
     function getLocation() {
-      axios.get("http://localhost:3000/locationList")
+      axios.get("http://localhost:8070/locationList")
         .then((res) => {
           console.log("Response from server:", res.data);
           setLocations(res.data);
@@ -28,7 +28,7 @@ const LocationList = () => {
   const onDeleteClick = async (locationId) => {
     const confirmed = window.confirm('Are you sure you want to delete this location?');
     if (confirmed) {
-      await axios.delete(`http://localhost:3000/locationList/delete/${locationId}`);
+      await axios.delete(`http://localhost:8070/locationList/delete/${locationId}`);
       alert('Location Deleted Successfully');
       window.location.reload();
     }
@@ -41,9 +41,9 @@ const LocationList = () => {
   });
 
   const filteredLocation = locations.filter((location) =>
-    location.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    location.latitude.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    location.longitude.toLowerCase().includes(searchTerm.toLowerCase())
+    location.locationName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (location.coordinates && location.coordinates[0]?.toString().includes(searchTerm)) || // Latitude
+    (location.coordinates && location.coordinates[1]?.toString().includes(searchTerm))   // Longitude
   );
 
   return (
@@ -82,9 +82,9 @@ const LocationList = () => {
           <tbody>
             {filteredLocation.map((loc) => (
               <tr key={loc.id} className="border-b border-gray-600 hover:bg-gray-700">
-                <td className="px-4 py-2">{loc.location}</td>
-                <td className="px-4 py-2">{loc.latitude}</td>
-                <td className="px-4 py-2">{loc.longitude}</td>
+                <td className="px-4 py-2">{loc.locationName}</td>
+                <td className="px-4 py-2">{loc.coordinates[0]}</td> // Latitude
+                <td className="px-4 py-2">{loc.coordinates[1]}</td> // Longitude
                 <td className="px-4 py-2 flex gap-2">
                   <Link to={`/updateLocation/${loc._id}`}>
                     <button className="bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded">Edit</button>

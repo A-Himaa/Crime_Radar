@@ -64,7 +64,7 @@ const Login = () => {
 
       {/* Form Container */}
       <div className="relative bg-white p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh]">
-        <h2 className="text-5xl font-bold text-center mb-2"><span className ="text-amber-600">L</span>ogin</h2>
+        <h2 className="text-5xl font-bold text-center mb-2"><span className ="text-amber-600 text-5xl">L</span>ogin</h2>
         <p className="text-center text-xl text-gray-600 mb-4">Welcome Back! Login to get started</p>
 
         {/* Error message */}
