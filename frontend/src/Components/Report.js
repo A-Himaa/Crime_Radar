@@ -14,8 +14,18 @@ function Report(){
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
 
+    const [errormail, setemailError] = useState("");
+    const [errornum, setnumError] = useState("");
+    const [errnic, setnicError] = useState("");
+
     function submit(e){
         e.preventDefault();
+
+        const form = e.target.closest('form');
+        if(!form.checkValidity()){
+            alert("Please Fill Out The Required Fields.");
+            return;
+        }
 
         const newReport = {
             anonymous,
@@ -93,8 +103,8 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
                 
             {/*---------1st Row---------*/}
                 <div className={`flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3  ${anonymous ? "opacity-50" : ''}`}>
-                    <label className="font-semibold">Name :</label>
-                    <label className="font-semibold">Email :</label>
+                    <label className="font-semibold">Name<span className="text-red-500"> *</span> :</label>
+                    <label className="font-semibold">Email<span className="text-red-500"> *</span> :</label>
 
                     {/* Name Validation */}
                     <input type="text"
@@ -126,7 +136,7 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
                         value={email}
                         onKeyDown={(e) => {
                             const key = e.key;
-                            const isEmailLetter = /^[a-zA-Z0-9._+@-]$/.test(key)
+                            const isEmailLetter = /^[a-zA-Z0-9.@]$/.test(key)
                             const isBackspace = key === 'Backspace';
 
                             const isValid = isBackspace || isEmailLetter;
@@ -138,21 +148,30 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
 
                         onChange={(e) => {
                             const newVal = e.target.value;
+                            setEmail(newVal);
+                        }}
 
-                            const validInput = /^[a-zA-Z0-9._+@-]*$/.test(newVal);
+                                            
+                        onBlur={() => {
+                            const validEmailRegex = /^[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        
+                            if (!validEmailRegex.test(email)) {
+                                setemailError(true);
 
-                            if(validInput){
-                                setEmail(newVal);
+                            } else {
+                                setemailError(false);
                             }
-                        }}                 
-                    className="border border-gray-300 rounded-md w-full p-2" placeholder="xxxxx@gmail.com" disabled={anonymous} required /> 
+                        }}
+                                      
+                        className={`border ${errormail ? "border-red-500 shadow-sm shadow-red-400" : "border-gray-300"} rounded-md w-full p-2`} 
+                        placeholder="xxxxx@gmail.com"  required disabled={anonymous} /> 
 
                 </div>
 
             {/*---------2nd Row---------*/}
             <div className={`flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3 ${anonymous ? "opacity-50" : ''}`}>
-                    <label className="font-semibold">Contact No. :</label>
-                    <label className="font-semibold">NIC :</label>
+                    <label className="font-semibold">Contact No.<span className="text-red-500"> *</span> :</label>
+                    <label className="font-semibold">NIC<span className="text-red-500"> *</span> :</label>
 
 
                     <input type="text" 
@@ -176,10 +195,22 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
                                 setcontactNo(validNo);
                             }
                         }}
-
                         minLength={10}
-                        maxLength={10}               
-                    className="border border-gray-300 rounded-md w-full p-2" placeholder="0312369850" disabled={anonymous} required />   
+                        maxLength={10}   
+                        
+                        onBlur={() => {
+                            const validPhone = /^\d{10}$/;
+        
+                            if (!validPhone.test(contactNo)) {
+                                setnumError(true);
+
+                            } else {
+                                setnumError(false);
+                            }
+                        }}
+                                      
+                        className={`border ${errornum ? "border-red-500 shadow-sm shadow-red-400" : "border-gray-300"} rounded-md w-full p-2`} 
+                        placeholder="0312369850" disabled={anonymous} required />   
 
 
                     {/* NIC validation */}
@@ -204,11 +235,24 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
                                 setnic(validNic);
                             }
                         }}
-
                         minLength={10}
                         maxLength={12}
+
+                        onBlur={() => {
+                            const validnicold = /^\d{9}[Vv]$/;
+                            const validnicnew = /^\d{12}$/;
+        
+                            if (!(validnicold.test(NIC) || validnicnew.test(NIC))) {
+                                setnicError(true);
+
+                            } else {
+                                setnicError(false);
+                            }
+                        }}
+                                      
+                        className={`border ${errnic ? "border-red-500 shadow-sm shadow-red-400" : "border-gray-300"} rounded-md w-full p-2`}                        
                         placeholder="Enter your NIC"
-                        className="border border-gray-300 rounded-md w-full p-2" disabled={anonymous} required />         
+                        disabled={anonymous} required />         
                 </div>
 
                 {/* <hr className="border-gray-400 opacity-50 mt-5 " /> */}
@@ -219,8 +263,8 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
 
                 {/*---------1st Row---------*/}
                 <div className="flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-2 ">
-                    <label className="font-semibold">Crime Type :</label>
-                    <label className="font-semibold">Severity :</label>
+                    <label className="font-semibold">Crime Type<span className="text-red-500"> *</span> :</label>
+                    <label className="font-semibold">Severity<span className="text-red-500"> *</span> :</label>
 
                     {/* Crime Type */}
                     <select className="border border-gray-300 rounded-md w-full p-2 " onChange={(e) => setType(e.target.value)} required>
@@ -246,8 +290,8 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
 
             {/*---------2nd Row---------*/}
             <div className="flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3">
-                    <label className="font-semibold">Date & Time :</label>
-                    <label className="font-semibold">District :</label>
+                    <label className="font-semibold">Date & Time<span className="text-red-500"> *</span> :</label>
+                    <label className="font-semibold">District<span className="text-red-500"> *</span> :</label>
 
                     <input type="datetime-local" className="border border-gray-300 rounded-md w-full p-2" onChange={(e) => setDatetime(e.target.value)} required />  
 
@@ -286,7 +330,7 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
 
                 {/*---------3rd Row---------*/}
                 <div className="pl-3 pr-3 pt-3">
-                    <label className="font-semibold">Description :</label>
+                    <label className="font-semibold">Description<span className="text-red-500"> *</span> :</label>
                     <textarea className="border border-gray-300 rounded-md w-full p-2 mt-3" placeholder="Description about the incident" onChange={(e) => setDescription(e.target.value)} required />                    
                 </div>
 
@@ -298,7 +342,7 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
 
                 <div className="p-3 flex items-center">
                     <input type="checkbox" className="w-5 h-5" required/>
-                    <label className="pl-3">I hereby confirm that all the information provided is accurate and true to the best of my knowledge</label>
+                    <label className="pl-3">I hereby confirm that all the information provided is accurate and true to the best of my knowledge.</label>
                 </div>
 
                 <div className="flex justify-end">
