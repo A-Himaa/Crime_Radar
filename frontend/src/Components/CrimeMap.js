@@ -22,7 +22,7 @@ const getColor = (severity) => {
 const CrimeMap = function () {
   const [crimes, setCrimes] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [userLocation, setUserLocation] = useState([6.9271, 79.8612]); // Default to Colombo
+  const [userLocation, setUserLocation] = useState([6.9061, 79.9696]); // Default to Colombo
 
   useEffect(() => {
     // Get user's current location
@@ -64,7 +64,7 @@ const CrimeMap = function () {
         {crimes.map((crime, index) => (
           <CircleMarker
             key={index}
-            center={[crime.latitude, crime.longitude]}
+            center={[crime.coordinates]}
             radius={8}
             color={getColor(crime.severity)}
           >

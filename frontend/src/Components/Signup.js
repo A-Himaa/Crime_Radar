@@ -98,9 +98,9 @@ const Signup = () => {
            </div> 
 
       <div className="relative bg-white p-8 rounded-lg shadow-lg w-[600px] z-10 mt-[20vh] mb-[5vh]">
-        <h2 className="text-4xl font-bold text-center mb-2">
+        <h2 className="text-5xl font-bold text-center mb-2">
           {showTrustedForm ? ("Trusted Person Details") : (
-            <> <span className="text-amber-600">S</span>ign <span className="text-amber-600">U</span>p</>
+            <> <span className="text-amber-600 text-5xl">S</span>ign <span className="text-amber-600 text-5xl">U</span>p</>
           )}
         </h2>
         <p className="text-center text-xl text-gray-600 mb-4">

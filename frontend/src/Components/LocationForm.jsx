@@ -3,16 +3,15 @@ import axios from "axios";
 
 function LocationForm({ onClose }) {
   const [locationName, setLocationName] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
+  const [coordinates, setCoordinates] = useState(["",""]);
+  
 
   // Function to get location using Geolocation API
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
+          setCoordinates([position.coords.latitude, position.coords.longitude]);
         },
         (error) => {
           console.error("Error getting location:", error);
@@ -30,8 +29,7 @@ function LocationForm({ onClose }) {
 
     const newLocation = {
       locationName, // Correcting the reference
-      latitude,
-      longitude,
+      coordinates
     };
 
     axios.post("http://localhost:8070/locations/addLocation", newLocation)
@@ -58,8 +56,8 @@ function LocationForm({ onClose }) {
                 </div>
 
                 <div className="flex space-x-4">
-                  <input type="text" value={latitude} placeholder="Latitude (N)" readOnly className="w-full px-4 py-2 border border-gray-300 rounded-lg"/>
-                  <input type="text" value={longitude} placeholder="Longitude (E)" readOnly className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+                  <input type="text" value={coordinates[0]} placeholder="Latitude (N)" readOnly className="w-full px-4 py-2 border border-gray-300 rounded-lg"/>
+                  <input type="text" value={coordinates[1]} placeholder="Longitude (E)" readOnly className="w-full px-4 py-2 border border-gray-300 rounded-lg" />
                 </div>
 
                 <button type="submit" className="w-full py-2 bg-amber-500 text-white font-semibold rounded hover:bg-amber-600 transition">
