@@ -18,10 +18,8 @@ app.use(express.json()); // Replaced bodyParser.json() with express.json() (sinc
 const URL = process.env.mongodb;
 
 mongoose.connect(URL, {
-  //   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  //   useFindAndModify: false
 });
 
 const connection = mongoose.connection;
@@ -34,7 +32,7 @@ const authRouter = require("./routes/auth.js");
 app.use("/auth", authRouter);
 
 const userRouter = require("./routes/user.js");
-app.use("/signup", userRouter);
+app.use("/auth", userRouter);
 
 //Himaa
 const reportRouter = require("./routes/report_route.js");
