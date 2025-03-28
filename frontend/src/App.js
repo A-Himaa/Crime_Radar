@@ -9,9 +9,12 @@ import Home from "./Components/home";
 import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
 import CrimeMap from "./Components/CrimeMap";
+import CrimeDetails from "./Components/crimeDetails.js";
+
 import LocationForm from "./Components/LocationForm.jsx";
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
+
 
 function App() {
   return (
@@ -26,6 +29,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/newreport" element={<Report />} />
+          <Route path="/crimedetails" element={<CrimeDetails />} />
         </Routes>
       </div>
     </Router> 
