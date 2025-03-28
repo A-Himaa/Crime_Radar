@@ -2,6 +2,30 @@ import React, {useState, useEffect} from "react";
 import axios from "axios";
 
 function CrimeDetails(){
+    const [allReports, setAllreports] = useState([]);
+
+    useEffect(() => {
+        function getReports() {
+            axios.get("http://localhost:8070/report/crimedetails")
+                .then((res) => {
+                    console.log("Response from server:", res.data); 
+                    const reservedReports = res.data.reverse();
+                    setAllreports(reservedReports);
+                })
+                .catch((err) => {
+                    console.error("Error fetching data:", err);
+                    alert(err.message);
+                });
+        }
+  
+        getReports();
+    }, []);
+
+    const data = allReports;
+
+
+
+
     return(
         <div className="w-full h-screen flex justify-center items-center bg-gradient-to-b from-stone-200 to-orange-50">
             <div className="bg-white rounded-xl shadow-xl px-8 py-6 w-[80vw] mt-[15vh] mb-[18vh]">
@@ -12,7 +36,7 @@ function CrimeDetails(){
                 </h2>
             </div>
 
-            <div className="container bg-gray-400 bg-opacity-70 rounded-lg ">
+            <div className="container bg-gray-200 bg-opacity-90 rounded-lg ">
             <div className="space-y-2 flex justify-between grid grid-cols-5 gap-4 mt-4 mb-4">
             <div>
               <h2 className="text-center text-xl flex-grow font-bold mt-4 mb-4">Anonymous</h2>
@@ -31,6 +55,8 @@ function CrimeDetails(){
                 </div>
             </div>
             </div>
+                   
+
                     
                              
          
