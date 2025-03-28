@@ -43,7 +43,7 @@ router.route("/newcrime").post((req,res) =>{
 })
 
 //Retrive crime data
-router.route("/crimedata").get((req,res)=>{
+router.route("/crimedetails").get((req,res)=>{
     ReportModel.find().then((data)=>{
         res.json(data)
     }).catch((err)=>{
