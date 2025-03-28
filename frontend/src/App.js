@@ -14,6 +14,8 @@ import CrimeDetails from "./Components/crimeDetails.js";
 import LocationForm from "./Components/LocationForm.jsx";
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
+import Profile from "./Components/Profile.js";
+
 
 
 function App() {
@@ -27,6 +29,8 @@ function App() {
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/addLocation" element={<LocationForm />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<Profile />} />
+
           <Route path="/signup" element={<Signup />} />
           <Route path="/newreport" element={<Report />} />
           <Route path="/crimedetails" element={<CrimeDetails />} />
