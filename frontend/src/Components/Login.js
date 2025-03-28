@@ -25,32 +25,44 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage(""); 
+    console.log("Submitting login request:", { email, password }); // Debugging
 
     try {
-      // Send login data to the backend
       const response = await axios.post("http://localhost:8070/auth/login", {
         email,
         password,
       });
-
-      // If login is successful, handle the response
+  
+      console.log("Login Response:", response.data); // Debugging response
+  
       if (response.data.success) {
-        // Check if the credentials match the admin credentials
-        if (email === "admin@example.com" && password === "admin123") {
-          navigate("/admin"); // Redirect to admin page
-        } else {
-          navigate("/home"); // Redirect to home page for normal users
-        }
+        setErrorMessage("✅ Login successful! Redirecting...");
+        localStorage.setItem("token", response.data.token);
+  
+        // Delay navigation to allow the success message to be visible
+        setTimeout(() => {
+          if (email === "admin@example.com" && password === "admin123") {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
+        }, 2000); // 2-second delay
+      } else {
+        setErrorMessage("⚠️ Unexpected error! Try again.");
       }
     } catch (error) {
-      // Handle errors if login fails (e.g., invalid credentials)
-      console.error("Login error", error);
-      setErrorMessage("Invalid email or password.");
+      console.error("Login error:", error.response?.data || error.message);
+      setErrorMessage("❌ Invalid email or password.");
+      
+      // Hide the error message after 4 seconds
       setTimeout(() => {
-        setErrorMessage(""); // This will hide the error message after 4 seconds
-      }, 4000);
+        setErrorMessage("");
+      }, 2000);
     }
   };
+  
+  
 
   return (
     <div className="relative flex justify-center items-center h-full bg-black">
