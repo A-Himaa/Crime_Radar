@@ -43,6 +43,12 @@ app.use("/report",reportRouter);
 const locationRouter = require("./routes/locations.js");
 app.use("/locations", locationRouter);
 
+//Madhusha
+const articleRouter = require("./routes/articleRoute.js");
+app.use("/article", articleRouter);
+
+
+
 //console.log("📌 Location routes are mounted at: /locationList"); 
 
 // server port allocation & server start
