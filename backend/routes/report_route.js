@@ -1,10 +1,28 @@
 const router = require("express").Router();
 
+const multer = require("multer");
+const path = require("path");
+
+// Define storage settings for the uploaded image
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, './uploads/'); // Store uploaded images in 'uploads' folder
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9); // Unique file name
+      cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)); // Store with original file extension
+    }
+  });
+
+// Create a multer upload instance
+const upload = multer({ storage: storage });
+
+
 let ReportModel = require("../models/c_report.js");
 
 
 //Fetching data from the frontend
-router.route("/newcrime").post((req,res) =>{
+router.route("/newcrime").post(upload.single('image'), (req, res) => {
     const anonymous = req.body.anonymous;
     const name = req.body.name;
     const email = req.body.email;
@@ -15,7 +33,11 @@ router.route("/newcrime").post((req,res) =>{
     const datetime = req.body.datetime;
     const district = req.body.district;
     const description = req.body.description;
-    const image = req.body.image;
+
+    const image = {
+        data : req.file.filename,
+        contentType : req.file.mimetype,
+    };
 
 
     const newCrime = new ReportModel({
@@ -30,7 +52,7 @@ router.route("/newcrime").post((req,res) =>{
             district,
             description,
             image,
-    })
+    });
 
 
     //Passing data to database(Create)

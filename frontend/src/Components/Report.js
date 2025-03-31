@@ -18,51 +18,41 @@ function Report(){
     const [errornum, setnumError] = useState("");
     const [errnic, setnicError] = useState("");
 
-    function submit(e){
+    function submit(e) {
         e.preventDefault();
-
+   
         const form = e.target.closest('form');
-        if(!form.checkValidity()){
+        if (!form.checkValidity()) {
             alert("Please Fill Out The Required Fields.");
             return;
         }
-
-        const newReport = {
-            anonymous,
-            name,
-            email,
-            contactNo,
-            NIC,
-            type,
-            severity,
-            datetime,
-            district,
-            description,
-            image,
-        };
-
-
-//Function to create a new report
-
-axios.post("http://localhost:8070/report/newCrime", newReport )
+   
+        const formData = new FormData();
+        formData.append("anonymous", anonymous);
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("contactNo", contactNo);
+        formData.append("NIC", NIC);
+        formData.append("type", type);
+        formData.append("severity", severity);
+        formData.append("datetime", datetime);
+        formData.append("district", district);
+        formData.append("description", description);
+        formData.append("image", image);
+   
+        axios.post("http://localhost:8070/report/newCrime", formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            }
+        })
         .then(() => {
             alert("Report Successfully Added");
             window.location.reload();
         })
-        .catch((err) =>{
-            alert(err);
+        .catch((err) => {
+            alert("Error: " + err.response.data);
         });
-
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -81,7 +71,7 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
 
 
             {/*----------Form-------------*/}
-            <form className="text-gray-800 pl-8 pr-8">
+            <form className="text-gray-800 pl-8 pr-8" enctype="multipart/form-data">
                 
                 
 
@@ -337,7 +327,7 @@ axios.post("http://localhost:8070/report/newCrime", newReport )
                 {/*---------4th Row---------*/}
                 <div className="pl-3 pr-3 pb-3">
                     <label className="font-semibold">Images :</label>
-                    <input type="file" className="border border-gray-300 rounded-md w-full p-4 mt-3" placeholder="Description about the incident" onChange={(e) => setImage(e.target.value)} />                    
+                    <input type="file" name="image" className="border border-gray-300 rounded-md w-full p-4 mt-3" placeholder="Description about the incident" onChange={(e) => setImage(e.target.files[0])} />                    
                 </div>
 
                 <div className="p-3 flex items-center">
