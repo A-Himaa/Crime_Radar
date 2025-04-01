@@ -38,7 +38,11 @@ function Report(){
         formData.append("datetime", datetime);
         formData.append("district", district);
         formData.append("description", description);
-        formData.append("image", image);
+        
+        // Only append image if one is selected
+        if (image) {
+            formData.append("image", image);
+        }
    
         axios.post("http://localhost:8070/report/newCrime", formData, {
             headers: {

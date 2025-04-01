@@ -10,6 +10,7 @@ import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
 import CrimeMap from "./Components/CrimeMap";
 import CrimeDetails from "./Components/crimeDetails.js";
+import ReportDetails from "./Components/reportDetails.js";
 
 import LocationForm from "./Components/LocationForm.jsx";
 import Login from "./Components/Login.js";
@@ -33,7 +34,9 @@ function App() {
 
           <Route path="/signup" element={<Signup />} />
           <Route path="/newreport" element={<Report />} />
-          <Route path="/crimedetails" element={<CrimeDetails />} />
+          <Route path="/crimeDetails" element={<CrimeDetails />} />
+          <Route path="/crimeDetails/:id" element={<ReportDetails />} />
+          
         </Routes>
       </div>
     </Router> 
