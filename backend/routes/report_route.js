@@ -34,10 +34,13 @@ router.route("/newcrime").post(upload.single('image'), (req, res) => {
     const district = req.body.district;
     const description = req.body.description;
 
-    const image = {
-        data : req.file.filename,
-        contentType : req.file.mimetype,
-    };
+    let image = {};
+    if (req.file) {
+        image = {
+            data: req.file.filename,
+            contentType: req.file.mimetype,
+        };
+    }
 
 
     const newCrime = new ReportModel({
@@ -64,13 +67,36 @@ router.route("/newcrime").post(upload.single('image'), (req, res) => {
 
 })
 
+
+
 //Retrive crime data
-router.route("/crimedetails").get((req,res)=>{
+router.route("/crimeDetails").get((req,res)=>{
     ReportModel.find().then((data)=>{
         res.json(data)
     }).catch((err)=>{
         console.log(err)
     })
+})
+
+
+//Retrieve specific crime data
+router.get('/crimeDetails/:id', async (req, res) => {
+    const reportId = req.params.id;
+
+    try {
+        // Query the database to find the document with the reportId
+        const reportDetails = await ReportModel.findById(reportId);
+    
+        if (!reportDetails) {
+          return res.status(404).json({ message: 'Data not found' });
+        }
+    
+        res.json(reportDetails);
+    
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+      }
 })
 
 
