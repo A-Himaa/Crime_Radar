@@ -21,7 +21,7 @@ function home(){
         autoPlay
         loop
         muted
-        className="absolute top-0 left-0 w-full h-[100vh] object-cover"
+        className="absolute top-0 left-0 w-full h-[90vh] object-cover"
         onLoadedMetadata={(e) => (e.target.playbackRate = 0.75)}
       >
         <source src={backgroundvid} type="video/mp4" />
@@ -29,7 +29,7 @@ function home(){
       </video>
 
       {/* Gradient */}
-      <div className="absolute top-0 left-0 w-full h-[100vh] bg-black bg-opacity-25"></div>
+      <div className="absolute top-0 left-0 w-full h-[90vh] bg-black bg-opacity-25"></div>
 
 
 

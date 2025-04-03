@@ -12,12 +12,12 @@ const LocationList = () => {
 
   useEffect(() => {
     function getLocation() {
-      axios.get("http://localhost:8070/locationList")
+      axios.get("http://localhost:8070/locations/locationList")
         .then((res) => {
-          console.log("Response from server:", res.data);
+          console.log("Response from server: 🏁", res.data);
           setLocations(res.data);
         }).catch((err) => {
-          console.error("Error fetching data: ", err);
+          console.error("Error fetching data: ⛔", err);
           alert(err.message);
         });
     }
@@ -26,9 +26,9 @@ const LocationList = () => {
   }, []);
 
   const onDeleteClick = async (locationId) => {
-    const confirmed = window.confirm('Are you sure you want to delete this location?');
+    const confirmed = window.confirm('Are you sure you want to delete this location❓');
     if (confirmed) {
-      await axios.delete(`http://localhost:8070/locationList/delete/${locationId}`);
+      await axios.delete(`http://localhost:8070/locations/delete/${locationId}`);
       alert('Location Deleted Successfully');
       window.location.reload();
     }
@@ -37,7 +37,7 @@ const LocationList = () => {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: "Location List",
-    onAfterPrint: () => alert("Location List generation successful!!")
+    onAfterPrint: () => alert("Location List generation successful!! ✅")
   });
 
   const filteredLocation = locations.filter((location) =>
@@ -48,7 +48,7 @@ const LocationList = () => {
 
   return (
     <div className="p-12 bg-gradient-to-b from-stone-200 to-orange-50">
-  <h1 className="text-4xl font-bold text-gray-800 text-center mb-6">
+  <h1 className="text-4xl font-bold text-gray-800 text-center mb-10 mt-20 ">
     <span className="text-amber-600">L</span>ocation <span className="text-amber-600">L</span>ist
   </h1>
 
@@ -83,8 +83,8 @@ const LocationList = () => {
             {filteredLocation.map((loc) => (
               <tr key={loc.id} className="border-b border-gray-600 hover:bg-gray-700">
                 <td className="px-4 py-2">{loc.locationName}</td>
-                <td className="px-4 py-2">{loc.coordinates[0]}</td> // Latitude
-                <td className="px-4 py-2">{loc.coordinates[1]}</td> // Longitude
+                <td className="px-4 py-2">{loc.coordinates[0]}</td>
+                <td className="px-4 py-2">{loc.coordinates[1]}</td>
                 <td className="px-4 py-2 flex gap-2">
                   <Link to={`/updateLocation/${loc._id}`}>
                     <button className="bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded">Edit</button>
