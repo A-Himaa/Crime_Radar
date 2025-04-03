@@ -8,6 +8,7 @@ import Home from "./Components/home";
 //Crime Report
 import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
+import LocationListUser from "./Components/LocationListUser.jsx"
 import CrimeMap from "./Components/CrimeMap";
 import CrimeDetails from "./Components/crimeDetails.js";
 import ReportDetails from "./Components/reportDetails.js";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/crimeMap" element={<CrimeMap />} />
           <Route path="/locationList" element={<LocationList />} />
+          <Route path="/locationListUser" element={<LocationListUser />} />
           <Route path="/addLocation" element={<LocationForm />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />

@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { useReactToPrint } from 'react-to-print';
-import { Link } from "react-router-dom";
-import { FaPrint } from "react-icons/fa6";
 import CrimeMap2 from "./CrimeMap2";
 import { FaSearch } from "react-icons/fa"; // Import Search Icon
 
@@ -27,20 +24,6 @@ const LocationList = () => {
     getLocation();
   }, []);
 
-  const onDeleteClick = async (locationId) => {
-    const confirmed = window.confirm('Are you sure you want to delete this location❓');
-    if (confirmed) {
-      await axios.delete(`http://localhost:8070/locations/delete/${locationId}`);
-      alert('Location Deleted Successfully');
-      window.location.reload();
-    }
-  };
-
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: "Location List",
-    onAfterPrint: () => alert("Location List generation successful!! ✅")
-  });
 
   const filteredLocation = locations
   .filter((location) =>
@@ -82,7 +65,6 @@ const LocationList = () => {
               <th className="px-4 py-3 text-left">Location</th>
               <th className="px-4 py-3 text-left">Latitude</th>
               <th className="px-4 py-3 text-left">Longitude</th>
-              <th className="px-4 py-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -91,26 +73,10 @@ const LocationList = () => {
                 <td className="px-4 py-2">{loc.locationName}</td>
                 <td className="px-4 py-2">{loc.coordinates[0]}</td>
                 <td className="px-4 py-2">{loc.coordinates[1]}</td>
-                <td className="px-4 py-2 flex gap-2">
-                  <Link to={`/updateLocation/${loc._id}`}>
-                    <button className="bg-green-500 hover:bg-green-700 text-white px-3 py-1 rounded">Edit</button>
-                  </Link>
-                  <button onClick={() => onDeleteClick(loc._id)}
-                    className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded">
-                    Delete
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Print Button */}
-      <div className="flex justify-end mt-4">
-        <button onClick={handlePrint} className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded flex items-center gap-2">
-          <FaPrint /> Generate Reports
-        </button>
       </div>
     </div>
 

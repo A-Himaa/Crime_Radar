@@ -78,7 +78,7 @@ const CrimeMap = function () {
       </MapContainer>
 
       <div className="relative flex justify-end p-5 z-0">
-        <Link to="/locationList"><button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">Location List</button></Link>
+        <Link to="/locationListUser"><button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">Location List</button></Link>
         <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded" onClick={() => setShowForm(true)}>New Location</button>
       </div>
 
