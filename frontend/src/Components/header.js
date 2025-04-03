@@ -46,6 +46,9 @@ const Header = () => {
           <a href="/locationList" className="hover:underline transition-all duration-300">
             INSIGHTS
           </a>
+          <a href="/profile" className="hover:underline transition-all duration-300">
+            PROFILE
+          </a>
 
           {/* Login Button */}
           <a href="/login">

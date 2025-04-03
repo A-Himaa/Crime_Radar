@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import backgroundvid from "../Images/background.mp4";
 import axios from "axios"; // Ensure axios is installed
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
 
 const Signup = () => {
+  const navigate = useNavigate(); // Initialize navigate function
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showTrustedForm, setShowTrustedForm] = useState(false);
@@ -81,6 +85,8 @@ const Signup = () => {
       const response = await axios.post("http://localhost:8070/auth/signup", dataToSend); // Ensure the correct URL
       console.log("Form submitted successfully:", response.data);
       alert("Signup successful!");
+      navigate("/login"); // Redirect to login page
+
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Signup failed. Please try again.");
