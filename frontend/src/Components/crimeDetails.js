@@ -15,8 +15,12 @@ function CrimeDetails(){
             axios.get("http://localhost:8070/report/crimeDetails")
                 .then((res) => {
                     console.log("Response from server:", res.data); 
-                    const reservedReports = res.data.reverse();
-                    setAllreports(reservedReports);
+
+                     const reversedReports = res.data.reverse().map(report => ({
+                    ...report,
+                    createdAt: new Date(parseInt(report._id.substring(0, 8), 16) * 1000)
+                }));
+                    setAllreports(reversedReports);
                 })
                 .catch((err) => {
                     console.error("Error fetching data:", err);
@@ -43,7 +47,8 @@ const filteredReports = reportindex.filter((report) => {
     report.reportNumber.toString().includes(query) ||
     report.type.toLowerCase().includes(query) ||
     report.severity.toLowerCase().includes(query) ||
-    report.datetime.toLowerCase().includes(query)
+    report.datetime.toLowerCase().includes(query) ||
+    report.district.toLowerCase().includes(query)
   );
 });
 
@@ -82,17 +87,18 @@ return (
 
           {/* Table Header */}
           <div className="container bg-gray-200 bg-opacity-90 ">
-              <div className="grid grid-cols-5 gap-4  font-bold text-xl text-center p-4">
+              <div className="grid grid-cols-6 gap-4  font-bold text-xl text-center p-4">
                   <div>Report Number</div>
                   <div>Type</div>
                   <div>Severity</div>
-                  <div>Date & Time</div>
+                  <div>Location</div>
+                  <div>Reported On</div>
                   <div>Action</div>
               </div>
 
               {/* Table Data */}
               {filteredReports.map((report) => (
-                  <div key={report._id} className="grid grid-cols-5 gap-4 text-center py-2 bg-white border-b">
+                  <div key={report._id} className="grid grid-cols-6 gap-4 text-center py-2 bg-white border-b">
                       
                       {/* Generated Report Number */}
                       <div className="text-lg font-semibold">{report.reportNumber}</div>
@@ -103,8 +109,11 @@ return (
                       {/* Severity */}
                       <div>{report.severity}</div>
 
+                      {/* Location */}
+                      <div>{report.district}</div>
+
                       {/* Creation Date & Time */}
-                      <div>{new Date(report.datetime).toLocaleString()}</div>
+                      <div>{new Date(report.createdAt).toLocaleString()}</div>
 
                       {/* View More Details */}
                       <div>

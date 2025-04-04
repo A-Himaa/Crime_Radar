@@ -204,7 +204,7 @@ function Report(){
                         }}
                                       
                         className={`border ${errornum ? "border-red-500 shadow-sm shadow-red-400" : "border-gray-300"} rounded-md w-full p-2`} 
-                        placeholder="0312369850" disabled={anonymous} required />   
+                        placeholder="0112XXXXXX" disabled={anonymous} required />   
 
 
                     {/* NIC validation */}
