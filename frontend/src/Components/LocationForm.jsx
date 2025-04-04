@@ -11,15 +11,19 @@ function LocationForm({ onClose }) {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setCoordinates([position.coords.latitude, position.coords.longitude]);
+          console.log("Fetched Coordinates:", position.coords.latitude, position.coords.longitude);
+          setCoordinates([
+            position.coords.latitude.toString(), 
+            position.coords.longitude.toString()
+          ]);
         },
         (error) => {
-          console.error("Error getting location:", error);
-          alert("Unable to retrieve location.");
+          console.error("Error getting location: ⛔", error);
+          alert("Unable to retrieve location. ⛔");
         }
       );
     } else {
-      alert("Geolocation is not supported by your browser.");
+      alert("Geolocation is not supported by your browser. ⛔");
     }
   };
 
@@ -27,18 +31,30 @@ function LocationForm({ onClose }) {
   function sendLocation(e) {
     e.preventDefault();
 
+    if(!coordinates[0] || !coordinates[1]){
+      alert("Please get the location before submitting. *️⃣");
+      return;
+    }
+
+    const formattedCoordinates = [
+      parseFloat(coordinates[0]), 
+      parseFloat(coordinates[1])
+    ];
+
     const newLocation = {
       locationName, // Correcting the reference
-      coordinates
+      coordinates: formattedCoordinates,
     };
+
+    console.log("Sending Data: ", newLocation); //Debugging
 
     axios.post("http://localhost:8070/locations/addLocation", newLocation)
       .then(() => {
-        alert("Location Added");
+        alert("Location Added ✅");
         onClose();
       })
       .catch((err) => {
-        alert("Failed to save location");
+        alert("Failed to save location ⛔");
         console.error(err);
       });
   }

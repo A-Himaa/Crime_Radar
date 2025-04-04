@@ -21,7 +21,7 @@ function home(){
         autoPlay
         loop
         muted
-        className="absolute top-0 left-0 w-full h-[85vh] object-cover"
+        className="absolute top-0 left-0 w-full h-[90vh] object-cover"
         onLoadedMetadata={(e) => (e.target.playbackRate = 0.75)}
       >
         <source src={backgroundvid} type="video/mp4" />
@@ -29,13 +29,13 @@ function home(){
       </video>
 
       {/* Gradient */}
-      <div className="absolute top-0 left-0 w-full h-[85vh] bg-black bg-opacity-25"></div>
+      <div className="absolute top-0 left-0 w-full h-[90vh] bg-black bg-opacity-25"></div>
 
 
 
 
       {/* Home content */}
-      <div className="relative w-full min-h-screen flex text-m pt-16 text-white my-50 top-[26vh]">
+      <div className="relative w-full min-h-screen flex text-m pt-16 text-white my-50 top-[20vh]">
         <div className="absolute left-16  text-lg bg-gray-50 bg-opacity-25 p-2 px-5 rounded-full">
             Welcome to Crime Radar
         </div>
@@ -60,7 +60,7 @@ function home(){
       </div>      
 
        {/* Why crime Radar */}
-       <div className="flex items-center justify-center pb-16 -mt-6 ">
+       <div className="flex items-center justify-center pb-16 -mt-6 pt-16">
 
         <div className="w-[90vw] items-center justify-center rounded-xl m-0 bg-[#DABEB5] bg-opacity-50 pb-6">
 
