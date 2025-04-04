@@ -66,12 +66,15 @@ function ReportDetails() {
         recipientEmail: recipientEmail,
         id: report._id,
       })
+
       .then((res) => {
         alert("Report sent successfully.");
       })
+
       .catch((err) => {
         console.error("Error sending report:", err);
-        alert("Error sending report.");
+        alert("Please generate the report before sending it.");
+
       });
   };
 
@@ -191,22 +194,29 @@ function ReportDetails() {
                             <option value="info.lensloom@gmail.com">info.lensloom@gmail.com</option>
                         </select>
 
+                        <button className="bg-amber-700 opacity-70 text-white  py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+                            onClick={generateReport}>
+                                Generate Report
+                        </button>
 
-                            <button id="emailInput" className="bg-amber-700 opacity-70 text-white  py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105" onClick={handleForwardClick}>
+                        <button id="emailInput" className="bg-amber-700 opacity-70 text-white  py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105" onClick={handleForwardClick}>
                             Forward
-                            </button>
+                        </button>
 
                         </div>
+                        </div>
+
+                        <hr className="mt-12"/>
+
+                        <div className="mt-5">
+                            <label className="font-bold text-gray-800">Report Status: </label>
                         </div>
 
                         <div className="flex justify-end mt-10">
                             <button className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105 mr-3 mt-4">
                                 Status Update
                             </button>
-                            <button className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105 mr-3 mt-4"
-                            onClick={generateReport}>
-                                Generate Report
-                            </button>
+                           
                             
                         </div>
 

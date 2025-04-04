@@ -135,13 +135,19 @@ router.post("/generate-report", (req, res) => {
 
 const topMargin = 12;
 
-doc.rect(7, 7, doc.page.width - 17, doc.page.height - 17)
-   .lineWidth(1)  
-   .strokeColor('#131313')  
-   .stroke();
+const drawPageBorder = () => {
+  doc.rect(7, 7, doc.page.width - 17, doc.page.height - 17)
+     .lineWidth(1)
+     .strokeColor('#131313')
+     .stroke();
+};
 
-doc.fillColor('#471f00')  
-   .rect(12, topMargin, doc.page.width - 27, 70)
+drawPageBorder();
+
+doc.on('pageAdded', drawPageBorder);
+
+doc.fillColor('#c66e08')  
+   .rect(12, topMargin, doc.page.width - 27, 60)
    .fill();  
 
 
@@ -149,6 +155,13 @@ const logoPath = path.join(__dirname, "../../frontend/src/Images/Logo.png");
 
 doc.image(logoPath, 20, 15, { width: 80 })
 
+doc.fillColor('#FFFFFF')
+   .fontSize(11)
+   .font('Helvetica-Bold')
+   .text('Crime Radar Team',95, topMargin + 20)
+   .text('crimeradar@gmail.com',95, topMargin + 35)
+
+doc.font('Helvetica');
 doc.moveDown();  
 doc.moveDown();
 doc.moveDown();
@@ -158,15 +171,15 @@ doc.moveDown();
 doc.fillColor('#1a0b00')  
    .fontSize(20)
    .font('Helvetica-Bold')
-   .text('Crime Incident Report', 30, topMargin + 80, { align: 'center' });
+   .text('Crime Incident Report', 30, topMargin + 85, { align: 'center' });
 
 doc.font('Helvetica');
 
   
 
 const tableTop = topMargin + 120; 
-const col1X = 50; //
-const col2X = 230; //
+const col1X = 65; //
+const col2X = 245; //
 const colWidth1 = 180;
 const colWidth2 = 300; 
 const lineColor = '#616161'; 
@@ -213,6 +226,34 @@ drawRow('Description:', report.description);
 
 drawRow('Evidence:', report.image ? 'Available' : 'None');
 
+if (report.image?.filename) {
+  doc.addPage();
+
+  const imagePath = path.join(__dirname, "../uploads", report.image.filename); 
+
+  doc.fontSize(12)
+     .fillColor('#000000')
+     .text('Evidence Image:', col1X, currentY-550);
+
+     currentY += 20;
+
+     doc.image(imagePath, col1X, currentY-540, { width: 400 });
+
+
+}
+
+const date = new Date().toLocaleDateString();
+const footerText = `Generated on ${date}`;
+const textWidth = doc.widthOfString(footerText);
+const rightMargin = 20;  
+const bottomMargin = 20; 
+
+doc.fontSize(11)
+   .fillColor('#b4b4b4')
+   .text(footerText, doc.page.width - textWidth - rightMargin, doc.page.height - 100);
+ 
+
+
 doc.end();
 
 writeStream.on('finish', () => {
@@ -230,8 +271,7 @@ router.post("/send-report", async (req, res) => {
 
 
   const filePath = path.join(__dirname, '../reportpdf', `report_${id}.pdf`);
-  console.log("File Path:", filePath);
-
+  
   if (!fs.existsSync(filePath)) {
     return res.status(400).send('Report does not exist. Please generate the report first.');
   }
@@ -245,7 +285,6 @@ router.post("/send-report", async (req, res) => {
     },
   });
 
-  // let attachmentContent = Buffer.isBuffer(reportData) ? reportData : Buffer.from(reportData, 'base64');
 
   // Create the email content
   const mailOptions = {
@@ -253,16 +292,14 @@ router.post("/send-report", async (req, res) => {
     to: recipientEmail,  
     subject: 'Crime Report Details',
     text: `Dear Sir/Madam,
-  
-  Please find attached the crime incident report as requested.
-  If you have any questions, feel free to reach out.
+  Please find attached the crime incident report.
   
   Best regards,
   Crime Radar Team`,
 
   attachments: [
     {
-      filename:  `report_${id}`,
+      filename:  `report_${id}.pdf`,
       path: filePath,
     },
   ],
