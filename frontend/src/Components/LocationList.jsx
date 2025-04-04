@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { FaPrint } from "react-icons/fa6";
 import CrimeMap2 from "./CrimeMap2";
 import { FaSearch } from "react-icons/fa"; // Import Search Icon
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 
 
 const LocationList = () => {
@@ -36,11 +39,67 @@ const LocationList = () => {
     }
   };
 
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: "Location List",
-    onAfterPrint: () => alert("Location List generation successful!! ✅")
-  });
+  // const handlePrint = useReactToPrint({
+  //   content: () => componentRef.current,
+  //   documentTitle: "Location List",
+  //   onAfterPrint: () => alert("Location List Downloaded!! ✅")
+  // });
+
+  const downloadLocationPDF = (locations) => {
+    const doc = new jsPDF();
+
+    //Header
+    doc.setFontSize(18);
+    doc.setTextColor(40);
+    doc.text("Crime Awareness System", 14,20);
+
+    doc.setFontSize(14);
+    doc.setTextColor(100);
+    doc.text("Location List Report", 14, 30);
+    doc.setLineWidth(0.5);
+    doc.line(14, 32, 196, 32); // underline
+
+    //Table
+    const tableColumn = ["#", "Location Name", "Latitude", "Longitude"];
+    const tableRows = [];
+
+    locations.forEach((loc, index) => {
+      const row = [
+        index + 1,
+        loc.locationName,
+        loc.coordinates[0],
+        loc.coordinates[1]
+      ];
+      tableRows.push(row);
+    });
+
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 40,
+      styles: {
+        fontSize: 11,
+        cellPadding: 4,
+      },
+      headStyles: {
+        fillColor: [217, 119, 6], // amber
+        textColor: 0,
+        halign: "left",
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245],
+      },
+    });
+  
+    // Footer
+    const date = new Date().toLocaleDateString();
+    doc.setFontSize(10);
+    doc.text(`Generated on ${date}`, 14, doc.internal.pageSize.height - 10);
+  
+    doc.save("Location_List_Report.pdf");
+
+  }
+
 
   const filteredLocation = locations
   .filter((location) =>
@@ -79,6 +138,7 @@ const LocationList = () => {
         <table className="bg-gray-800 text-white w-full rounded-lg overflow-hidden">
           <thead>
           <tr className="bg-gradient-to-r from-gray-800 via-gray-600 to-gray-500 hover:from-gray-600 hover:via-gray-500 hover:to-gray-400">
+              <th className="px-4 py-3 text-left">#</th>
               <th className="px-4 py-3 text-left">Location</th>
               <th className="px-4 py-3 text-left">Latitude</th>
               <th className="px-4 py-3 text-left">Longitude</th>
@@ -86,8 +146,9 @@ const LocationList = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredLocation.map((loc) => (
+            {filteredLocation.map((loc, index) => (
               <tr key={loc.id} className="border-b border-gray-600 hover:bg-gray-700">
+                <td className="px-4 py-2">{index + 1}</td>
                 <td className="px-4 py-2">{loc.locationName}</td>
                 <td className="px-4 py-2">{loc.coordinates[0]}</td>
                 <td className="px-4 py-2">{loc.coordinates[1]}</td>
@@ -99,6 +160,7 @@ const LocationList = () => {
                     className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded">
                     Delete
                   </button>
+
                 </td>
               </tr>
             ))}
@@ -108,7 +170,7 @@ const LocationList = () => {
 
       {/* Print Button */}
       <div className="flex justify-end mt-4">
-        <button onClick={handlePrint} className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded flex items-center gap-2">
+        <button onClick={() => downloadLocationPDF(filteredLocation)} className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded flex items-center gap-2">
           <FaPrint /> Generate Reports
         </button>
       </div>

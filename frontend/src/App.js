@@ -17,6 +17,7 @@ import LocationForm from "./Components/LocationForm.jsx";
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
+import UpdateLocation from "./Components/UpdateLocation.jsx";
 
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/locationListUser" element={<LocationListUser />} />
           <Route path="/addLocation" element={<LocationForm />} />
+          <Route path="/updateLocation/:id" element={<UpdateLocation />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
 
