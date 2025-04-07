@@ -19,7 +19,7 @@ const getColor = (severity) => {
   return severity === "High" ? "red" : severity === "Medium" ? "orange" : "green";
 };
 
-const CrimeMap = function () {
+const DashboardMap = function () {
   const [crimes, setCrimes] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [userLocation, setUserLocation] = useState([6.9061, 79.9696]); // Default to Colombo
@@ -45,11 +45,11 @@ const CrimeMap = function () {
   }, []);
 
   return (
-    <div className="w-[90vw] mx-auto p-2 rounded-1xl shadow-lg bg-gray-600 m-2 relative z-10">
+    <div className="w-[90vw] mx-auto p-2 rounded-lg shadow-lg bg-white-800 m-2 relative z-10">
       <MapContainer
         center={userLocation}
         zoom={12}
-        className="w-full h-[500px] rounded-1xl overflow-hidden relative z-[0]"
+        className="w-full h-[700px] rounded-lg overflow-hidden relative z-[0]"
       >
 
       <ChangeView center={userLocation} /> {/* Updates map center dynamically */}
@@ -76,16 +76,8 @@ const CrimeMap = function () {
           </CircleMarker>
         ))}
       </MapContainer>
-
-      <div className="relative flex justify-end p-5 z-0">
-        <Link to="/locationListUser"><button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">Location List</button></Link>
-        <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded" onClick={() => setShowForm(true)}>New Location</button>
-      </div>
-
-      {/* Show the location form when button is clicked */}
-      {showForm && <LocationForm onClose={() => setShowForm(false)} />}
     </div>
   );
 };
 
-export default CrimeMap;
+export default DashboardMap;

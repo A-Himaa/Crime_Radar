@@ -18,6 +18,10 @@ import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
 import UpdateLocation from "./Components/UpdateLocation.jsx";
+import CrimeYearLineChart from "./Components/CrimeYearLineChart.jsx";
+import CrimeTypePieChart from "./Components/CrimeTypePieChart.jsx";
+import CrimeDashboard from "./Components/CrimeDashboard.jsx";
+import CrimeMap2 from "./Components/CrimeMap2.js";
 
 
 
@@ -29,10 +33,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/crimeMap" element={<CrimeMap />} />
+          <Route path="/crimeMap2" element={<CrimeMap2 />} />
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/locationListUser" element={<LocationListUser />} />
           <Route path="/addLocation" element={<LocationForm />} />
           <Route path="/updateLocation/:id" element={<UpdateLocation />} />
+          <Route path="/crimeDashboard" element={<CrimeDashboard />} />
+          <Route path="/lineChart" element={<CrimeYearLineChart />} />
+          <Route path="/pieChart" element={<CrimeTypePieChart />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
 

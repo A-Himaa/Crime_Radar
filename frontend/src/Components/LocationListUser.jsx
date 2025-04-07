@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import CrimeMap2 from "./CrimeMap2";
 import { FaSearch } from "react-icons/fa"; // Import Search Icon
+import CrimeTypePieChart from "./CrimeTypePieChart";
+import CrimeYearLineChart from "./CrimeYearLineChart";
 
 
 const LocationList = () => {
@@ -85,6 +87,8 @@ const LocationList = () => {
       <CrimeMap2 />
     </div>
   </div>
+    <CrimeTypePieChart/>
+    <CrimeYearLineChart />
 </div>
 
   );
