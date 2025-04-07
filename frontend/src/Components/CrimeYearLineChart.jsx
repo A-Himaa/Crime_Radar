@@ -41,6 +41,12 @@ const CrimeYearLineChart = () => {
       });
   }, []);
 
+  // Format date to show month and day (MM/DD)
+  const formatDate = (date) => {
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' }); // MM/DD format
+  };
+
   return (
     <div className="bg-white p-4 rounded-lg shadow-lg w-[50vw] my-6">
       {/* Title fixed above scrollable chart */}
@@ -51,8 +57,15 @@ const CrimeYearLineChart = () => {
         <div className="min-w-[1000px]">
           <LineChart width={1000} height={400} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" angle={-45} textAnchor="end" height={70} />
-            {/* <YAxis label={{ value: 'Number of Crimes', angle: -90, position: 'insideLeft' }} /> */}
+            <XAxis
+              dataKey="date"
+              angle={-45}
+              textAnchor="end"
+              height={70}
+              tickFormatter={formatDate}  // Format date on the X axis
+              label={{ value: 'Date', position: 'outsideTop' }}
+            />
+            <YAxis label={{ value: 'Number of Crimes', angle: -90, position: 'insideLeft' }} />
             <Tooltip />
             <Legend />
             <Line type="monotone" dataKey="count" stroke="#0088FE" name="Number of Crimes" />
@@ -62,6 +75,5 @@ const CrimeYearLineChart = () => {
     </div>
   );
 };
-
 
 export default CrimeYearLineChart;
