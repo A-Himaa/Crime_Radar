@@ -60,18 +60,21 @@ function ReportDetails() {
 
 
   // Email forwarding feature
-  const forwardReport = (recipientEmail, reportData) => {
+  const forwardReport = (recipientEmail) => {
     axios
       .post("http://localhost:8070/report/send-report", {
         recipientEmail: recipientEmail,
-        reportData: reportData,
+        id: report._id,
       })
+
       .then((res) => {
         alert("Report sent successfully.");
       })
+
       .catch((err) => {
         console.error("Error sending report:", err);
-        alert("Error sending report.");
+        alert("Please generate the report before sending it.");
+
       });
   };
 
@@ -81,7 +84,7 @@ function ReportDetails() {
       alert("Please enter a valid recipient email.");
       return;
     }
-    forwardReport(recipientEmail, report);
+    forwardReport(recipientEmail);
   };
       
 
@@ -182,27 +185,38 @@ function ReportDetails() {
                         <div className="mt-5">
                         <label className="font-bold text-gray-800">Forward to: </label>
                         <div className="flex items-center space-x-3 mt-3">
-                            <input
-                                type="email"
-                                placeholder="Enter recipient email"
-                                className="border border-gray-300 rounded-md p-2 flex-grow"
-                                value={recipientEmail}  // Bind state to input value
-                                onChange={(e) => setRecipientEmail(e.target.value)} 
-                            />
-                            <button id="emailInput" className="bg-amber-700 opacity-70 text-white  py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105" onClick={handleForwardClick}>
+                        <select
+                            className="border border-gray-300 rounded-md p-2 flex-grow text-md opacity-80"
+                            value={recipientEmail} 
+                            onChange={(e) => setRecipientEmail(e.target.value)}
+                        >
+                            <option value="">Select Recipient Email</option>
+                            <option value="info.lensloom@gmail.com">info.lensloom@gmail.com</option>
+                        </select>
+
+                        <button className="bg-amber-700 opacity-70 text-white  py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105"
+                            onClick={generateReport}>
+                                Generate Report
+                        </button>
+
+                        <button id="emailInput" className="bg-amber-700 opacity-70 text-white  py-3 px-5 rounded-lg transition duration-300 ease-in-out transform hover:scale-105" onClick={handleForwardClick}>
                             Forward
-                            </button>
+                        </button>
+
                         </div>
+                        </div>
+
+                        <hr className="mt-12"/>
+
+                        <div className="mt-5">
+                            <label className="font-bold text-gray-800">Report Status: </label>
                         </div>
 
                         <div className="flex justify-end mt-10">
                             <button className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105 mr-3 mt-4">
                                 Status Update
                             </button>
-                            <button className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105 mr-3 mt-4"
-                            onClick={generateReport}>
-                                Generate Report
-                            </button>
+                           
                             
                         </div>
 

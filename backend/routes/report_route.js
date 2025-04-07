@@ -117,27 +117,37 @@ router.use("/images", express.static("uploads"));
 //Generate Report
 router.post("/generate-report", (req, res) => {
   const report = req.body;
+  const _id =  report._id; 
 
   const doc = new pdfdocument();
 
+  const filePath = path.join(__dirname, '../reportpdf', `report_${_id}.pdf`);
+  const writeStream = fs.createWriteStream(filePath);
+
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', 'attachment; filename=crime_report.pdf');
+  res.setHeader('Content-Disposition', `attachment; filename=crime_report.pdf`);
 
+  doc.pipe(writeStream);
   doc.pipe(res);
-
 
 
 //Styling
 
 const topMargin = 12;
 
-doc.rect(7, 7, doc.page.width - 17, doc.page.height - 17)
-   .lineWidth(1)  
-   .strokeColor('#131313')  
-   .stroke();
+const drawPageBorder = () => {
+  doc.rect(7, 7, doc.page.width - 17, doc.page.height - 17)
+     .lineWidth(1)
+     .strokeColor('#131313')
+     .stroke();
+};
 
-doc.fillColor('#471f00')  
-   .rect(12, topMargin, doc.page.width - 27, 70)
+drawPageBorder();
+
+doc.on('pageAdded', drawPageBorder);
+
+doc.fillColor('#c66e08')  
+   .rect(12, topMargin, doc.page.width - 27, 60)
    .fill();  
 
 
@@ -145,6 +155,13 @@ const logoPath = path.join(__dirname, "../../frontend/src/Images/Logo.png");
 
 doc.image(logoPath, 20, 15, { width: 80 })
 
+doc.fillColor('#FFFFFF')
+   .fontSize(11)
+   .font('Helvetica-Bold')
+   .text('Crime Radar Team',95, topMargin + 20)
+   .text('crimeradar@gmail.com',95, topMargin + 35)
+
+doc.font('Helvetica');
 doc.moveDown();  
 doc.moveDown();
 doc.moveDown();
@@ -154,15 +171,15 @@ doc.moveDown();
 doc.fillColor('#1a0b00')  
    .fontSize(20)
    .font('Helvetica-Bold')
-   .text('Crime Incident Report', 30, topMargin + 80, { align: 'center' });
+   .text('Crime Incident Report', 30, topMargin + 85, { align: 'center' });
 
 doc.font('Helvetica');
 
   
 
 const tableTop = topMargin + 120; 
-const col1X = 50; //
-const col2X = 230; //
+const col1X = 65; //
+const col2X = 245; //
 const colWidth1 = 180;
 const colWidth2 = 300; 
 const lineColor = '#616161'; 
@@ -209,97 +226,83 @@ drawRow('Description:', report.description);
 
 drawRow('Evidence:', report.image ? 'Available' : 'None');
 
-// End the document
+if (report.image?.filename) {
+  doc.addPage();
+
+  const imagePath = path.join(__dirname, "../uploads", report.image.filename); 
+
+  doc.fontSize(12)
+     .fillColor('#000000')
+     .text('Evidence Image:', col1X, currentY-550);
+
+     currentY += 20;
+
+     doc.image(imagePath, col1X, currentY-540, { width: 400 });
+
+
+}
+
+const date = new Date().toLocaleDateString();
+const footerText = `Generated on ${date}`;
+const textWidth = doc.widthOfString(footerText);
+const rightMargin = 20;  
+const bottomMargin = 20; 
+
+doc.fontSize(11)
+   .fillColor('#b4b4b4')
+   .text(footerText, doc.page.width - textWidth - rightMargin, doc.page.height - 100);
+ 
+
+
 doc.end();
+
+writeStream.on('finish', () => {
+  console.log(`PDF generated and saved as report_${_id}.pdf`);
+});
+
 })
 
-// router.post("/send-report", async (req, res) => {
-//   const { recipientEmail, reportData } = req.body;
 
-//   const transporter = nodemailer.createTransport({
-//     service: "gmail",  
-//     auth: {
-//       user: "info.lensloom@gmail.com",  // Your email
-//       pass: "",   // Your email password (or use OAuth2 for better security)
-//     },
-//   });
-
-//   // Create the email content
-//   const mailOptions = {
-//     from: "info.lensloom@gmail.com",  // Sender's email
-//     to: recipientEmail,           // Recipient email from frontend
-//     subject: "Crime Report Details", 
-//     text: `Dear Sir/Madam,
-
-// Please find attached the crime incident report as requested. 
-// If you have any questions, feel free to reach out.
-
-// Best regards,
-// Crime Radar Team`,
-
-//     attachments: [
-//       {
-//         filename: "crime_report.pdf",
-//         content: reportData,  // This will be the PDF content generated from the frontend
-//         encoding: "base64",
-//       },
-//     ],
-//   };
-
-//   // Send the email
-//   transporter.sendMail(mailOptions, (error, info) => {
-//     if (error) {
-//       console.log("Error sending email: ", error);
-//       return res.status(500).send("Error sending email.");
-//     }
-//     console.log("Email sent: " + info.response);
-//     res.status(200).send("Report sent successfully.");
-//   });
-// });
-
-
-
-
-// Update your SendGrid API Key
-const SENDGRID_API_KEY = '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'; // Replace with your actual SendGrid API Key
+// Email Forwarding
+const SENDGRID_API_KEY = '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'; 
 
 router.post("/send-report", async (req, res) => {
-  const { recipientEmail, reportData } = req.body;
+  const { recipientEmail, id } = req.body;
 
-  // if (!recipientEmail || recipientEmail.trim() === "") {
-  //   return res.status(400).send("Recipient email is required.");
-  // }
+
+  const filePath = path.join(__dirname, '../reportpdf', `report_${id}.pdf`);
+  
+  if (!fs.existsSync(filePath)) {
+    return res.status(400).send('Report does not exist. Please generate the report first.');
+  }
 
   // Set up the transporter to use SendGrid SMTP
   const transporter = nodemailer.createTransport({
-    service: 'SendGrid',  // Using SendGrid as the email service provider
+    service: 'SendGrid',  
     auth: {
-      user: 'apikey',  // SendGrid uses 'apikey' as the username
-      pass: SENDGRID_API_KEY,  // Use the SendGrid API key here
+      user: 'apikey', 
+      pass: SENDGRID_API_KEY, 
     },
   });
 
-  // let attachmentContent = Buffer.isBuffer(reportData) ? reportData : Buffer.from(reportData, 'base64');
 
   // Create the email content
   const mailOptions = {
-    from: 'em5206.crimeradar.info',  // Sender's email (verified in SendGrid)
-    to: recipientEmail,  // Recipient email address from frontend
+    from: 'akilahimaja@hotmail.com',  
+    to: recipientEmail,  
     subject: 'Crime Report Details',
     text: `Dear Sir/Madam,
-  
-  Please find attached the crime incident report as requested.
-  If you have any questions, feel free to reach out.
+  Please find attached the crime incident report.
   
   Best regards,
   Crime Radar Team`,
-    // attachments: [
-    //   {
-    //     filename: 'crime_report.pdf',
-    //     content: attachmentContent,  // Assuming reportData is a base64 string
-    //     encoding: 'base64',  // Base64 encoding for proper attachment
-    //   },
-    // ],
+
+  attachments: [
+    {
+      filename:  `report_${id}.pdf`,
+      path: filePath,
+    },
+  ],
   };
 
   // Send the email
