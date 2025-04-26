@@ -34,7 +34,30 @@
 </ul><br />
 
 <h2>📦 Installation Guide</h2>
-<p></p>
+<h3>Clone the repository</h3>
+<p>📎Run "git clone https://github.com/A-Himaa/Crime_Radar.git".</p>
+
+<h3>Installing Dependencies</h3>
+<p>📎Run "cd backend" => "npm install" </p>
+<p>📎Run "cd frontend" => "npm install" </p>
+<br />
+
+<h2>🙌 Acknowledgement</h2>
+<ul>
+  <li><a href="https://reactjs.org/">React</a></li>
+  <li><a href="https://expressjs.com/">Express.js</a></li>
+  <li><a href="https://leafletjs.com/">Leaflet.js</a></li>
+  <li><a href="https://www.mongodb.com/cloud/atlas">MongoDB</a></li>
+  <li><a href="https://leafletjs.com/">Leaflet.js</a></li>
+  <li><a href="https://github.com/foliojs/pdfkit">PDFkit</a></li>
+  <li><a href="https://nodemailer.com/about/">NodeMailer</a></li>
+</ul>
+<br />
+
+<hr /><br/>
+<h1 align="center">🌟 Thank You For Checking Out Crime Radar.</h1>
+<br />
+
 
 
 
