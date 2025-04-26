@@ -23,4 +23,30 @@
 <li>Crime Analitic Dashboards: Graphical representation of crime trends and patterns.</li>
 <li>Anonymous Crime Reporting: Submit crime reports securely without revealing your identity.</li>
 <li>User Privacy: Ensure the security of users' private data.</li>
-</ul>
+</ul><br />
+
+<h2>🛠️ Tech Stack</h2>
+<ul>
+  <li>Frontend : React, Tailwind CSS</li>
+  <li>Backend : Node js, Express js</li>
+  <li>Database : MongoDB</li>
+  <li>Other : Leaflet.js (Maps), PDFKit(PDF generation), Nodemailer(Email forwarding)</li>
+</ul><br />
+
+<h2>📦 Installation Guide</h2>
+<p></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
