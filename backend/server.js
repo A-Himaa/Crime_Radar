@@ -49,6 +49,10 @@ app.use("/article", articleRouter);
 
 
 
+
+
+
+
 //console.log("📌 Location routes are mounted at: /locationList"); 
 
 // server port allocation & server start
