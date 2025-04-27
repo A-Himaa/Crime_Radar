@@ -38,7 +38,11 @@ function Report(){
         formData.append("datetime", datetime);
         formData.append("district", district);
         formData.append("description", description);
-        formData.append("image", image);
+        
+        // Only append image if one is selected
+        if (image) {
+            formData.append("image", image);
+        }
    
         axios.post("http://localhost:8070/report/newCrime", formData, {
             headers: {
@@ -200,7 +204,7 @@ function Report(){
                         }}
                                       
                         className={`border ${errornum ? "border-red-500 shadow-sm shadow-red-400" : "border-gray-300"} rounded-md w-full p-2`} 
-                        placeholder="0312369850" disabled={anonymous} required />   
+                        placeholder="0112XXXXXX" disabled={anonymous} required />   
 
 
                     {/* NIC validation */}
