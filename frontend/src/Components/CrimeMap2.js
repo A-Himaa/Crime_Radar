@@ -1,10 +1,13 @@
+// src/components/CrimeMap2.jsx
+
 import React, { useEffect, useState, useMemo } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import axios from "axios";
 import FilterPanel from "./FilterPanel";
 import "leaflet/dist/leaflet.css";
 
-const getColor = (severity) => {
+// Severity → color
+const getSeverityColor = (severity) => {
   if (!severity) return "gray";
   return severity === "High"
     ? "red"
@@ -13,47 +16,83 @@ const getColor = (severity) => {
     : "green";
 };
 
+// Type → color lookup
+const typeColors = {
+  Violence:      "purple",
+  Cyber:         "blue",
+  Property:      "brown",
+  "Drug-Related": "teal",
+  Robbery:       "maroon",
+  Other:         "gray"
+};
+
+// District → color lookup (all 25)
+const districtColors = {
+  Ampara:         "#e6194b",
+  Anuradhapura:   "#3cb44b",
+  Badulla:        "#ffe119",
+  Batticaloa:     "#4363d8",
+  Colombo:        "#f58231",
+  Galle:          "#911eb4",
+  Gampaha:        "#46f0f0",
+  Hambantota:     "#f032e6",
+  Jaffna:         "#bcf60c",
+  Kalutara:       "#fabebe",
+  Kandy:          "#008080",
+  Kegalle:        "#e6beff",
+  Kilinochchi:    "#9a6324",
+  Kurunegala:     "#fffac8",
+  Mannar:         "#800000",
+  Matale:         "#aaffc3",
+  Matara:         "#808000",
+  Moneragala:     "#ffd8b1",
+  Mullativu:      "#000075",
+  "Nuwara Eliya":   "#808080",
+  Polonnaruwa:    "#ffffff",
+  Puttalam:       "#000000",
+  Ratnapura:      "#1f77b4",
+  Trincomalee:    "#ff7f0e",
+  Vavuniya:       "#2ca02c"
+};
+
 export default function CrimeMap2() {
   const [crimes, setCrimes] = useState([]);
   const [userLocation, setUserLocation] = useState([6.9271, 79.8612]);
 
-  // 1) live selections
-  const [filters, setFilters] = useState({
-    severity: "",
-    type: "",
-    district: ""
-  });
-  // 2) applied selections
+  const [filters, setFilters] = useState({ severity: "", type: "", district: "" });
   const [appliedFilters, setAppliedFilters] = useState(filters);
 
-  // fetch
   useEffect(() => {
-    navigator.geolocation?.getCurrentPosition(
-      ({ coords }) => setUserLocation([coords.latitude, coords.longitude]),
-      console.error,
-      { timeout: 10000 }
-    );
-
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => setUserLocation([coords.latitude, coords.longitude]),
+        console.error,
+        { timeout: 10000 }
+      );
+    }
     axios
-      .get("http://localhost:3000/api/crimeDetails")
+      .get("http://localhost:3000/report/crimeDetails")
       .then(res => setCrimes(res.data))
       .catch(err => console.error("Error fetching crimes:", err));
   }, []);
 
-  // dropdown options
   const severityOptions = ["High", "Medium", "Low"];
-  const typeOptions = [
-    "Violence", "Cyber", "Property", "Drug-Related", "Robbery", "Other"
-  ];
-  const districtOptions = [
-    "Ampara","Anuradhapura","Badulla","Batticaloa","Colombo","Galle",
-    "Gampaha","Hambantota","Jaffna","Kalutara","Kandy","Kegalle",
-    "Kilinochchi","Kurunegala","Mannar","Matale","Matara","Moneragala",
-    "Mullativu","Nuwara Eliya","Polonnaruwa","Puttalam","Ratnapura",
-    "Trincomalee","Vavuniya"
-  ];
+  const typeOptions     = ["Violence", "Cyber", "Property", "Drug-Related", "Robbery", "Other"];
+  const districtOptions = Object.keys(districtColors);
 
-  // filtered list uses appliedFilters
+  const getMarkerColor = (crime) => {
+    if (appliedFilters.severity) {
+      return getSeverityColor(crime.severity);
+    }
+    if (appliedFilters.type) {
+      return typeColors[crime.type] || "black";
+    }
+    if (appliedFilters.district) {
+      return districtColors[crime.district] || "black";
+    }
+    return getSeverityColor(crime.severity);
+  };
+
   const visibleCrimes = useMemo(() => {
     return crimes.filter(c => {
       if (!Array.isArray(c.coordinates) || c.coordinates.length !== 2) return false;
@@ -65,13 +104,10 @@ export default function CrimeMap2() {
     });
   }, [crimes, appliedFilters]);
 
-  // handlers
   const handleFilterChange = (field, value) => {
     setFilters(prev => ({ ...prev, [field]: value }));
   };
-  const applyFilters = () => {
-    setAppliedFilters(filters);
-  };
+  const applyFilters = () => setAppliedFilters(filters);
   const resetAll = () => {
     const empty = { severity: "", type: "", district: "" };
     setFilters(empty);
@@ -79,7 +115,7 @@ export default function CrimeMap2() {
   };
 
   return (
-    <div className="mx-auto p-2 rounded shadow bg-gray-100 m-4">
+    <div className="mx-auto p-4 rounded shadow bg-gray-100 m-4">
       <FilterPanel
         severityOptions={severityOptions}
         typeOptions={typeOptions}
@@ -101,13 +137,13 @@ export default function CrimeMap2() {
             key={idx}
             center={crime.coordinates}
             radius={8}
-            color={getColor(crime.severity)}
+            color={getMarkerColor(crime)}
           >
             <Popup>
-              <strong>Type:</strong> {crime.type} <br />
-              <strong>Severity:</strong> {crime.severity} <br />
-              <strong>Date:</strong>{" "}
-              {new Date(crime.datetime).toLocaleDateString()}
+              <strong>Type:</strong> {crime.type}<br/>
+              <strong>Severity:</strong> {crime.severity}<br/>
+              <strong>District:</strong> {crime.district}<br/>
+              <strong>Date:</strong> {new Date(crime.datetime).toLocaleDateString()}
             </Popup>
           </CircleMarker>
         ))}
@@ -115,3 +151,4 @@ export default function CrimeMap2() {
     </div>
   );
 }
+

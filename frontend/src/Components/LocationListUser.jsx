@@ -4,6 +4,7 @@ import CrimeMap2 from "./CrimeMap2";
 import { FaSearch } from "react-icons/fa"; // Import Search Icon
 import CrimeTypePieChart from "./CrimeTypePieChart";
 import CrimeYearLineChart from "./CrimeYearLineChart";
+import CrimeBubbleChart from "./CrimeBubbleChart";
 
 
 const LocationList = () => {
@@ -84,7 +85,8 @@ const LocationList = () => {
 
     {/* Crime Map Section */}
     <div className="w-1/2 overflow-x-auto">
-      <CrimeMap2 />
+      {/* <CrimeBubbleChart/> */}
+      <CrimeMap2/>
       <CrimeTypePieChart/>
     </div>
     

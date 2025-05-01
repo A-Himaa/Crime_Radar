@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -38,8 +39,17 @@ import CrimeYearLineChart from "./Components/CrimeYearLineChart.jsx";
 import CrimeTypePieChart from "./Components/CrimeTypePieChart.jsx";
 import CrimeDashboard from "./Components/CrimeDashboard.jsx";
 import CrimeMap2 from "./Components/CrimeMap2.js";
+import CrimeBubbleChart from "./Components/CrimeBubbleChart.jsx";
 
 function App() {
+  const [crimes, setCrimes] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/crimeDetails")
+      .then(res => setCrimes(res.data))
+      .catch(err => console.error("Error fetching crimes:", err));
+  }, []);
+
   return (
     <Router>
       <div className="App">
@@ -55,6 +65,7 @@ function App() {
           <Route path="/crimeDashboard" element={<CrimeDashboard />} />
           <Route path="/lineChart" element={<CrimeYearLineChart />} />
           <Route path="/pieChart" element={<CrimeTypePieChart />} />
+          <Route path="/bubbleMap" element={<CrimeBubbleChart crimes={crimes} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/addarticle" element={<AddArticle />} />
