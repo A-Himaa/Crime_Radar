@@ -38,7 +38,7 @@ const LocationList = () => {
   return (
     <div className="p-12 bg-gradient-to-b from-stone-200 to-orange-50">
   <h1 className="text-4xl font-bold text-gray-800 text-center mb-10 mt-20 ">
-    <span className="text-amber-600">L</span>ocation <span className="text-amber-600">L</span>ist
+    <span className="text-amber-600">I</span>NSIGHTS
   </h1>
 
   {/* Flex container to align Map and Table side by side */}
@@ -85,9 +85,11 @@ const LocationList = () => {
     {/* Crime Map Section */}
     <div className="w-1/2 overflow-x-auto">
       <CrimeMap2 />
+      <CrimeTypePieChart/>
     </div>
+    
   </div>
-    <CrimeTypePieChart/>
+    
     <CrimeYearLineChart />
 </div>
 

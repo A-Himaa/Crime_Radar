@@ -45,7 +45,7 @@ const CrimeMap2 = function () {
         {crimes.map((crime, index) => (
           <CircleMarker
             key={index}
-            center={[crime.cordinates]}
+            center={[crime.coordinates]}
             radius={8}
             color={getColor(crime.severity)}
           >
