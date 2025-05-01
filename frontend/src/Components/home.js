@@ -21,15 +21,15 @@ function home(){
         autoPlay
         loop
         muted
-        className="absolute top-0 left-0 w-full h-[85vh] object-cover"
+        className="absolute top-0 left-0 w-full h-[100vh] object-cover"
         onLoadedMetadata={(e) => (e.target.playbackRate = 0.75)}
       >
-        <source src={backgroundvid} type="video/mp4" />
+        <source src={backgroundvid} type="video/mp4"/>
         Your browser does not support the video tag.
       </video>
 
       {/* Gradient */}
-      <div className="absolute top-0 left-0 w-full h-[85vh] bg-black bg-opacity-25"></div>
+      <div className="absolute top-0 left-0 w-full h-[100vh] bg-black bg-opacity-25"></div>
 
 
 
@@ -57,7 +57,9 @@ function home(){
        </div>
 
         
-      </div>      
+      </div>     
+      <br></br> 
+      <br></br>
 
        {/* Why crime Radar */}
        <div className="flex items-center justify-center pb-16 -mt-6 ">

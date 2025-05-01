@@ -31,6 +31,8 @@ connection.once("open", () => {
 const authRouter = require("./routes/auth.js");
 app.use("/auth", authRouter);
 
+app.use(express.json());
+
 const userRouter = require("./routes/user.js");
 app.use("/auth", userRouter);
 

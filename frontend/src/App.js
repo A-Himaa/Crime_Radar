@@ -5,38 +5,43 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header1 from "./Components/header";
 import Home from "./Components/home";
 
-//Crime Report
+//Crime Report 
 import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
 import CrimeMap from "./Components/CrimeMap";
 import CrimeDetails from "./Components/crimeDetails.js";
 
 import LocationForm from "./Components/LocationForm.jsx";
+
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
-
+import AdminUserProfile from "./Components/AdminUserProfile.js";
+import AdminUserList from "./Components/AdminUserList.js";
 
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Header1/>
+        <Header1 />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/crimeMap" element={<CrimeMap />} />
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/addLocation" element={<LocationForm />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
-
+          <Route path="/adminuser/:email" element={<AdminUserProfile />} />
+          <Route path="/adminuserlist" element={<AdminUserList/>} />
           <Route path="/signup" element={<Signup />} />
+
           <Route path="/newreport" element={<Report />} />
           <Route path="/crimedetails" element={<CrimeDetails />} />
         </Routes>
       </div>
-    </Router> 
+    </Router>
   );
 }
 

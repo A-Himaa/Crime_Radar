@@ -4,7 +4,6 @@ import backgroundvid from "../Images/background.mp4";
 import axios from "axios"; // Ensure axios is installed
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
-
 const Signup = () => {
   const navigate = useNavigate(); // Initialize navigate function
 
@@ -32,7 +31,6 @@ const Signup = () => {
     nic: "",
   });
 
-  
   // Handle input change for both forms
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -52,7 +50,9 @@ const Signup = () => {
   // Move to the second form (Trusted Person Details)
   const handleNextClick = (e) => {
     e.preventDefault();
-    if (!userDetails.email || !userDetails.password || !userDetails.confirmPassword) {
+    if (
+      !userDetails.firstName || !userDetails.lastName || !userDetails.email || !userDetails.password
+    ) {
       alert("Please fill in all required fields before proceeding.");
       return;
     }
@@ -71,54 +71,74 @@ const Signup = () => {
   // Submit both forms together
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Combine both forms using user email as the primary key
+  
+    // Clean up the userDetails (remove confirmPassword before sending to the backend)
+    const { confirmPassword, ...cleanedUserDetails } = userDetails;
+  
+    // Log cleaned user details and trusted person details for debugging
+    console.log("Cleaned user details:", cleanedUserDetails);
+    console.log("Trusted person details:", trustedPersonDetails);
+  
+    // Prepare data to send to the backend
     const dataToSend = {
       userDetails,
       trustedPersonDetails,
-      primaryKey: userDetails.email, // Email as primary key
     };
-
-    console.log("Sending data to backend:", dataToSend); // Add logging here to check data
-
+  
+    console.log("Sending data to backend:", dataToSend);
+  
     try {
-      const response = await axios.post("http://localhost:8070/auth/signup", dataToSend); // Ensure the correct URL
+      const response = await axios.post(
+        "http://localhost:8070/auth/signup",
+        dataToSend
+      );
       console.log("Form submitted successfully:", response.data);
       alert("Signup successful!");
-      navigate("/login"); // Redirect to login page
-
+      navigate("/login");
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Signup failed. Please try again.");
     }
   };
+  
 
   return (
     <div className="relative flex justify-center items-center h-full bg-black">
-     {/* Video Background */}
-           <div className="absolute top-0 left-0 w-full h-full">
-             <video autoPlay loop muted className="w-full h-full object-cover blur-[14px]">
-               <source src={backgroundvid} type="video/mp4" />
-               Your browser does not support the video tag.
-             </video>
-           </div> 
+      {/* Video Background */}
+      <div className="absolute top-0 left-0 w-full h-full">
+        <video
+          autoPlay
+          loop
+          muted
+          className="w-full h-full object-cover blur-[14px]"
+        >
+          <source src={backgroundvid} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
 
       <div className="relative bg-white p-8 rounded-lg shadow-lg w-[600px] z-10 mt-[20vh] mb-[5vh]">
         <h2 className="text-4xl font-bold text-center mb-2">
-          {showTrustedForm ? ("Trusted Person Details") : (
-            <> <span className="text-amber-600">S</span>ign <span className="text-amber-600">U</span>p</>
+          {showTrustedForm ? (
+            "Trusted Person Details"
+          ) : (
+            <>
+              {" "}
+              <span className="text-amber-600">S</span>ign{" "}
+              <span className="text-amber-600">U</span>p
+            </>
           )}
         </h2>
         <p className="text-center text-xl text-gray-600 mb-4">
-          {showTrustedForm
-            ? ""
-            : "Welcome to Crime Radar..!"}
+          {showTrustedForm ? "" : "Welcome to Crime Radar..!"}
         </p>
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700">First Name <span className="text-red-700">*</span></label>
+              <label className="block text-gray-700">
+                First Name <span className="text-red-700">*</span>
+              </label>
               <input
                 type="text"
                 name="firstName"
@@ -134,7 +154,9 @@ const Signup = () => {
               />
             </div>
             <div>
-              <label className="block text-gray-700">Last Name <span className="text-red-700">*</span></label>
+              <label className="block text-gray-700">
+                Last Name <span className="text-red-700">*</span>
+              </label>
               <input
                 type="text"
                 name="lastName"
@@ -151,20 +173,20 @@ const Signup = () => {
             </div>
           </div>
 
-          <label className="block text-gray-700 mt-4">E-mail <span className="text-red-700">*</span></label>
+          <label className="block text-gray-700 mt-4">
+            E-mail <span className="text-red-700">*</span>
+          </label>
           <input
             type="email"
             name="email"
             value={
               showTrustedForm ? trustedPersonDetails.email : userDetails.email
             }
-
             onKeyDown={(e) => {
               const key = e.key;
-              const isEmailLetter = /^[a-zA-Z0-9._+@-]$/.test(key)
-              const isBackspace = key === 'Backspace';
+              const isEmailLetter = /^[a-zA-Z0-9._+@-]$/.test(key);
+              const isBackspace = key === "Backspace";
               const isValid = isBackspace || isEmailLetter;
-
             }}
             onChange={handleInputChange}
             placeholder="example@gmail.com"
@@ -172,22 +194,23 @@ const Signup = () => {
             required={!showTrustedForm} // Required only in the first form
           />
           {/* Phone number------------------------------------------------- */}
-          <label className="block text-gray-700 mt-4">Phone <span className="text-red-700">*</span></label>
+          <label className="block text-gray-700 mt-4">
+            Phone <span className="text-red-700">*</span>
+          </label>
           <input
             type="text"
             name="phone"
-            onKeyDown={(e) => { 
+            onKeyDown={(e) => {
               const key = e.key;
-              const isDigit =  /^[0-9]$/.test(key);
-                            const isBackspace = key === 'Backspace';
-                            const isValid = isBackspace || isDigit;
-                            if(!isValid){
-                                e.preventDefault();
-                            }
-            }}  
+              const isDigit = /^[0-9]$/.test(key);
+              const isBackspace = key === "Backspace";
+              const isValid = isBackspace || isDigit;
+              if (!isValid) {
+                e.preventDefault();
+              }
+            }}
             minLength={10}
             maxLength={10}
-
             value={
               showTrustedForm ? trustedPersonDetails.phone : userDetails.phone
             }
@@ -197,19 +220,20 @@ const Signup = () => {
             required
           />
 
-
           {/* NIC-------------------------------------------------------- */}
-          <label className="block text-gray-700 mt-4">NIC <span className="text-red-700">*</span></label>
+          <label className="block text-gray-700 mt-4">
+            NIC <span className="text-red-700">*</span>
+          </label>
           <input
             type="text"
             name="nic"
             onKeyDown={(e) => {
               const key = e.key;
               const isnicDigit = /^[0-9Vv]$/.test(key);
-              const isBackspace = key === 'Backspace';
+              const isBackspace = key === "Backspace";
               const isValid = isBackspace || isnicDigit;
-              if(!isValid){
-                  e.preventDefault();
+              if (!isValid) {
+                e.preventDefault();
               }
             }}
             value={showTrustedForm ? trustedPersonDetails.nic : userDetails.nic}
@@ -221,7 +245,9 @@ const Signup = () => {
 
           {!showTrustedForm && (
             <>
-              <label className="block text-gray-700 mt-4">Password <span className="text-red-700">*</span></label>
+              <label className="block text-gray-700 mt-4">
+                Password <span className="text-red-700">*</span>
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
