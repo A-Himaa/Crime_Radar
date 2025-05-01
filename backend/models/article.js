@@ -11,6 +11,12 @@ const crimeCategories = [
 ];
 
 const articleSchema = new Schema({
+    
+   
+    article_id: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
@@ -20,6 +26,14 @@ const articleSchema = new Schema({
         required: true
     },
     content: {
+        type: String,
+        required: true
+    },
+    published_date: {
+        type: String,
+        required: true
+    },
+    author: {
         type: String,
         required: true
     }
