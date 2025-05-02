@@ -26,24 +26,13 @@ function UpdateLocation() {
       });
   }, [id]);
 
-  // Update coordinates using Geolocation API
-  const getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          console.log("Updated Coordinates:", position.coords.latitude, position.coords.longitude);
-          setCoordinates([
-            position.coords.latitude.toString(),
-            position.coords.longitude.toString()
-          ]);
-        },
-        (error) => {
-          console.error("Error getting location: ⛔", error);
-          alert("Unable to retrieve location. ⛔");
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by your browser. ⛔");
+  // Handle coordinate input change with validation
+  const handleCoordinateChange = (index, value) => {
+    const regex = /^[0-9]*\.?[0-9]*$/;
+    if (regex.test(value)) {
+      const newCoords = [...coordinates];
+      newCoords[index] = value;
+      setCoordinates(newCoords);
     }
   };
 
@@ -52,7 +41,7 @@ function UpdateLocation() {
     e.preventDefault();
 
     if (!coordinates[0] || !coordinates[1]) {
-      alert("Please get the location before updating. *️⃣");
+      alert("Please enter both latitude and longitude. *️⃣");
       return;
     }
 
@@ -78,13 +67,6 @@ function UpdateLocation() {
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] relative">
         <h2 className="text-2xl font-semibold mb-4 text-center text-gray-700">Update Location</h2>
 
-        <button
-          onClick={getLocation}
-          className="w-full py-2 mb-4 bg-gray-500 text-white font-semibold rounded hover:bg-gray-800 transition"
-        >
-          Get Current Location
-        </button>
-
         <form onSubmit={handleUpdate} className="space-y-4">
           <div>
             <input
@@ -102,15 +84,17 @@ function UpdateLocation() {
               type="text"
               value={coordinates[0]}
               placeholder="Latitude (N)"
-              readOnly
+              onChange={(e) => handleCoordinateChange(0, e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              required
             />
             <input
               type="text"
               value={coordinates[1]}
               placeholder="Longitude (E)"
-              readOnly
+              onChange={(e) => handleCoordinateChange(1, e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              required
             />
           </div>
 

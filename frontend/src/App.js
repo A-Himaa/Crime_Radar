@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+
 
 //Importing Header
 import Header1 from "./Components/header";
@@ -30,8 +35,21 @@ import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
 import UpdateLocation from "./Components/UpdateLocation.jsx";
+import CrimeYearLineChart from "./Components/CrimeYearLineChart.jsx";
+import CrimeTypePieChart from "./Components/CrimeTypePieChart.jsx";
+import CrimeDashboard from "./Components/CrimeDashboard.jsx";
+import CrimeMap2 from "./Components/CrimeMap2.js";
+import CrimeBubbleChart from "./Components/CrimeBubbleChart.jsx";
 
 function App() {
+  const [crimes, setCrimes] = useState([]);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/crimeDetails")
+      .then(res => setCrimes(res.data))
+      .catch(err => console.error("Error fetching crimes:", err));
+  }, []);
+
   return (
     <Router>
       <div className="App">
@@ -39,10 +57,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/crimeMap" element={<CrimeMap />} />
+          <Route path="/crimeMap2" element={<CrimeMap2 />} />
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/locationListUser" element={<LocationListUser />} />
           <Route path="/addLocation" element={<LocationForm />} />
           <Route path="/updateLocation/:id" element={<UpdateLocation />} />
+          <Route path="/crimeDashboard" element={<CrimeDashboard />} />
+          <Route path="/lineChart" element={<CrimeYearLineChart />} />
+          <Route path="/pieChart" element={<CrimeTypePieChart />} />
+          <Route path="/bubbleMap" element={<CrimeBubbleChart crimes={crimes} />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/addarticle" element={<AddArticle />} />
