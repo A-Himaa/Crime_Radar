@@ -1,6 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import CrimeTypePieChart from "./CrimeTypePieChart";
+import CrimeYearLineChart from "./CrimeYearLineChart";
+
+
 
 const Overview = () => {
 
@@ -61,6 +65,11 @@ const Overview = () => {
         </div>
 
       </div>
+      <div>
+      <CrimeTypePieChart/>
+      <CrimeYearLineChart/>
+      </div>
+      
     </div>
   );
 };
