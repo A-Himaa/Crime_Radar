@@ -82,11 +82,7 @@ const Header = () => {
           >
             STAY AWARE
           </a>
-          <a
-            href="/locationList"
-            className="hover:underline transition-all duration-300"
-            onClick={(e) => handleNavigation(e, "/locationList")}
-          >
+          <a href="/locationList" className="hover:underline transition-all duration-300">
             INSIGHTS
           </a>
 

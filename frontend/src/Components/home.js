@@ -35,7 +35,7 @@ function home(){
 
 
       {/* Home content */}
-      <div className="relative w-full min-h-screen flex text-m pt-16 text-white my-50 top-[26vh]">
+      <div className="relative w-full min-h-screen flex text-m pt-16 text-white my-50 top-[20vh]">
         <div className="absolute left-16  text-lg bg-gray-50 bg-opacity-25 p-2 px-5 rounded-full">
             Welcome to Crime Radar
         </div>
@@ -62,7 +62,7 @@ function home(){
       <br></br>
 
        {/* Why crime Radar */}
-       <div className="flex items-center justify-center pb-16 -mt-6 ">
+       <div className="flex items-center justify-center pb-16 -mt-6 pt-16">
 
         <div className="w-[90vw] items-center justify-center rounded-xl m-0 bg-[#DABEB5] bg-opacity-50 pb-6">
 
