@@ -1,9 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 
 //Importing Header
 import Header1 from "./Components/header";
 import Home from "./Components/home";
+import Admindb from "./Components/admindb.js";
+import Overview from "./Components/overview.js";
 
 //Crime Report
 import Report from "./Components/Report.js";
@@ -22,12 +24,30 @@ import UpdateLocation from "./Components/UpdateLocation.jsx";
 
 
 function App() {
+  const location = useLocation();
+  const path = location.pathname;
+
+  const hideHeader =
+  path.startsWith("/admin") || path === "/crimeDetails" || path.startsWith("/crimeDetails/");
+
+
+
   return (
-    <Router>
-      <div className="App">
-        <Header1/>
+    <>
+      {!hideHeader && <Header1 />}
+
+        <div className="App">
+        
         <Routes>
           <Route path="/" element={<Home />} />
+
+          <Route path="/admin" element={<Admindb />}>
+          <Route index element={<Overview />} />
+          <Route path="crimeDetails" element={<CrimeDetails />} />
+          <Route path="crimeDetails/:id" element={<ReportDetails />} />
+        </Route>
+
+
           <Route path="/crimeMap" element={<CrimeMap />} />
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/locationListUser" element={<LocationListUser />} />
@@ -38,12 +58,12 @@ function App() {
 
           <Route path="/signup" element={<Signup />} />
           <Route path="/newreport" element={<Report />} />
-          <Route path="/crimeDetails" element={<CrimeDetails />} />
           <Route path="/crimeDetails/:id" element={<ReportDetails />} />
           
         </Routes>
       </div>
-    </Router> 
+    
+    </>
   );
 }
 

@@ -264,7 +264,7 @@ writeStream.on('finish', () => {
 
 
 // Email Forwarding
-const SENDGRID_API_KEY = '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'; 
+const SENDGRID_API_KEY = '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'; 
 
 router.post("/send-report", async (req, res) => {
   const { recipientEmail, id } = req.body;
