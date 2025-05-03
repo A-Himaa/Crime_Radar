@@ -25,7 +25,10 @@ const CrimeTypePieChart = () => {
   }, []);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg w-[44vw] my-6 ml-2">
+    <div className="bg-white p-4 rounded-2xl shadow-lg w-[35vw] my-6 ml-2 mt-5"
+    style={{
+      boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
+    }}>
       <h2 className="text-xl font-bold mb-4 text-center">Crime Type Distribution</h2>
       <div className="flex justify-center">
         <PieChart width={500} height={300}>

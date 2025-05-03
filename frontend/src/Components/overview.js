@@ -1,4 +1,6 @@
 import React from "react";
+import CrimeTypePieChart from "./CrimeTypePieChart";
+import CrimeYearLineChart from "./CrimeYearLineChart";
 
 const Overview = () => {
   return (
@@ -44,6 +46,11 @@ const Overview = () => {
         </div>
 
       </div>
+      <div>
+      <CrimeTypePieChart/>
+      <CrimeYearLineChart/>
+      </div>
+      
     </div>
   );
 };
