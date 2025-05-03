@@ -40,8 +40,8 @@ app.use("/report",reportRouter);
 
 
 //Taviii
-const locationRouter = require("./routes/locations.js");
-app.use("/locations", locationRouter);
+const locationRouter = require('./routes/locations.js');
+app.use('/locations', locationRouter);
 
 //Madhusha
 const articleRouter = require("./routes/articleRoute.js");
