@@ -36,7 +36,6 @@ import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
 
-import UpdateLocation from "./Components/UpdateLocation.jsx";
 import CrimeYearLineChart from "./Components/CrimeYearLineChart.jsx";
 import CrimeTypePieChart from "./Components/CrimeTypePieChart.jsx";
 import CrimeDashboard from "./Components/CrimeDashboard.jsx";
