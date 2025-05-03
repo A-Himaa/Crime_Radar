@@ -47,6 +47,18 @@ const reportSchema = new Schema({
         filename: { type: String, required: false }, // Storing the filename of the image
         contentType: { type: String, required: false }, // Storing the MIME type
     },
+    status: {
+        type: String,
+        default: "Pending",
+        enum: ["Pending", "Forwarded", "Under Investigation", "Resolved"]
+      },
+      statusHistory: [
+        {
+          status: String,
+          updatedAt: Date
+        }
+      ]
+      
 })
 
 reportSchema.methods.toJSON = function() {
@@ -56,5 +68,4 @@ reportSchema.methods.toJSON = function() {
 
 
 const c_report = mongoose.model("crimedata",reportSchema);
-
 module.exports = c_report;
