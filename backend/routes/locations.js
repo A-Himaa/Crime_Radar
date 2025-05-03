@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Location = require("../models/location");
 
+
 // Create location
 router.post("/addLocation", async (req, res) => {
     try {
@@ -13,7 +14,7 @@ router.post("/addLocation", async (req, res) => {
             coordinates: [
                 parseFloat(coordinates[0]), 
                 parseFloat(coordinates[1])
-            ],
+            ]
         });
 
         // Save to database
