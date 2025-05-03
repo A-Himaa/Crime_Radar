@@ -11,10 +11,10 @@ import LocationList from "./Components/LocationList";
 import LocationListUser from "./Components/LocationListUser.jsx"
 import CrimeMap from "./Components/CrimeMap";
 import CrimeDetails from "./Components/crimeDetails.js";
-<<<<<<<<< Temporary merge branch 1
+import UpdateLocation from "./Components/UpdateLocation.jsx";
 import ReportDetails from "./Components/reportDetails.js";
 
-=========
+
 import AddArticle from "./Components/AddArticle.js";
 import ViewArticles from './Components/ViewArticles.js';
 import EditArticle from "./Components/EditArticle.js";
@@ -24,7 +24,6 @@ import CyberCrimes from "./Components/CyberCrimes.js";
 import PropertyCrimes from "./Components/PropertyCrimes.js";
 import DrugRelatedCrimes from "./Components/DrugRelatedCrimes.js";
 import RobberyCrimes from "./Components/RobberyCrimes.js";
->>>>>>>>> Temporary merge branch 2
 import LocationForm from "./Components/LocationForm.jsx";
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
