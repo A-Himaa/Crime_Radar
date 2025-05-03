@@ -327,7 +327,7 @@ router.get("/count", async (req, res) => {
   }
 });
 
-//Status Update
+//Status Update for admin
 router.patch('/update/:id', async (req, res) => {
   try {
     const { status } = req.body;
