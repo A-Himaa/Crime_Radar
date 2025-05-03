@@ -56,8 +56,8 @@ const filteredReports = reportindex.filter((report) => {
 
 
 return (
-  <div className="w-full flex justify-center items-center bg-gradient-to-b from-stone-200 to-orange-50 ">
-      <div className="bg-white rounded-xl shadow-xl px-8 py-6 w-[80vw] mt-[18vh] mb-[18vh]">
+  <div className="w-full flex justify-center items-center">
+      <div className="bg-white shadow-xl px-8 py-6 w-[82vw] mt-24">
 
           {/* Header with Search */}
           <div className="flex justify-between w-full items-center">
@@ -117,7 +117,7 @@ return (
 
                       {/* View More Details */}
                       <div>
-                          <Link to={`/crimeDetails/${report._id}`} className="text-blue-500 hover:underline">
+                          <Link to={`/admin/crimeDetails/${report._id}`} className="text-blue-500 hover:underline">
                               View Details
                           </Link>
                       </div>

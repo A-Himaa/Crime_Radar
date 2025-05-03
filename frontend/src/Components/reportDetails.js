@@ -93,7 +93,7 @@ function ReportDetails() {
 
     return (
         <div className="w-full flex justify-center items-center bg-gradient-to-b from-stone-200 to-orange-50">
-            <div className="bg-white shadow-xl px-20 py-10 w-[80vw] mt-[18vh] mb-[18vh]">
+            <div className="bg-white shadow-xl px-20 py-10 w-[82vw] mt-24">
                 <h2 className="text-4xl font-bold text-gray-800 mb-4 mt-2 flex justify-center">
                     <span className="text-amber-600">I</span>ncident
                     <span className="text-amber-600 ml-4"> D</span>etails
