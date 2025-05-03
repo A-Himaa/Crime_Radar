@@ -44,8 +44,8 @@ const reportSchema = new Schema({
         required: true
     },
     image: {
-        filename: { type: String, required: false }, // Storing the filename of the image
-        contentType: { type: String, required: false }, // Storing the MIME type
+        filename: { type: String, required: false }, 
+        contentType: { type: String, required: false }, 
     },
     status: {
         type: String,

@@ -88,7 +88,7 @@ function ReportDetails() {
   };
 
 
-  //Status Update
+  //Status Update function
   const updateStatus = (newStatus) => {
     axios.patch(`http://localhost:8070/report/update/${report._id}`, { status: newStatus })
       .then((res) => {
