@@ -3,7 +3,8 @@ import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 // Define COLORS for the pie chart segments
-const COLORS = ["#FF8042", "#00C49F", "#0088FE", "#FFBB28", "#AA336A", "#8884d8"];
+const COLORS = ["#EF476F", "#FF6B3C", "#FFBF00", "#06D6A0", "#118AB2", "#073B4C"];
+
 
 const CrimeTypePieChart = () => {
   const [data, setData] = useState([]);
@@ -24,12 +25,27 @@ const CrimeTypePieChart = () => {
       .catch((err) => console.error('Error fetching data:', err)); // Handle any errors
   }, []);
 
+  const CustomLegend = ({ payload }) => (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(3, 1fr)',
+      gap: '5px',
+      marginTop: '5px'
+    }}>
+      {payload.map((entry, index) => (
+        <div key={`item-${index}`} style={{ color: entry.color }}>
+          ● {entry.value}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
-    <div className="bg-white p-4 rounded-2xl shadow-lg w-[35vw] my-6 ml-2 mt-5"
+    <div className="bg-white p-2 rounded-2xl shadow-lg h-[60vh] w-[30vw] my-6 ml-0"
     style={{
       boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
     }}>
-      <h2 className="text-xl font-bold mb-4 text-center">Crime Type Distribution</h2>
+      <h2 className="text-xl font-bold mb-4 text-center mt-2">Crime Type Distribution</h2>
       <div className="flex justify-center">
         <PieChart width={500} height={300}>
           <Pie data={data} cx="50%" cy="50%">
@@ -38,7 +54,8 @@ const CrimeTypePieChart = () => {
             ))}
           </Pie>
           <Tooltip />
-          <Legend />
+          <Legend content={<CustomLegend />} />
+
         </PieChart>
       </div>
     </div>

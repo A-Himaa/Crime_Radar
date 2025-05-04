@@ -61,7 +61,7 @@ export default function CrimeMap2() {
   const [appliedFilters, setAppliedFilters] = useState(filters);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/map/crimeDetails")
+    axios.get("http://localhost:8070/map/crimeDetails")
       .then(res => setCrimes(res.data))
       .catch(err => console.error("Error fetching crimes:", err));
   }, []);
@@ -103,6 +103,7 @@ export default function CrimeMap2() {
     setFilters(empty);
     setAppliedFilters(empty);
   };
+  
 
   return (
     <div className="mx-auto p-4 rounded shadow bg-gray-100 m-4">
@@ -125,7 +126,9 @@ export default function CrimeMap2() {
         {visibleCrimes.map((crime, idx) => (
           <CircleMarker
             key={idx}
-            center={crime.coordinates}
+            center={Array.isArray(crime.coordinates)
+              ? crime.coordinates
+              : [crime.coordinates.latitude, crime.coordinates.longitude]}            
             radius={8}
             color={getMarkerColor(crime)}
           >

@@ -48,7 +48,7 @@ const CrimeYearLineChart = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-2xl shadow-lg w-[45vw] my-6"
+    <div className="bg-white p-4 rounded-2xl shadow-lg w-[45vw] my-6 ml-0"
     style={{
       boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
     }}>
@@ -58,17 +58,17 @@ const CrimeYearLineChart = () => {
       {/* Scrollable chart */}
       <div className="overflow-x-auto">
         <div className="min-w-[1000px]">
-          <LineChart width={1000} height={400} data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
+          <LineChart width={1000} height={300} data={data}>
+            <CartesianGrid strokeDasharray="1 1" />
             <XAxis
               dataKey="date"
               angle={-45}
               textAnchor="end"
-              height={70}
+              height={100}
               tickFormatter={formatDate}  // Format date on the X axis
-              label={{ value: 'Date', position: 'outsideTop' }}
+              label={{ value: 'Date', position: 'outside' }}
             />
-            <YAxis label={{ value: 'Number of Crimes', angle: -90, position: 'insideLeft' }} />
+            <YAxis label={{ value: 'Total Crimes', angle: -90, position: 'insideLeft' }} />
             <Tooltip />
             <Legend />
             <Line type="monotone" dataKey="count" stroke="#0088FE" name="Number of Crimes" />
