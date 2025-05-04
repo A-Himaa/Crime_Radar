@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, CircleMarker, Popup, useMap} from "react-leafl
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
 import LocationForm from "./LocationForm";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Function to update the map view dynamically
 const ChangeView = ({ center }) => {
