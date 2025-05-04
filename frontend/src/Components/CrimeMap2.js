@@ -47,7 +47,7 @@ const districtColors = {
   Matara:         "#808000",
   Moneragala:     "#ffd8b1",
   Mullativu:      "#000075",
-  "Nuwara Eliya":   "#808080",
+  "Nuwara Eliya": "#808080",
   Polonnaruwa:    "#ffffff",
   Puttalam:       "#000000",
   Ratnapura:      "#1f77b4",
@@ -57,21 +57,11 @@ const districtColors = {
 
 export default function CrimeMap2() {
   const [crimes, setCrimes] = useState([]);
-  const [userLocation, setUserLocation] = useState([6.9271, 79.8612]);
-
   const [filters, setFilters] = useState({ severity: "", type: "", district: "" });
   const [appliedFilters, setAppliedFilters] = useState(filters);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) => setUserLocation([coords.latitude, coords.longitude]),
-        console.error,
-        { timeout: 10000 }
-      );
-    }
-    axios
-      .get("http://localhost:3000/report/crimeDetails")
+    axios.get("http://localhost:3000/map/crimeDetails")
       .then(res => setCrimes(res.data))
       .catch(err => console.error("Error fetching crimes:", err));
   }, []);
@@ -127,7 +117,7 @@ export default function CrimeMap2() {
       />
 
       <MapContainer
-        center={userLocation}
+        center={[6.9271, 79.8612]}  // Default to Colombo
         zoom={12}
         className="w-full h-[500px] rounded overflow-hidden mt-4"
       >
@@ -151,4 +141,3 @@ export default function CrimeMap2() {
     </div>
   );
 }
-
