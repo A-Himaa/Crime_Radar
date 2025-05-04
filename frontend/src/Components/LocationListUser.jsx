@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import CrimeMap2 from "./CrimeMap2";
 import { FaSearch } from "react-icons/fa"; // Import Search Icon
-import CrimeTypePieChart from "./CrimeTypePieChart";
-import CrimeYearLineChart from "./CrimeYearLineChart";
+import CrimeTypePieChart2 from "./CrimeTypePieChart2";
+import CrimeYearLineChart2 from "./CrimeYearLineChart2";
 import CrimeBubbleChart from "./CrimeBubbleChart";
 
 
@@ -45,7 +45,7 @@ const LocationList = () => {
   {/* Flex container to align Map and Table side by side */}
   <div className="flex flex-row gap-6">
     {/* Location List Table Section */}
-    <div className="w-1/2 overflow-x-auto">
+    <div className="w-1/2 overflow-x-auto" >
       {/* Search Bar */}
       <div className="flex justify-end mb-4">
         <div className="relative w-full md:w-64">
@@ -61,7 +61,9 @@ const LocationList = () => {
       </div>
 
       {/* Table */}
-      <div ref={componentRef} className="overflow-x-auto">
+      <div ref={componentRef} className="overflow-x-auto"style={{
+      boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
+    }}>
         <table className="bg-gray-800 text-white w-full rounded-lg overflow-hidden">
           <thead>
           <tr className="bg-gradient-to-r from-gray-800 via-gray-600 to-gray-500 hover:from-gray-600 hover:via-gray-500 hover:to-gray-400">
@@ -87,12 +89,12 @@ const LocationList = () => {
     <div className="w-1/2 overflow-x-auto">
       {/* <CrimeBubbleChart/> */}
       <CrimeMap2/>
-      <CrimeTypePieChart/>
+      <CrimeTypePieChart2/>
     </div>
     
   </div>
     
-    <CrimeYearLineChart />
+    <CrimeYearLineChart2 />
 </div>
 
   );

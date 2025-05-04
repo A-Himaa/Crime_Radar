@@ -1,7 +1,8 @@
 // src/components/CrimeMap2.jsx
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
+import L from "leaflet";
 import axios from "axios";
 import FilterPanel from "./FilterPanel";
 import "leaflet/dist/leaflet.css";
@@ -59,11 +60,19 @@ export default function CrimeMap2() {
   const [crimes, setCrimes] = useState([]);
   const [filters, setFilters] = useState({ severity: "", type: "", district: "" });
   const [appliedFilters, setAppliedFilters] = useState(filters);
+  const mapRef = useRef();
 
   useEffect(() => {
     axios.get("http://localhost:8070/map/crimeDetails")
       .then(res => setCrimes(res.data))
       .catch(err => console.error("Error fetching crimes:", err));
+  }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (map) {
+      L.control.zoom({ position: "bottomright" }).addTo(map);
+    }
   }, []);
 
   const severityOptions = ["High", "Medium", "Low"];
@@ -103,10 +112,11 @@ export default function CrimeMap2() {
     setFilters(empty);
     setAppliedFilters(empty);
   };
-  
 
   return (
-    <div className="mx-auto p-4 rounded shadow bg-gray-100 m-4">
+    <div className="mx-auto p-4 rounded shadow bg-gray-100 m-4" style={{
+      boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
+    }}>
       <FilterPanel
         severityOptions={severityOptions}
         typeOptions={typeOptions}
@@ -120,7 +130,11 @@ export default function CrimeMap2() {
       <MapContainer
         center={[6.9271, 79.8612]}  // Default to Colombo
         zoom={12}
+        zoomControl={false}
         className="w-full h-[500px] rounded overflow-hidden mt-4"
+        whenCreated={(mapInstance) => {
+          mapRef.current = mapInstance;
+        }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         {visibleCrimes.map((crime, idx) => (
