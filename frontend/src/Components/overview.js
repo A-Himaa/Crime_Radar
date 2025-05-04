@@ -46,11 +46,10 @@ const Overview = () => {
         </div>
 
       </div>
-      <div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5 text-gray-800">
       <CrimeTypePieChart/>
       <CrimeYearLineChart/>
       </div>
-      
     </div>
   );
 };

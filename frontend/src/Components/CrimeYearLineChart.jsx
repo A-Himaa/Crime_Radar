@@ -48,7 +48,10 @@ const CrimeYearLineChart = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-lg w-[50vw] my-6">
+    <div className="bg-white p-4 rounded-2xl shadow-lg w-[45vw] my-6"
+    style={{
+      boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
+    }}>
       {/* Title fixed above scrollable chart */}
       <h2 className="text-xl font-bold mb-4 text-center">Crimes by Date</h2>
 
