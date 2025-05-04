@@ -316,6 +316,19 @@ router.post("/send-report", async (req, res) => {
   });
 });
 
+//Report count
+
+router.get("/count", async (req, res) => {
+  try {
+    const count = await ReportModel.countDocuments();
+    res.json({ count });
+  } catch (err) {
+    console.error("Error fetching report count:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 
 
 
