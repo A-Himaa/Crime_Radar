@@ -4,6 +4,8 @@ import axios from "axios";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import CrimeMap2 from './Components/CrimeMap2';
+
 
 
 //Importing Header
@@ -36,6 +38,8 @@ import LocationForm from "./Components/LocationForm.jsx";
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
+import AdminUserList from "./Components/AdminUserList.js";
+
 
 
 
@@ -56,7 +60,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    
       <div className="App">
         <Header1/>
         <Routes>
@@ -74,17 +78,23 @@ function App() {
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/locationListUser" element={<LocationListUser />} />
           <Route path="/addLocation" element={<LocationForm />} />
+
+
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
-
           <Route path="/signup" element={<Signup />} />
+          <Route path="/adminuserlist" element={<AdminUserList />} />
+
+          
+
+
 
           <Route path="/newreport" element={<Report />} />
           <Route path="/crimeDetails/:id" element={<ReportDetails />} />
           
         </Routes>
       </div>
-    </Router> 
+  
   );
 }
 

@@ -10,7 +10,7 @@ const AdminUserList = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:8070/auth/users');
+        const response = await axios.get('http://localhost:8070/auth/user');
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
