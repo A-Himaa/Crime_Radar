@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
-require("dotenv").config();  
+require("dotenv").config();
 
 // port allocation
 const PORT = process.env.PORT || 8070;
@@ -31,17 +31,8 @@ connection.once("open", () => {
 const authRouter = require("./routes/auth.js");
 app.use("/auth", authRouter);
 
-const passwordResetRoutes = require("./routes/passwordReset");
-app.use("/password", passwordResetRoutes);
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found', path: req.originalUrl });
-});
-
 const userRouter = require("./routes/user.js");
 app.use("/auth", userRouter);
-
-app.use(express.json());
-
 
 //Himaa
 const reportRouter = require("./routes/report_route.js");
@@ -49,8 +40,8 @@ app.use("/report",reportRouter);
 
 
 //Taviii
-const locationRouter = require("./routes/locations.js");
-app.use("/locations", locationRouter);
+const locationRouter = require('./routes/locations.js');
+app.use('/locations', locationRouter);
 
 const mapRouter = require('./routes/crime.js');
 app.use('/map', mapRouter);
@@ -59,7 +50,13 @@ app.use('/map', mapRouter);
 const articleRouter = require("./routes/articleRoute.js");
 app.use("/article", articleRouter);
 
-console.log("📌 Location routes are mounted at: /locationList"); 
+
+
+
+
+
+
+//console.log("📌 Location routes are mounted at: /locationList"); 
 
 // server port allocation & server start
 app.listen(PORT, () => {
