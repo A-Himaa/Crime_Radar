@@ -41,9 +41,11 @@ function LocationForm({ onClose }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[1000]">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] relative">
-        <h2 className="text-2xl font-semibold mb-4 text-center text-gray-700">
-          New Location
-        </h2>
+        <h1 className="text-4xl font-bold text-gray-800 text-center mb-10 mt-5">
+        <span className="text-amber-600">N</span>ew{" "}
+        <span className="text-amber-600">L</span>ocation
+
+        </h1>
 
         <form onSubmit={sendLocation} className="space-y-4">
           <div>

@@ -20,9 +20,6 @@ import LocationList from "./Components/LocationList";
 import LocationListUser from "./Components/LocationListUser.jsx"
 import CrimeMap from "./Components/CrimeMap";
 import CrimeDetails from "./Components/crimeDetails.js";
-import UpdateLocation from "./Components/UpdateLocation.jsx";
-import ReportDetails from "./Components/reportDetails.js";
-
 
 import AddArticle from "./Components/AddArticle.js";
 import ViewArticles from './Components/ViewArticles.js';
@@ -33,14 +30,24 @@ import CyberCrimes from "./Components/CyberCrimes.js";
 import PropertyCrimes from "./Components/PropertyCrimes.js";
 import DrugRelatedCrimes from "./Components/DrugRelatedCrimes.js";
 import RobberyCrimes from "./Components/RobberyCrimes.js";
+
+import ReportDetails from "./Components/reportDetails.js";
+
+
 import LocationForm from "./Components/LocationForm.jsx";
 
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
+
 import AdminUserList from "./Components/AdminUserList.js";
 
-
+import UpdateLocation from "./Components/UpdateLocation.jsx";
+import CrimeYearLineChart from "./Components/CrimeYearLineChart.jsx";
+import CrimeTypePieChart from "./Components/CrimeTypePieChart.jsx";
+import CrimeDashboard from "./Components/CrimeDashboard.jsx";
+import CrimeMap2 from "./Components/CrimeMap2.js";
+import CrimeBubbleChart from "./Components/CrimeBubbleChart.jsx";
 
 
 function App() {
