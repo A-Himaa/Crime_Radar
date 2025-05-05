@@ -4,6 +4,8 @@ import axios from "axios";
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import CrimeMap2 from './Components/CrimeMap2';
+
 
 
 //Importing Header
@@ -12,7 +14,7 @@ import Home from "./Components/home";
 import Admindb from "./Components/admindb.js";
 import Overview from "./Components/overview.js";
 
-//Crime Report
+//Crime Report 
 import Report from "./Components/Report.js";
 import LocationList from "./Components/LocationList";
 import LocationListUser from "./Components/LocationListUser.jsx"
@@ -33,15 +35,20 @@ import ReportDetails from "./Components/reportDetails.js";
 
 
 import LocationForm from "./Components/LocationForm.jsx";
+
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
+
+import AdminUserList from "./Components/AdminUserList.js";
+
 import UpdateLocation from "./Components/UpdateLocation.jsx";
 import CrimeYearLineChart from "./Components/CrimeYearLineChart.jsx";
 import CrimeTypePieChart from "./Components/CrimeTypePieChart.jsx";
 import CrimeDashboard from "./Components/CrimeDashboard.jsx";
 import CrimeMap2 from "./Components/CrimeMap2.js";
 import CrimeBubbleChart from "./Components/CrimeBubbleChart.jsx";
+
 
 function App() {
   const location = useLocation();
@@ -60,11 +67,9 @@ function App() {
   }, []);
 
   return (
-    <>
-      {!hideHeader && <Header1 />}
-
-        <div className="App">
-        
+    
+      <div className="App">
+        <Header1/>
         <Routes>
           <Route path="/" element={<Home />} />
 
@@ -80,30 +85,23 @@ function App() {
           <Route path="/locationList" element={<LocationList />} />
           <Route path="/locationListUser" element={<LocationListUser />} />
           <Route path="/addLocation" element={<LocationForm />} />
-          <Route path="/updateLocation/:id" element={<UpdateLocation />} />
-          <Route path="/crimeDashboard" element={<CrimeDashboard />} />
-          <Route path="/lineChart" element={<CrimeYearLineChart />} />
-          <Route path="/pieChart" element={<CrimeTypePieChart />} />
-          <Route path="/bubbleMap" element={<CrimeBubbleChart crimes={crimes} />} />
+
+
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/addarticle" element={<AddArticle />} />
-          <Route path="/articles" element={<ViewArticles />} />
-          <Route path="/updatearticle/:id" element={<EditArticle />} />
-          <Route path="/awareadmin" element={<AwareAdminMain />} />
-          <Route path="/violence" element={<ViolentCrimes />} />
-          <Route path="/cyber" element={<CyberCrimes />} />
-          <Route path="/property" element={<PropertyCrimes />} />
-          <Route path="/drug" element={<DrugRelatedCrimes />} />
-          <Route path="/robbery" element={<RobberyCrimes />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/adminuserlist" element={<AdminUserList />} />
+
+          
+
+
+
           <Route path="/newreport" element={<Report />} />
           <Route path="/crimeDetails/:id" element={<ReportDetails />} />
           
         </Routes>
       </div>
-    
-    </>
+  
   );
 }
 
