@@ -50,7 +50,7 @@ const Overview = () => {
           }}
         >
           <h2 className="text-xl font-semibold mb-2">Solved Reports</h2>
-          <p className="text-3xl font-bold text-amber-600">124</p>
+          <p className="text-3xl font-bold text-amber-600">90</p>
         </div>
 
         {/* Card 3 */}
@@ -61,7 +61,7 @@ const Overview = () => {
           }}
         >
           <h2 className="text-xl font-semibold mb-2">Total No. Of Users</h2>
-          <p className="text-3xl font-bold text-amber-600">124</p>
+          <p className="text-3xl font-bold text-amber-600">150</p>
         </div>
 
       </div>
