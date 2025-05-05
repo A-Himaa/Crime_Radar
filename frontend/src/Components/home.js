@@ -24,7 +24,7 @@ function home(){
         className="absolute top-0 left-0 w-full h-[100vh] object-cover"
         onLoadedMetadata={(e) => (e.target.playbackRate = 0.75)}
       >
-        <source src={backgroundvid} type="video/mp4"/>
+        <source src={backgroundvid} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
@@ -57,9 +57,7 @@ function home(){
        </div>
 
         
-      </div>     
-      <br></br> 
-      <br></br>
+      </div>      
 
        {/* Why crime Radar */}
        <div className="flex items-center justify-center pb-16 -mt-6 pt-16">
