@@ -5,7 +5,7 @@ const ReportModel = require("../models/c_report");
 const LocationModel = require("../models/location");
 
 // GET /api/crimes
-router.get("/crimeDetails", async (req, res) => {
+router.get("/getBubbles", async (req, res) => {
   try {
     const data = await ReportModel.aggregate([
       // match additional query params later if you like

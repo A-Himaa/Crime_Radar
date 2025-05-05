@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, CircleMarker, Popup, useMap} from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  CircleMarker,
+  Popup,
+  useMap,
+} from "react-leaflet";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
-import LocationForm from "./LocationForm";
-import { Link, useLocation } from "react-router-dom";
+// import LocationForm from "./LocationForm";
+import { Link } from "react-router-dom";
 
 // Function to update the map view dynamically
 const ChangeView = ({ center }) => {
@@ -16,18 +22,22 @@ const ChangeView = ({ center }) => {
 
 const getColor = (severity) => {
   if (!severity) return "gray";
-  return severity === "High" ? "red" : severity === "Medium" ? "orange" : "green";
+  return severity === "High"
+    ? "red"
+    : severity === "Medium"
+    ? "orange"
+    : "green";
 };
 
 const CrimeMap = function () {
   const [crimes, setCrimes] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+  // const [showForm, setShowForm] = useState(false);
   const [userLocation, setUserLocation] = useState([6.9061, 79.9696]); // Default to Colombo
 
   useEffect(() => {
     // Get user's current location
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition  (
+      navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           setUserLocation([latitude, longitude]);
@@ -51,15 +61,13 @@ const CrimeMap = function () {
         zoom={12}
         className="w-full h-[500px] rounded-1xl overflow-hidden relative z-[0]"
       >
-
-      <ChangeView center={userLocation} /> {/* Updates map center dynamically */}
+        <ChangeView center={userLocation} />{" "}
+        {/* Updates map center dynamically */}
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
         {/* Display user location */}
         <CircleMarker center={userLocation} radius={10} color="red">
           <Popup>You are here 🚩</Popup>
         </CircleMarker>
-
         {/* Display crime locations */}
         {crimes.map((crime, index) => (
           <CircleMarker
@@ -77,13 +85,13 @@ const CrimeMap = function () {
         ))}
       </MapContainer>
 
-      <div className="relative flex justify-end p-5 z-0">
+      {/* <div className="relative flex justify-end p-5 z-0">
         <Link to="/locationListUser"><button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">Location List</button></Link>
         <button className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded" onClick={() => setShowForm(true)}>New Location</button>
-      </div>
+      </div> */}
 
-      {/* Show the location form when button is clicked */}
-      {showForm && <LocationForm onClose={() => setShowForm(false)} />}
+      {/* Show the location form when button is clicked
+      {showForm && <LocationForm onClose={() => setShowForm(false)} />} */}
     </div>
   );
 };
