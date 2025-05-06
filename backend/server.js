@@ -43,6 +43,9 @@ app.use("/report",reportRouter);
 const locationRouter = require('./routes/locations.js');
 app.use('/locations', locationRouter);
 
+const mapRouter = require('./routes/crime.js');
+app.use('/map', mapRouter);
+
 //Madhusha
 const articleRouter = require("./routes/articleRoute.js");
 app.use("/article", articleRouter);

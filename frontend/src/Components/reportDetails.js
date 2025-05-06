@@ -86,9 +86,22 @@ function ReportDetails() {
     }
     forwardReport(recipientEmail);
   };
+
+
+  //Status Update function
+  const updateStatus = (newStatus) => {
+    axios.patch(`http://localhost:8070/report/update/${report._id}`, { status: newStatus })
+      .then((res) => {
+        alert("Status updated successfully.");
+        setReport(res.data.report); 
+      })
+      .catch((err) => {
+        console.error("Failed to update status:", err);
+        alert("Error updating status.");
+      });
+  };
+  
       
-
-
 
 
     return (
@@ -208,16 +221,20 @@ function ReportDetails() {
 
                         <hr className="mt-12"/>
 
-                        <div className="mt-5">
-                            <label className="font-bold text-gray-800">Report Status: </label>
-                        </div>
-
-                        <div className="flex justify-end mt-10">
-                            <button className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105 mr-3 mt-4">
-                                Status Update
-                            </button>
-                           
-                            
+                        <div className="mt-10">
+                            <label className="font-bold text-gray-800">Status:</label>
+                            <div className="flex space-x-3 mt-3">
+                                <select
+                                value={report.status}
+                                onChange={(e) => updateStatus(e.target.value)}
+                                className="border border-gray-400 p-2 rounded-md w-[40vw]"
+                                >
+                                <option value="Pending">Pending</option>
+                                <option value="Forwarded">Forwarded</option>
+                                <option value="Under Investigation">Under Investigation</option>
+                                <option value="Resolved">Resolved</option>
+                                </select>
+                            </div>
                         </div>
 
                    

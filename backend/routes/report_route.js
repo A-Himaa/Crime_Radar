@@ -264,7 +264,7 @@ writeStream.on('finish', () => {
 
 
 // Email Forwarding
-const SENDGRID_API_KEY = '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'; 
+const SENDGRID_API_KEY = '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'; 
 
 router.post("/send-report", async (req, res) => {
   const { recipientEmail, id } = req.body;
@@ -317,7 +317,6 @@ router.post("/send-report", async (req, res) => {
 });
 
 //Report count
-
 router.get("/count", async (req, res) => {
   try {
     const count = await ReportModel.countDocuments();
@@ -327,6 +326,30 @@ router.get("/count", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+//Status Update for admin
+router.patch('/update/:id', async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const report = await ReportModel.findById(req.params.id);
+    if (!report) return res.status(404).json({ message: "Report not found" });
+
+    report.status = status;
+    report.statusHistory.push({
+      status,
+      updatedAt: new Date()
+    });
+
+    await report.save();
+    res.json({ message: "Status updated", report });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
 
 
 

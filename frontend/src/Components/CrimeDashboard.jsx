@@ -1,5 +1,5 @@
 import React from "react";
-import CrimeMap from "./CrimeMap";
+//import CrimeMap from "./CrimeMap";
 import CrimeTypePieChart from "./CrimeTypePieChart";
 import CrimeYearLineChart from "./CrimeYearLineChart";
 import DashboardMap from "./DashboardMap";
@@ -15,7 +15,7 @@ const CrimeDashboard = () => {
         <div className="w-[45%] ">
           <CrimeTypePieChart />
         </div>
-        <div className="w-[65%] ml-16">
+        <div>
           <CrimeYearLineChart />
         </div>
       </div>
