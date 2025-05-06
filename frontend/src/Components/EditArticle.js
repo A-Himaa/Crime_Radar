@@ -18,10 +18,40 @@ const EditArticle = () => {
 
   const [article, setArticle] = useState(articleFields);
 
+
+
+  useEffect(() => {
+    axios.get(`http://localhost:8070/article/ViewArticle/${id}`) 
+        .then((res) => {
+            console.log("Fetched article Data:", res.data);
+
+            const articleData = res.data;
+            if (!articleData.createdAt) {
+              articleData.createdAt = new Date(
+                    parseInt(articleData._id.substring(0, 8), 16) * 1000
+                ).toISOString(); 
+            }
+
+            setArticle(articleData);
+        })
+        .catch((err) => {
+            console.error("Error fetching report:", err);
+            alert("Error in loading report details.");
+        });
+}, [id]);
+
+
+
+
+
+
+
+
+
   useEffect(() => {
     // Fetch article by MongoDB _id
     axios
-      .get(`http://localhost:8070/article/get/${id}`)
+      .get(`http://localhost:8070/article/ViewArticle/${id}`)
       .then((res) => setArticle(res.data.article))
       .catch((err) => console.log(err));
   }, [id]);
@@ -43,7 +73,7 @@ const EditArticle = () => {
       .put(`http://localhost:8070/article/updatearticle/${id}`, article)
       .then(() => {
         Swal.fire("Success", "Article Updated Successfully!", "success");
-        navigate("/ViewArticles");
+        navigate("/article");
       })
       .catch((err) => {
         console.log(err);

@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const Article = require("../models/article");
@@ -28,16 +27,7 @@ router.post("/addarticle", async (req, res) => {
   }
 });
 
-// View Violence articles
-router.get("/violence", async (req, res) => {
-  try {
-    const violence = await Article.find();
-    res.status(200).json(violence);
-  } catch (err) {
-    console.error("Error fetching articles:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+
 
 
 // Retrieve all articles
@@ -48,6 +38,26 @@ router.get("/article", async (req, res) => {
   } catch (err) {
     console.error("Error fetching articles:", err);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Retrieve specific article data
+router.get('/article/get/:id', async (req, res) => {
+  const articleId = req.params.id;
+
+  try {
+    // Query the database to find the article with the given ID
+    const articleDetails = await Article.findById(articleId);
+
+    if (!articleDetails) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+
+    res.json({ article: articleDetails });
+
+  } catch (error) {
+    console.error("Error fetching article:", error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

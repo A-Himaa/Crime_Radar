@@ -26,7 +26,7 @@ import AddArticle from "./Components/AddArticle.js";
 import ViewArticles from './Components/ViewArticles.js';
 import EditArticle from "./Components/EditArticle.js";
 import AwareAdminMain from "./Components/AwareAdminMain.js";
-import ViolentCrimes from "./Components/ViolentCimes.js";
+import ViolentCrimes from "./Components/ViolentCrimes.js";
 import CyberCrimes from "./Components/CyberCrimes.js";
 import PropertyCrimes from "./Components/PropertyCrimes.js";
 import DrugRelatedCrimes from "./Components/DrugRelatedCrimes.js";
@@ -90,7 +90,7 @@ function App() {
           <Route path="/addarticle" element={<AddArticle />} />
           <Route path="/articles" element={<ViewArticles />} />
           <Route path="/updatearticle/:id" element={<EditArticle />} />
-          <Route path="/awareadmin" element={<AwareAdminMain />} />
+          <Route path="/admin/awareadmin" element={<AwareAdminMain />} />
           <Route path="/violence" element={<ViolentCrimes />} />
           <Route path="/cyber" element={<CyberCrimes />} />
           <Route path="/property" element={<PropertyCrimes />} />

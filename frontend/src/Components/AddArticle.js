@@ -155,7 +155,7 @@ const AddArticle = () => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-[80vw] mt-[20vh]">
         {/* ← Back to awareadmin page */}
   <button
-    onClick={() => navigate('/awareadmin')}
+    onClick={() => navigate('/admin/awareadmin')}
     className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition"
   >
     ← Back

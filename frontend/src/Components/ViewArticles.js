@@ -120,7 +120,7 @@ const ViewArticles = () => {
       <div className="flex justify-between items-center mb-4">
        {/* ← Back to awareadmin page */}
        <button
-         onClick={() => navigate('/awareadmin')}
+         onClick={() => navigate('/admin/awareadmin')}
          className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition"
       >
         Back
