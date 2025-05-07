@@ -40,17 +40,17 @@ function home(){
             Welcome to Crime Radar
         </div>
 
-        <div className="absolute left-16 text-3xl font-bold tracking-wider leading-normal pl-3 pt-12 mt-10">
+        <div className="absolute left-16 text-3xl font-bold tracking-wider leading-normal pl-3 pt-12">
         SEE IT REPORT IT STOP  IT <br />
         TOGETHER FOR A TOMORROW !
         </div>
 
-        <div className="absolute left-16 text-lg pl-3 pt-36 mt-10">
+        <div className="absolute left-16 text-lg pl-3 pt-36">
         Your go-to platform for real-time crime tracking and awareness.<br /> Our interactive crime map, safety alerts, and reporting tools empower <br />you to stay informed and take action.
         </div>
 
         {/*---------Scroll Button--------- */}
-        <div className="absolute text-lg pl-3 pt-64 left-16 mt-14">
+        <div className="absolute text-lg pl-3 pt-64 left-16">
         <a href="/">
             <button className="py-2 px-6 border-2 border-white bg-transparent text-white hover:bg-amber-800 hover:text-white transition-colors duration-300">Scroll To Know More</button>
         </a>
@@ -170,11 +170,11 @@ function home(){
           <div>
             <div>
               <h1 className="text-4xl mb-5 pl-10 pt-8 font-bold text-gray-800 pb-5 text-center">
-                <span className="text-amber-600 ">L</span>ook Closer to <span className="text-amber-600">S</span>pot Hazards !</h1>
+                <span className="text-amber-600">L</span>ook Closer to <span className="text-amber-600">S</span>pot Hazards !</h1>
             </div>
 
             <CrimeMap />
-              
+               
           </div>
         </div>
       </div>

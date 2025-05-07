@@ -40,7 +40,7 @@ const Header = () => {
           <a href="/newreport" className="hover:underline transition-all duration-300">
             QUICK REPORT
           </a>
-          <a href="#" className="hover:underline transition-all duration-300">
+          <a href="/awareness" className="hover:underline transition-all duration-300">
             STAY AWARE
           </a>
           {/* <a href="/locationList" className="hover:underline transition-all duration-300"> */}

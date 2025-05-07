@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 const ViewArticles = () => {
   const [articles, setArticles] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -10,7 +9,7 @@ const ViewArticles = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage] = useState(10);
+  const [recordsPerPage] = useState(3);
   const [popupMessage, setPopupMessage] = useState("");
   const tableRef = useRef(null);
   const navigate = useNavigate();
@@ -46,36 +45,24 @@ const ViewArticles = () => {
   const handleEdit = async (id) => {
     try {
       const editingArticle = articles.find((article) => article._id === id);
-  
+
       if (!editingArticle) {
         alert("Article not found.");
         return;
       }
-  
-      setArticles((prev) =>
-        prev.map((article) =>
-          article._id === id
-            ? {
-                ...article,
-                editedMessage: ` Redirecting to edit... Article ID: ${article.article_id}`,
-              }
-            : article
-        )
-      );
-  
-      // Show popup
+
       setPopupMessage(`Redirecting to edit... Article ID: ${editingArticle.article_id}`);
-  
+
       setTimeout(() => {
         setPopupMessage("");
         navigate(`/updatearticle/${editingArticle._id}`);
-      }, 2000); // Show message for 2 seconds before navigating
+      }, 2000);
     } catch (error) {
       alert("Failed to proceed to edit.");
       console.error(error);
     }
   };
-  
+
   const handleDelete = async () => {
     try {
       const deletedArticle = articles.find((article) => article._id === deleteId);
@@ -85,52 +72,55 @@ const ViewArticles = () => {
         return;
       }
 
-      setArticles((prev) =>
-        prev.map((article) =>
-          article._id === deleteId
-            ? {
-                ...article,
-                deletedMessage: ` Article deleted successfully! Article ID: ${article.article_id}`,
-              }
-            : article
-        )
-      );
-
       setConfirmDelete(false);
       setDeleteId(null);
 
-      // Show popup message
-      setPopupMessage(` Article deleted successfully! Article ID: ${deletedArticle.article_id}`);
+      setPopupMessage(`Article deleted successfully! Article ID: ${deletedArticle.article_id}`);
 
       setTimeout(async () => {
         await axios.delete(`http://localhost:8070/article/article/${deletedArticle._id}`);
         setArticles((prev) => prev.filter((article) => article._id !== deletedArticle._id));
         setPopupMessage("");
-      }, 2000); // Popup shows for 2 seconds before deletion happens
+      }, 2000);
     } catch (error) {
       alert("Failed to delete article.");
       console.error(error);
     }
   };
 
+  const openContentPopup = (content) => {
+    const popup = window.open("", "_blank", "width=600,height=400,scrollbars=yes");
+    popup.document.write(`
+      <html>
+        <head>
+          <title>Full Article Content</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+          </style>
+        </head>
+        <body>
+          <h2>Full Article Content</h2>
+          <p>${content.replace(/\n/g, "<br/>")}</p>
+        </body>
+      </html>
+    `);
+    popup.document.close();
+  };
+
   return (
-    
     <div className="flex justify-center items-center min-h-screen bg-gray-100 overflow-auto relative">
       <div className="bg-white p-8 rounded-lg shadow-lg w-[80vw] mt-[10vh]">
-      <div className="flex justify-between items-center mb-4">
-       {/* ← Back to awareadmin page */}
-       <button
-         onClick={() => navigate('/admin/awareadmin')}
-         className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition"
-      >
-        Back
-      </button>
-  
-</div>
         <div className="flex justify-between items-center mb-4">
-       
-        <h1 className="text-3xl font-bold text-gray-800">Crime Article Management</h1>
-          
+          <button
+            onClick={() => navigate('/admin/awareadmin')}
+            className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition"
+          >
+            Back
+          </button>
+        </div>
+
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-3xl font-bold text-gray-800">Crime Article Management</h1>
         </div>
 
         <div className="flex gap-4 mb-4">
@@ -162,7 +152,7 @@ const ViewArticles = () => {
                 <th className="py-2 px-4 text-left">Article ID</th>
                 <th className="py-2 px-4 text-left">Category</th>
                 <th className="py-2 px-4 text-left">Theme</th>
-                <th className="py-2 px-4 text-left">Content</th>
+                <th className="py-2 px-4 text-left w-[40rem]">Content</th>
                 <th className="py-2 px-4 text-left">Published Date</th>
                 <th className="py-2 px-4 text-left">Author</th>
                 <th className="py-2 px-4 text-left">Action</th>
@@ -171,38 +161,45 @@ const ViewArticles = () => {
             <tbody>
               {currentRecords.length > 0 ? (
                 currentRecords.map((article, index) => (
-                  <tr key={index} className="border-t">
+                  <tr key={index} className="border-t align-top">
                     <td className="py-2 px-4">{article.article_id}</td>
                     <td className="py-2 px-4">{article.title}</td>
                     <td className="py-2 px-4">{article.theme}</td>
-                    <td className="py-2 px-4">{article.content}</td>
+                    <td className="py-2 px-4 w-[40rem]">
+                      {article.content.length > 30
+                        ? (
+                          <>
+                            {article.content.slice(0, 30)}...
+                            <button
+                              onClick={() => openContentPopup(article.content)}
+                              className="text-blue-500 ml-2 underline hover:text-blue-700"
+                            >
+                              View More
+                            </button>
+                          </>
+                        )
+                        : article.content}
+                    </td>
                     <td className="py-2 px-4">{article.published_date}</td>
                     <td className="py-2 px-4">{article.author}</td>
                     <td className="py-2 px-4 flex flex-col gap-1">
-                      {article.deletedMessage ? (
-                        <span className="text-green-600 font-medium text-sm">
-                          {article.deletedMessage}
-                        </span>
-                      ) : (
-                        <div className="flex gap-2">
-                          <button
-                           onClick={() => handleEdit(article._id)}
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleEdit(article._id)}
                           className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition duration-200"
-                          >
-                            Edit
-                          </button>
-
-                          <button
-                            onClick={() => {
-                              setDeleteId(article._id);
-                              setConfirmDelete(true);
-                            }}
-                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      )}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => {
+                            setDeleteId(article._id);
+                            setConfirmDelete(true);
+                          }}
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-200"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -235,7 +232,7 @@ const ViewArticles = () => {
         </div>
       </div>
 
-      {/* Custom Confirmation Dialog */}
+      {/* Delete Confirmation */}
       {confirmDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded shadow-md">
@@ -258,7 +255,7 @@ const ViewArticles = () => {
         </div>
       )}
 
-      {/* Custom Popup Message */}
+      {/* Popup Message */}
       {popupMessage && (
         <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow z-50 animate-bounce">
           {popupMessage}
