@@ -175,13 +175,14 @@ const AddArticle = () => {
 
           <label className="block text-gray-800 font-semibold">Published Date</label>
           <input
-            type="date"
-            name="published_date"
-            value={published_date}
-            onChange={handleInputChange}
-            className="w-full p-2 border border-gray-300 rounded mt-1 mb-4"
-            required
-          />
+           type="date"
+           name="published_date"
+           value={published_date}
+           onChange={handleInputChange}
+           max={new Date().toISOString().split("T")[0]} 
+           className="w-full p-2 border border-gray-300 rounded mt-1 mb-4"
+           required
+           />
 
           <label className="block text-gray-800 font-semibold">Author</label>
           <input

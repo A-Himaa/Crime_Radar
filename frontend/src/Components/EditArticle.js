@@ -35,6 +35,17 @@ const EditArticle = () => {
     setArticle({ ...article, [name]: value });
   };
 
+  const [published_date, setPublishedDate] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+  
+    if (name === "published_date") {
+      setPublishedDate(value);
+    }
+    // add other fields if you need them like title, content, etc.
+  };
+  
   const validate = () => {
     const newErrors = {};
     if (!article.theme.trim()) {
@@ -112,13 +123,14 @@ const EditArticle = () => {
               Published Date <span className="text-red-500">*</span>
             </label>
             <input
-              type="date"
-              id="published_date"
-              name="published_date"
-              value={article.published_date}
-              onChange={inputChangeHandler}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-            />
+           type="date"
+           name="published_date"
+           value={published_date}
+           onChange={handleInputChange}
+           max={new Date().toISOString().split("T")[0]} 
+           className="w-full p-2 border border-gray-300 rounded mt-1 mb-4"
+           required
+           />
             {errors.published_date && <p className="text-red-500 text-sm mt-1">{errors.published_date}</p>}
           </div>
 
