@@ -42,12 +42,12 @@ router.get("/article", async (req, res) => {
 });
 
 // Retrieve specific article data
-router.get('/article/get/:id', async (req, res) => {
-  const articleId = req.params.id;
+router.get('/getarticle/:id', async (req, res) => {
+  const id = req.params.id;
 
   try {
     // Query the database to find the article with the given ID
-    const articleDetails = await Article.findById(articleId);
+    const articleDetails = await Article.findById(id);
 
     if (!articleDetails) {
       return res.status(404).json({ message: 'Article not found' });
@@ -62,20 +62,33 @@ router.get('/article/get/:id', async (req, res) => {
 });
 
 // Update article by ID
-router.put("article/updatearticle/:id", async (req, res) => {
+router.put("/updatearticle/:id", async (req, res) => {
+  const { id } = req.params;
+  const { article_id, title, theme, content, published_date, author } = req.body;
+
+  const updateArticle = {
+    article_id,
+    title,
+    theme,
+    content,
+    published_date,
+    author
+  };
+
   try {
-    const article = await Article.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (!article) {
-      return res.status(404).json({ error: "Article not found" });
+    const updated = await Article.findByIdAndUpdate(id, updateArticle, {
+      new: true,
+      runValidators: true
+    });
+
+    if (!updated) {
+      return res.status(404).json({ status: "Article not found" });
     }
-    res.status(200).json(article);
+
+    res.status(200).json({ status: "Article Updated", updatedArticle: updated });
   } catch (err) {
     console.error("Error updating article:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ status: "Error with updating article", error: err.message });
   }
 });
 

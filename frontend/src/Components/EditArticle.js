@@ -23,10 +23,11 @@ const EditArticle = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8070/article/ViewArticle/${id}`)
+      .get(`http://localhost:8070/article/getarticle/${id}`)
       .then((res) => setArticle(res.data.article))
       .catch((err) => console.log(err));
   }, [id]);
+  
 
   const inputChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -66,11 +67,12 @@ const EditArticle = () => {
       Swal.fire("Validation Error", "Please fix the validation errors.", "warning");
       return;
     }
+
     axios
       .put(`http://localhost:8070/article/updatearticle/${id}`, article)
       .then(() => {
         Swal.fire("Success", "Article Updated Successfully!", "success");
-        navigate("/article");
+        navigate("/admin/awareadmin");
       })
       .catch((err) => {
         console.log(err);
@@ -81,12 +83,12 @@ const EditArticle = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 overflow-auto relative">
       <div className="bg-white p-8 rounded-lg shadow-lg w-[80vw] mt-[15vh]">
-      <div className="mb-6">
+        <div className="mb-6">
           <Link
             to="/articles"
             className="text-white bg-amber-600 px-4 py-2 rounded shadow hover:bg-amber-700 transition"
           >
-             Back
+            Back
           </Link>
         </div>
         <h2 className="text-2xl font-bold mb-6">Edit Article</h2>

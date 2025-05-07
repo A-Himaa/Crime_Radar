@@ -30,7 +30,7 @@ const articleSchema = new Schema({
         required: true
     },
     published_date: {
-        type: Date,
+        type: String,
         required: true
     },
     author: {

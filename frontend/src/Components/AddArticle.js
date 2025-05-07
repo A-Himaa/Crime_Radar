@@ -118,7 +118,7 @@ const AddArticle = () => {
         setNotification("Article added successfully!");
         setTimeout(() => {
           setNotification("");
-          navigate("/");
+          navigate("/admin/awareadmin");
         }, 3000);
       } else {
         setError("Failed to add article. Please try again.");
@@ -133,7 +133,7 @@ const AddArticle = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 overflow-auto relative">
       {/* Top-right Notifications */}
-      <div className="absolute top-4 right-4 space-y-2">
+      <div className="absolute top-24 right-4 space-y-5">
         {error && (
           <div className="bg-red-500 text-white p-3 rounded shadow-lg">
             {error}

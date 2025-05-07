@@ -73,7 +73,7 @@ function App() {
           <Route path="crimeDetails" element={<CrimeDetails />} />
           <Route path="crimeDetails/:id" element={<ReportDetails />} />
           
-          <Route path="updatearticle/:id" element={<EditArticle />} />
+          
         </Route>
 
 
