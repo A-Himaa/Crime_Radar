@@ -21,23 +21,22 @@ const AddArticle = () => {
     "Robbery Crimes",
   ];
 
-  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     if (name === "title") {
       setTitle(value);
     } else if (name === "theme") {
       if (value.length <= 200) setTheme(value);
       if (value.length > 200) setNotification("Theme cannot exceed 200 characters.");
     } else if (name === "content") {
-      setContent(value); // Allow unlimited characters
-    }else if (name === "article_id") {
+      if (value.length <= 2000) setContent(value);
+      if (value.length > 2000) setNotification("Content cannot exceed 2000 characters.");
+    } else if (name === "article_id") {
       const allowedPrefixes = ["VC", "CC", "PC", "DC", "RC"];
       const input = e.target.value.toUpperCase();
-    
-      // Max 6 characters
+
       if (input.length <= 6) {
-        // If typing first 1–2 letters
         if (input.length <= 2) {
           if (allowedPrefixes.some((prefix) => prefix.startsWith(input))) {
             setArticleId(input);
@@ -48,29 +47,27 @@ const AddArticle = () => {
         } else {
           const prefix = input.slice(0, 2);
           const numberPart = input.slice(2);
-    
+
           if (!allowedPrefixes.includes(prefix)) {
             setNotification("Article ID must begin with VC, CC, PC, DC, or RC.");
             return;
           }
-    
+
           if (!/^\d{0,4}$/.test(numberPart)) {
             setNotification("Only digits are allowed after the prefix.");
             return;
           }
-    
+
           const number = parseInt(numberPart, 10);
           if (isNaN(number) || number > 1000) {
             setNotification("Number must be between 0 and 1000.");
             return;
           }
-    
+
           setArticleId(input);
           setNotification("");
         }
       }
-        
-    
     } else if (name === "published_date") {
       setPublishedDate(value);
     } else if (name === "author") {
@@ -87,8 +84,8 @@ const AddArticle = () => {
       setNotification("Theme must be between 20 and 200 characters.");
       return false;
     }
-    if (content.length < 200) {
-      setNotification("Content should be at least 200 characters.");
+    if (content.length < 200 || content.length > 2000) {
+      setNotification("Content should be between 200 and 2000 characters.");
       return false;
     }
     if (!article_id || !published_date || !author) {
@@ -116,7 +113,6 @@ const AddArticle = () => {
         setNotification("Invalid Article ID format.");
         return false;
       }
-      
 
       if (response.status === 201) {
         setNotification("Article added successfully!");
@@ -136,10 +132,8 @@ const AddArticle = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 overflow-auto relative">
-      
       {/* Top-right Notifications */}
       <div className="absolute top-4 right-4 space-y-2">
-        
         {error && (
           <div className="bg-red-500 text-white p-3 rounded shadow-lg">
             {error}
@@ -154,12 +148,12 @@ const AddArticle = () => {
 
       <div className="bg-white p-8 rounded-lg shadow-lg w-[80vw] mt-[20vh]">
         {/* ← Back to awareadmin page */}
-  <button
-    onClick={() => navigate('/admin/awareadmin')}
-    className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition"
-  >
-    ← Back
-  </button>
+        <button
+          onClick={() => navigate('/admin/awareadmin')}
+          className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition"
+        >
+          ← Back
+        </button>
         <h2 className="text-4xl font-bold text-center mb-2">
           <span className="text-amber-600">A</span>dd <span className="text-amber-600">A</span>rticle
         </h2>
@@ -227,6 +221,9 @@ const AddArticle = () => {
             maxLength="200"
             required
           />
+          <div className="text-sm text-gray-600 mt-1">
+            {theme.length}/200 characters
+          </div>
           {theme.length > 0 && (theme.length < 20 || theme.length > 200) && (
             <div className="text-red-500 mb-2">Theme must be between 20 and 200 characters.</div>
           )}
@@ -239,10 +236,17 @@ const AddArticle = () => {
             placeholder="Enter article content"
             className="w-full p-2 border border-gray-300 rounded mt-1 mb-2"
             rows="6"
+            maxLength="2000"
             required
           ></textarea>
+          <div className="text-sm text-gray-600 mt-1">
+            {content.length}/2000 characters
+          </div>
           {content.length > 0 && content.length < 200 && (
             <div className="text-red-500 mb-2">Content should be at least 200 characters.</div>
+          )}
+          {content.length > 2000 && (
+            <div className="text-red-500 mb-2">Content cannot exceed 2000 characters.</div>
           )}
 
           <div className="flex justify-end mt-6 space-x-4">
