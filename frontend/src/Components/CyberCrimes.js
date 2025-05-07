@@ -3,7 +3,7 @@ import axios from "axios";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import logo from "../Images/Logo.png"; // Import the logo
-import { Link } from "react-router-dom"; // ✅ Import Link
+import { Link } from "react-router-dom"; 
 
 const CyberCrimes = () => {
   const [articles, setArticles] = useState([]);
@@ -31,22 +31,36 @@ const CyberCrimes = () => {
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 20;
     let currentY = margin;
-
-    // 🟧 Logo
-    doc.addImage(logo, "PNG", margin, currentY, 30, 15);
-    currentY += 20;
-
-    // 🟧 Title
+  
+    const addWatermark = () => {
+      doc.saveGraphicsState();
+      doc.setFontSize(70);
+      doc.setTextColor(240, 240, 240); // Light gray
+      doc.setTextColor(240, 240, 240,0.00); // Optional: Set opacity manually with textColor in RGB
+      doc.setFont("helvetica", "bold");
+      doc.text("CRIME RADAR", pageWidth / 2, pageHeight / 2, {
+        angle: 30,
+        align: "center",
+      });
+      doc.restoreGraphicsState();
+    };
+  
+    // First page watermark
+    addWatermark();
+  
+  
+  
+    // Title
     doc.setFontSize(18);
     doc.setTextColor(255, 191, 0);
     doc.setFont("helvetica", "bold");
     doc.text("Cyber Crime Awareness Report", pageWidth / 2, currentY, {
       align: "center",
     });
-
+  
     currentY += 10;
-
-    // 📅 Date
+  
+    // Date
     const date = new Date();
     doc.setFontSize(10);
     doc.setTextColor(80);
@@ -56,85 +70,86 @@ const CyberCrimes = () => {
       margin,
       currentY
     );
-
+  
     currentY += 8;
-
+  
     // Divider
     doc.setDrawColor(255, 191, 0);
     doc.setLineWidth(0.5);
     doc.line(margin, currentY, pageWidth - margin, currentY);
-
+  
     currentY += 10;
-
+  
     // 🎯 Theme
     doc.setFontSize(13);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(33);
     const themeText = `Theme: ${article.theme || "N/A"}`;
     const wrappedThemeLines = doc.splitTextToSize(themeText, pageWidth - 2 * margin);
-
+  
     wrappedThemeLines.forEach((line) => {
       if (currentY + 7 > pageHeight - margin) {
         doc.addPage();
+        addWatermark(); //  Add watermark on new page
         currentY = margin;
       }
       doc.text(line, margin, currentY);
       currentY += 7;
     });
-
-    currentY += 5;
-
-
+  
     currentY += 10;
-
-    // 📝 Content
+  
+    // Content
     doc.setFont("times", "normal");
     doc.setFontSize(12);
     doc.setTextColor(40);
     const contentLines = doc.splitTextToSize(article.content || "", pageWidth - 2 * margin);
     const lineHeight = 7;
-
+  
     contentLines.forEach((line) => {
       if (currentY + lineHeight > pageHeight - margin) {
         doc.addPage();
+        addWatermark(); //  Add watermark on new page
         currentY = margin;
       }
       doc.text(line, margin, currentY, { maxWidth: pageWidth - 2 * margin });
       currentY += lineHeight;
     });
-
+  
     currentY += 10;
-
-    // 🧾 Details
+  
+    //  Details
     const details = [
       `Published Date: ${article.published_date || "N/A"}`,
       `Author: ${article.author || "N/A"}`,
       `Category: ${article.title || "N/A"}`,
       `Article ID: ${article.article_id || "N/A"}`,
     ];
-
+  
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
     doc.setTextColor(33);
     doc.text("Article Details", margin, currentY);
-
+  
     currentY += 8;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
     doc.setTextColor(50);
-
+  
     details.forEach((line) => {
       if (currentY + 6 > pageHeight - margin) {
         doc.addPage();
+        addWatermark(); // 🔁 Add watermark on new page
         currentY = margin;
       }
       doc.text(line, margin, currentY);
       currentY += 6;
     });
-
+  
     // 💾 Save the PDF
     doc.save(`Cyber_Crime_Article_${article.article_id || "Unknown"}.pdf`);
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 overflow-auto relative">

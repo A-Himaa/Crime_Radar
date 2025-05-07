@@ -32,21 +32,34 @@ const PropertyCrimes = () => {
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 20;
     let currentY = margin;
-
-    // 🔶 Logo
-    doc.addImage(logo, "PNG", margin, currentY, 30, 15);
-
+  
+    // 💧 Watermark Function
+    const addWatermark = () => {
+      doc.saveGraphicsState();
+      doc.setFontSize(70);
+      doc.setTextColor(240, 240, 240);
+      doc.setFont("helvetica", "bold");
+      doc.text("CRIME RADAR", pageWidth / 2, pageHeight / 2, {
+        angle: 30,
+        align: "center",
+      });
+      doc.restoreGraphicsState();
+    };
+  
+    // 🌀 First page watermark
+    addWatermark();
+  
     // 🔶 Title
     doc.setFontSize(18);
     doc.setTextColor(255, 191, 0);
     doc.setFont("helvetica", "bold");
-    doc.text("Property Crime Awareness Report", pageWidth / 2, currentY + 10, {
+    doc.text("Property Crime Awareness Report", pageWidth / 2, currentY + 5, {
       align: "center",
     });
-
-    currentY += 25;
-
-    // 🔶 Date
+  
+    currentY += 15;
+  
+    // 📅 Date
     const date = new Date();
     doc.setFontSize(10);
     doc.setTextColor(80);
@@ -56,93 +69,89 @@ const PropertyCrimes = () => {
       margin,
       currentY
     );
-
+  
     currentY += 8;
-
-    // 🔶 Divider
+  
+    // Divider
     doc.setDrawColor(255, 191, 0);
     doc.setLineWidth(0.5);
     doc.line(margin, currentY, pageWidth - margin, currentY);
-
+  
     currentY += 10;
-
-    // 🔷 Theme
+  
+    // 🎯 Theme
     doc.setFontSize(13);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(33);
     const themeText = `Theme: ${article.theme || "N/A"}`;
     const wrappedThemeLines = doc.splitTextToSize(themeText, pageWidth - 2 * margin);
-
+  
     wrappedThemeLines.forEach((line) => {
       if (currentY + 7 > pageHeight - margin) {
         doc.addPage();
+        addWatermark();
         currentY = margin;
       }
       doc.text(line, margin, currentY);
       currentY += 7;
     });
-
-    currentY += 5;
-
-
-    // 📄 Justified Content
-    doc.setFontSize(12);
+  
+    currentY += 10;
+  
+    // 📝 Justified Content
     doc.setFont("times", "normal");
-    doc.setTextColor(50);
-    const contentLines = doc.splitTextToSize(article.content || "No content", pageWidth - margin * 2);
+    doc.setFontSize(12);
+    doc.setTextColor(40);
+    const contentLines = doc.splitTextToSize(article.content || "No content", pageWidth - 2 * margin);
     const lineHeight = 7;
-
+  
     contentLines.forEach((line) => {
       if (currentY + lineHeight > pageHeight - margin) {
         doc.addPage();
+        addWatermark();
         currentY = margin;
       }
-      doc.text(line, margin, currentY, { maxWidth: pageWidth - margin * 2, align: "justify" });
+      doc.text(line, margin, currentY, {
+        maxWidth: pageWidth - 2 * margin,
+        align: "justify",
+      });
       currentY += lineHeight;
     });
-
+  
     currentY += 10;
-
-    // 📌 Article Details
+  
+    // 📑 Article Details
     const details = [
       `Published Date: ${article.published_date || "N/A"}`,
       `Author: ${article.author || "N/A"}`,
       `Category: ${article.title || "N/A"}`,
       `Article ID: ${article.article_id || "N/A"}`,
     ];
-
-    if (currentY + details.length * 8 > pageHeight - margin) {
-      doc.addPage();
-      currentY = margin;
-    }
-
-    doc.setDrawColor(200);
-    doc.line(margin, currentY, pageWidth - margin, currentY);
-    currentY += 6;
-
-    doc.setFontSize(13);
+  
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(13);
     doc.setTextColor(33);
     doc.text("Article Details", margin, currentY);
-
+  
     currentY += 8;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
     doc.setTextColor(50);
-
+  
     details.forEach((line) => {
       if (currentY + 6 > pageHeight - margin) {
         doc.addPage();
+        addWatermark();
         currentY = margin;
       }
       doc.text(line, margin, currentY);
       currentY += 6;
     });
-
-    // 💾 Save
+  
+    // 💾 Save PDF
     doc.save(`Property_Crime_Article_${article.article_id || "Unknown"}.pdf`);
   };
-
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 overflow-auto relative">
       <div className="w-full max-w-5xl w-[80vw] mt-[15vh]">

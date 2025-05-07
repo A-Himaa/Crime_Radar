@@ -13,6 +13,7 @@ const AddArticle = () => {
   const [notification, setNotification] = useState("");
   const navigate = useNavigate();
 
+
   const crimeCategories = [
     "Violent Crimes",
     "Cyber Crimes",
@@ -21,6 +22,20 @@ const AddArticle = () => {
     "Robbery Crimes",
   ];
 
+  const [article, setArticle] = useState({
+    article_id: "",
+    title: "",
+    theme: "",
+    content: "",
+    published_date: "",
+    author: "",
+  });
+  
+  const inputChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setArticle({ ...article, [name]: value });
+  };
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -175,14 +190,15 @@ const AddArticle = () => {
 
           <label className="block text-gray-800 font-semibold">Published Date</label>
           <input
-           type="date"
-           name="published_date"
-           value={published_date}
-           onChange={handleInputChange}
-           max={new Date().toISOString().split("T")[0]} 
-           className="w-full p-2 border border-gray-300 rounded mt-1 mb-4"
-           required
-           />
+  type="date"
+  id="published_date"
+  name="published_date"
+  value={published_date}
+  onChange={handleInputChange}
+  max={new Date().toLocaleDateString('en-CA')}
+  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+/>
+
 
           <label className="block text-gray-800 font-semibold">Author</label>
           <input

@@ -32,6 +32,21 @@ const ViolentCrimes = () => {
     const margin = 20;
     let currentY = margin;
 
+    // 💧 Watermark Function
+    const addWatermark = () => {
+      doc.saveGraphicsState();
+      doc.setFontSize(70);
+      doc.setTextColor(240, 240, 240);
+      doc.setFont("helvetica", "bold");
+      doc.text("CRIME RADAR", pageWidth / 2, pageHeight / 2, {
+        angle: 30,
+        align: "center",
+      });
+      doc.restoreGraphicsState();
+    };
+  
+    // 🌀 First page watermark
+    addWatermark();
     // Logo
     doc.addImage(logo, "PNG", margin, currentY, 30, 15);
     currentY += 20;

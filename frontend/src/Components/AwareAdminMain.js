@@ -80,7 +80,7 @@ const AwareAdminMain = () => {
         {/* ----Header bar----- */}
         <div className="flex-1">
         <header className="fixed left-0 md:left-64 w-full md:w-[calc(100%-16rem)] bg-gray-950 bg-opacity-80 backdrop-blur-md z-40 transition-transform duration-300">
-            <nav className="h-[13vh] flex justify-between items-center px-8">
+            <nav className="h-[15vh] flex justify-between items-center px-8">
             
             <h1 className="text-2xl font-semibold text-white">Welcome to Admin Dashboard!</h1>
             

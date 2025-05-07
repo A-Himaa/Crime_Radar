@@ -32,11 +32,25 @@ const DrugRelatedCrimes = () => {
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 20;
     let currentY = margin;
+  
 
-    // 🖼️ Logo
-    doc.addImage(logo, "PNG", margin, currentY, 30, 15);
-    currentY += 20;
-
+  
+    // 💧 Watermark Function
+    const addWatermark = () => {
+      doc.saveGraphicsState();
+      doc.setFontSize(70);
+      doc.setTextColor(240, 240, 240); // Light gray
+      doc.setFont("helvetica", "bold");
+      doc.text("CRIME RADAR", pageWidth / 2, pageHeight /2, {
+        angle: 30,
+        align: "center",
+      });
+      doc.restoreGraphicsState();
+    };
+  
+    // 🌀 First page watermark
+    addWatermark();
+  
     // 🧾 Title
     doc.setFontSize(18);
     doc.setTextColor(255, 191, 0);
@@ -44,9 +58,9 @@ const DrugRelatedCrimes = () => {
     doc.text("Drug-Related Crime Awareness Report", pageWidth / 2, currentY, {
       align: "center",
     });
-
+  
     currentY += 10;
-
+  
     // 📅 Date
     const date = new Date();
     doc.setFontSize(10);
@@ -57,43 +71,54 @@ const DrugRelatedCrimes = () => {
       margin,
       currentY
     );
-
+  
     currentY += 8;
-
+  
     // Divider
     doc.setDrawColor(255, 191, 0);
     doc.setLineWidth(0.5);
     doc.line(margin, currentY, pageWidth - margin, currentY);
-
+  
     currentY += 10;
-
-    // 🎯 Wrapped Theme
+  
+    // 🎯 Theme
     doc.setFontSize(13);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(33);
     const themeText = `Theme: ${article.theme || "N/A"}`;
-    const wrappedTheme = doc.splitTextToSize(themeText, pageWidth - 2 * margin);
-    doc.text(wrappedTheme, margin, currentY);
-    currentY += wrappedTheme.length * 7;
-
+    const wrappedThemeLines = doc.splitTextToSize(themeText, pageWidth - 2 * margin);
+  
+    wrappedThemeLines.forEach((line) => {
+      if (currentY + 7 > pageHeight - margin) {
+        doc.addPage();
+        addWatermark();
+        currentY = margin;
+      }
+      doc.text(line, margin, currentY);
+      currentY += 7;
+    });
+  
+    currentY += 10;
+  
     // 📝 Content
     doc.setFont("times", "normal");
     doc.setFontSize(12);
     doc.setTextColor(40);
     const contentLines = doc.splitTextToSize(article.content || "", pageWidth - 2 * margin);
     const lineHeight = 7;
-
+  
     contentLines.forEach((line) => {
       if (currentY + lineHeight > pageHeight - margin) {
         doc.addPage();
+        addWatermark();
         currentY = margin;
       }
       doc.text(line, margin, currentY, { maxWidth: pageWidth - 2 * margin });
       currentY += lineHeight;
     });
-
+  
     currentY += 10;
-
+  
     // 📑 Article Details
     const details = [
       `Published Date: ${article.published_date || "N/A"}`,
@@ -101,30 +126,31 @@ const DrugRelatedCrimes = () => {
       `Category: ${article.title || "N/A"}`,
       `Article ID: ${article.article_id || "N/A"}`,
     ];
-
+  
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
     doc.setTextColor(33);
     doc.text("Article Details", margin, currentY);
-
+  
     currentY += 8;
     doc.setFont("helvetica", "normal");
     doc.setFontSize(11);
     doc.setTextColor(50);
-
+  
     details.forEach((line) => {
       if (currentY + 6 > pageHeight - margin) {
         doc.addPage();
+        addWatermark();
         currentY = margin;
       }
       doc.text(line, margin, currentY);
       currentY += 6;
     });
-
+  
     // 💾 Save the PDF
     doc.save(`Drug_Related_Crime_Article_${article.article_id || "Unknown"}.pdf`);
   };
-
+  
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 overflow-auto relative">
       <div className="w-full max-w-5xl w-[80vw] mt-[15vh]">
