@@ -127,7 +127,7 @@ const AdminUserProfile = () => {
           </div>
         </div>
 
-        <div className="mt-10 text-center space-x-4">
+        <div className="mt-10 justify-end text-center space-x-4">
           <button
             onClick={() => navigate("/adminuserlist")}
             className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition duration-300"
@@ -142,12 +142,7 @@ const AdminUserProfile = () => {
             Delete
           </button>
 
-          <button
-            onClick={() => navigate("/adminuserlist")}
-            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition duration-300"
-          >
-            View Crime List
-          </button>
+          
         </div>
       </div>
 
