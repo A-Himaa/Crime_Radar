@@ -4,10 +4,9 @@ import CrimeMap2 from "./CrimeMap2";
 import { FaSearch } from "react-icons/fa"; // Import Search Icon
 import CrimeTypePieChart2 from "./CrimeTypePieChart2";
 import CrimeYearLineChart2 from "./CrimeYearLineChart2";
-import CrimeBubbleChart from "./CrimeBubbleChart";
 
 
-const LocationList = () => {
+const LocationListUser = () => {
   const [locations, setLocations] = useState([]);
   const componentRef = useRef();
   const [searchTerm, setSearchTerm] = useState("");
@@ -73,8 +72,8 @@ const LocationList = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredLocation.map((loc) => (
-              <tr key={loc.id} className="border-b border-gray-600 hover:bg-gray-700">
+            {filteredLocation.map((loc, index) => (
+              <tr key={index} className="border-b border-gray-600 hover:bg-gray-700">
                 <td className="px-4 py-2">{loc.locationName}</td>
                 <td className="px-4 py-2">{loc.coordinates[0]}</td>
                 <td className="px-4 py-2">{loc.coordinates[1]}</td>
@@ -87,7 +86,6 @@ const LocationList = () => {
 
     {/* Crime Map Section */}
     <div className="w-1/2 overflow-x-auto">
-      {/* <CrimeBubbleChart/> */}
       <CrimeMap2/>
       <CrimeTypePieChart2/>
     </div>
@@ -100,4 +98,4 @@ const LocationList = () => {
   );
 };
 
-export default LocationList;
+export default LocationListUser;

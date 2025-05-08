@@ -41,18 +41,23 @@ const CrimeTypePieChart2 = () => {
   );
 
   return (
-    <div className="bg-white p-2 rounded-2xl shadow-lg h-[64vh] w-[45vw] my-6 ml-1"
+    <div className="bg-white p-2 rounded-2xl shadow-lg h-[80vh] w-[44vw] my-6 ml-1"
     style={{
         boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
       }}>
       <h2 className="text-xl font-bold mb-4 text-center mt-2">Crime Type Distribution</h2>
       <div className="flex justify-center">
         <PieChart width={500} height={350}>
-          <Pie data={data} cx="50%" cy="50%">
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
+        <Pie
+          data={data}
+          dataKey="value"   // 🔁 was valueKey="value"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          outerRadius={80}
+          fill="#8884d8"
+          label
+        />
           <Tooltip />
           <Legend content={<CustomLegend />} />
 
