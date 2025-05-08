@@ -28,7 +28,7 @@ const AdminUserList = () => {
 
   const handleView = (email) => {
     localStorage.setItem("userEmail", email);
-    navigate(`/userprofile/${email}`);
+    navigate(`/adminuserprofile/${email}`);
   };
 
   // Filtered users based on search query

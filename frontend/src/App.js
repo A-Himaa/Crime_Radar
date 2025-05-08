@@ -38,6 +38,8 @@ import LocationForm from "./Components/LocationForm.jsx";
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
+import AdminUserProfile from "./Components/AdminUserProfile.js";
+
 
 import AdminUserList from "./Components/AdminUserList.js";
 
@@ -103,6 +105,7 @@ function App() {
           <Route path="/robbery" element={<RobberyCrimes />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/adminuserlist" element={<AdminUserList />} />
+          <Route path="/adminuserprofile/:email" element={<AdminUserProfile />} />
 
           
 

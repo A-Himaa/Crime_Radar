@@ -16,7 +16,7 @@ const AdminUserProfile = () => {
 
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/user/${email}`);
+        const response = await axios.get(`http://localhost:8070/user?email=${email}`);
         setUserDetails(response.data);
         setTrustedPersonDetails(response.data.trustedPerson || {}); // Ensure it's not null or undefined
       } catch (error) {
@@ -27,30 +27,23 @@ const AdminUserProfile = () => {
     fetchUserDetails();
   }, [email]);
 
-  const handleDeleteClick = async () => {
-    setShowDeleteModal(true); // Show confirmation modal
-  
+  const handleDeleteClick = () => {
+    setShowDeleteModal(true); // Just show the modal
+  };
+
+  const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete(
-        `http://localhost:8070/user/user?email=${userDetails.email}`
-      );
+      const response = await axios.delete(`http://localhost:8070/user/user?email=${email}`);
   
       if (response.status === 200) {
-        console.log("User deleted successfully");
-        // Redirect or do any necessary state update after deletion
-        navigate("/adminuserlist");
+        console.log("User and related data deleted successfully");
+        setShowDeleteModal(false); // Close the modal after deletion
+        navigate("/adminuserlist"); // Navigate after deletion
       }
     } catch (error) {
       console.error("Error deleting user:", error);
       alert("Error deleting user");
     }
-  };
-  
-
-  const handleConfirmDelete = () => {
-    // Perform delete operation here
-    console.log("User deleted");
-    setShowDeleteModal(false); // Close modal after deletion
   };
 
   const handleCancelDelete = () => {
@@ -83,7 +76,6 @@ const AdminUserProfile = () => {
       <div className="relative z-10 w-full max-w-4xl bg-white/10 backdrop-blur-md rounded-3xl border border-white/30 p-10 md:p-14 shadow-2xl animate-fade-in">
         <h1 className="text-4xl md:text-5xl  font-bold text-center  mb-10">
           👤           <span className="text-amber-600">U</span>ser <span className="text-amber-600">D</span>etails
-
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-white text-lg leading-relaxed">
@@ -133,8 +125,7 @@ const AdminUserProfile = () => {
                   <p className="flex items-center gap-2">
                     <User className="text-amber-600" />{" "}
                     <span>
-                      <strong>Last Name:</strong>{" "}
-                      {trustedPersonDetails.firstName}
+                      <strong>First Name:</strong> {trustedPersonDetails.firstName}
                     </span>
                   </p>
                   <p className="flex items-center gap-2">
@@ -166,7 +157,7 @@ const AdminUserProfile = () => {
           </button>
 
           <button
-            onClick={handleDeleteClick} // Show the delete confirmation modal
+            onClick={handleDeleteClick} // Just show the delete confirmation modal
             className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition duration-300"
           >
             Delete

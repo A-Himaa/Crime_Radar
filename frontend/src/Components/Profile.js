@@ -3,9 +3,7 @@ import axios from "axios";
 import backgroundvid from "../Images/background.mp4";
 import { useNavigate } from "react-router-dom"; 
 
-
 const Profile = () => {
-  // Manage active tab
   const [activeTab, setActiveTab] = useState("me");
   const [userDetails, setUserDetails] = useState(null);
   const [trustedPersonDetails, setTrustedPersonDetails] = useState(null);
@@ -20,7 +18,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/auth/user?email=${userEmail}`);
+        const response = await axios.get(`http://localhost:8070/user/${userEmail}`);
         setUserDetails(response.data);
         setTrustedPersonDetails(response.data.trustedPerson);
         setUpdatedUserDetails(response.data);
@@ -51,17 +49,16 @@ const Profile = () => {
   const handleSaveChanges = async () => {
     try {
       if (updatedUserDetails && updatedUserDetails._id) {
-        await axios.put(`http://localhost:8070/auth/user/${updatedUserDetails._id}`, updatedUserDetails);
+        await axios.put(`http://localhost:8070/user/user/${updatedUserDetails._id}`, {
+          updatedUserDetails,
+          trustedPerson: updatedTrustedPersonDetails
+        });
+  
+        setUserDetails(updatedUserDetails);
+        setTrustedPersonDetails(updatedTrustedPersonDetails);
+        setIsEditingMe(false);
+        setIsEditingTrustedPerson(false);
       }
-
-      if (updatedTrustedPersonDetails && updatedTrustedPersonDetails._id) {
-        await axios.put(`http://localhost:8070/auth/user/${updatedTrustedPersonDetails._id}`, updatedTrustedPersonDetails);
-      }
-
-      setUserDetails(updatedUserDetails);
-      setTrustedPersonDetails(updatedTrustedPersonDetails);
-      setIsEditingMe(false);
-      setIsEditingTrustedPerson(false);
     } catch (error) {
       console.error("Error saving changes:", error.response ? error.response.data : error);
     }
@@ -75,7 +72,7 @@ const Profile = () => {
     try {
       if (userDetails?.email) {
         // Delete the user using their email
-        await axios.delete(`http://localhost:8070/auth/user?email=${userDetails.email}`);
+        await axios.delete(`http://localhost:8070/user/user?email=${userDetails.email}`);
         
         // Clear state and update UI
         setUserDetails(null);
@@ -95,46 +92,44 @@ const Profile = () => {
 
   return (
     <div className="relative flex justify-center items-center h-screen bg-black overflow-hidden">
-      {/* Background Video */}
       <div className="absolute top-0 left-0 w-full h-full">
-        <video autoPlay loop muted className="w-full h-full object-cover blur-[14px]">
+        <video autoPlay loop muted className="w-full h-full object-cover blur-sm brightness-75">
           <source src={backgroundvid} type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
       </div>
 
       <div className="relative top-10 z-10 w-full max-w-xl">
-        <h1 className="text-3xl font-extrabold text-white mb-6 text-center">
-          <span className="text-amber-600">U</span>ser <span className="text-amber-600">D</span>etails
-          <h2 className="text-lg text-gray-100 mb-0 text-center">
-            Manage Your Details and Trusted Person's
-          </h2>
-        </h1>
+        <h1 className="text-4xl font-bold text-center text-white drop-shadow-lg tracking-wide mb-2">
+        👤<span className="text-amber-600">U</span>ser <span className="text-amber-600">P</span>rofile        </h1>
+        <h2 className="text-lg text-gray-200 text-center mb-4">Manage Your Details and Trusted Person's</h2>
 
-        <div className="bg-white shadow-xl rounded-lg p-6 mt-6">
-          <div className="flex mb-8 border">
+        <div className="bg-white/10 backdrop-blur-lg shadow-2xl rounded-2xl p-8 border border-white/20">
+          <div className="flex mb-8 rounded-full overflow-hidden border border-white/20">
             <button
-              className={`w-1/2 px-6 py-2 text-lg font-medium ${
-                activeTab === "me" ? "bg-amber-500 text-white" : "bg-gray-200 text-gray-700"
-              } focus:outline-none rounded-l-lg`}
+              className={`w-1/2 px-6 py-2 text-lg font-semibold transition-all duration-300 ${
+                activeTab === "me"
+                  ? "bg-amber-600 text-white shadow-inner"
+                  : "bg-white/20 text-white hover:bg-white/30"
+              }`}
               onClick={() => setActiveTab("me")}
             >
               Me
             </button>
             <button
-              className={`w-1/2 px-6 py-2 text-lg font-medium ${
-                activeTab === "trustedPerson" ? "bg-amber-500 text-white" : "bg-gray-200 text-gray-700"
-              } focus:outline-none rounded-r-lg`}
+              className={`w-1/2 px-6 py-2 text-lg font-semibold transition-all duration-300 ${
+                activeTab === "trustedPerson"
+                  ? "bg-amber-600 text-white shadow-inner"
+                  : "bg-white/20 text-white hover:bg-white/30"
+              }`}
               onClick={() => setActiveTab("trustedPerson")}
             >
               Trusted Person
             </button>
           </div>
 
-          {/* Me Content */}
-          {activeTab === "me" && (
+          {activeTab === "me" && userDetails && (
             <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">Personal Details</h3>
+              <h3 className="text-2xl font-bold text-white text-center drop-shadow-sm mb-4">Personal Details</h3>
               {isEditingMe ? (
                 <>
                   <input
@@ -142,21 +137,21 @@ const Profile = () => {
                     name="firstName"
                     value={updatedUserDetails.firstName}
                     onChange={(e) => handleInputChange(e)}
-                    className="border p-2 w-full mb-2"
+                    className="bg-white/30 backdrop-blur-sm text-white placeholder-gray-200 border border-white/20 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
                   />
                   <input
                     type="text"
                     name="lastName"
                     value={updatedUserDetails.lastName}
                     onChange={(e) => handleInputChange(e)}
-                    className="border p-2 w-full mb-2"
+                    className="bg-white/30 backdrop-blur-sm text-white placeholder-gray-200 border border-white/20 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
                   />
                   <input
                     type="email"
                     name="email"
                     value={updatedUserDetails.email}
                     onChange={(e) => handleInputChange(e)}
-                    className="border p-2 w-full mb-2"
+                    className="bg-white/30 backdrop-blur-sm text-white placeholder-gray-200 border border-white/20 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
                     disabled
                   />
                   <input
@@ -164,32 +159,31 @@ const Profile = () => {
                     name="phone"
                     value={updatedUserDetails.phone}
                     onChange={(e) => handleInputChange(e)}
-                    className="border p-2 w-full mb-2"
+                    className="bg-white/30 backdrop-blur-sm text-white placeholder-gray-200 border border-white/20 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
                   />
                   <input
                     type="text"
                     name="nic"
                     value={updatedUserDetails.nic}
                     onChange={(e) => handleInputChange(e)}
-                    className="border p-2 w-full mb-2"
+                    className="bg-white/30 backdrop-blur-sm text-white placeholder-gray-200 border border-white/20 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
                   />
                 </>
               ) : (
                 <>
-                  <p className="text-lg text-gray-800"><strong>First Name:</strong> {userDetails.firstName}</p>
-                  <p className="text-lg text-gray-800"><strong>Last Name:</strong> {userDetails.lastName}</p>
-                  <p className="text-lg text-gray-800"><strong>Email:</strong> {userDetails.email}</p>
-                  <p className="text-lg text-gray-800"><strong>Phone:</strong> {userDetails.phone}</p>
-                  <p className="text-lg text-gray-800"><strong>NIC:</strong> {userDetails.nic}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">First Name:</strong> {userDetails.firstName}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">Last Name:</strong> {userDetails.lastName}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">Email:</strong> {userDetails.email}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">Phone:</strong> {userDetails.phone}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">NIC:</strong> {userDetails.nic}</p>
                 </>
               )}
             </div>
           )}
 
-          {/* Trusted Person Content */}
-          {activeTab === "trustedPerson" && (
+          {activeTab === "trustedPerson" && trustedPersonDetails && (
             <div className="space-y-4">
-              <h3 className="text-2xl text-gray-800 mb-4 text-center font-bold">Trusted Person Details</h3>
+              <h3 className="text-2xl font-bold text-white text-center drop-shadow-sm mb-4">Trusted Person Details</h3>
               {isEditingTrustedPerson ? (
                 <>
                   <input
@@ -197,71 +191,48 @@ const Profile = () => {
                     name="firstName"
                     value={updatedTrustedPersonDetails.firstName}
                     onChange={(e) => handleInputChange(e, true)}
-                    className="border p-2 w-full mb-2"
+                    className="bg-white/30 backdrop-blur-sm text-white placeholder-gray-200 border border-white/20 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
                   />
                   <input
                     type="email"
                     name="email"
                     value={updatedTrustedPersonDetails.email}
                     onChange={(e) => handleInputChange(e, true)}
-                    className="border p-2 w-full mb-2"
-                  />
-                  <input
-                    type="text"
-                    name="phone"
-                    value={updatedTrustedPersonDetails.phone}
-                    onChange={(e) => handleInputChange(e, true)}
-                    className="border p-2 w-full mb-2"
-                  />
-                  <input
-                    type="text"
-                    name="nic"
-                    value={updatedTrustedPersonDetails.nic}
-                    onChange={(e) => handleInputChange(e, true)}
-                    className="border p-2 w-full mb-2"
+                    className="bg-white/30 backdrop-blur-sm text-white placeholder-gray-200 border border-white/20 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition"
                   />
                 </>
               ) : (
                 <>
-                  <p className="text-lg text-gray-800"><strong>First Name:</strong> {trustedPersonDetails.firstName}</p>
-                  <p className="text-lg text-gray-800"><strong>Email:</strong> {trustedPersonDetails.email}</p>
-                  <p className="text-lg text-gray-800"><strong>Phone:</strong> {trustedPersonDetails.phone}</p>
-                  <p className="text-lg text-gray-800"><strong>NIC:</strong> {trustedPersonDetails.nic}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">First Name:</strong> {trustedPersonDetails.firstName}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">Last Name:</strong> {trustedPersonDetails.lastName}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">Email:</strong> {trustedPersonDetails.email}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">Phone:</strong> {trustedPersonDetails.phone}</p>
+                  <p className="text-lg text-white drop-shadow-sm"><strong className="text-amber-600">NIC:</strong> {trustedPersonDetails.nic}</p>
+
                 </>
               )}
             </div>
           )}
 
-          {(isEditingMe || isEditingTrustedPerson) && (
-            <div className="flex justify-center mt-6">
-              <button
-                onClick={handleSaveChanges}
-                className="bg-green-600 text-white py-2 px-6 rounded-lg text-lg hover:bg-green-700"
-              >
-                Save Changes
-              </button>
-            </div>
-          )}
-
-          {/* Buttons (Edit & Delete) */}
-          <div className="flex space-x-4 justify-center mt-6">
-            {!isEditingMe && !isEditingTrustedPerson && (
-              <button
-                onClick={() => {
+          <div className="flex justify-between mt-6">
+            <button
+              className="bg-green-600 text-white py-2 px-6 rounded-md shadow-md transition-all duration-300 hover:bg-green-700"
+              onClick={() => {
+                if (isEditingMe || isEditingTrustedPerson) {
+                  handleSaveChanges();
+                } else {
                   setIsEditingMe(true);
                   setIsEditingTrustedPerson(true);
-                }}
-                className="bg-green-500 text-white py-2 px-6 rounded-lg text-lg hover:bg-green-700"
-              >
-                Edit
-              </button>
-            )}
-
-            <button
-              onClick={handleDelete}
-              className="bg-red-500 text-white py-2 px-6 rounded-lg text-lg hover:bg-red-700"
+                }
+              }}
             >
-              Delete
+              {isEditingMe || isEditingTrustedPerson ? "Save Changes" : "Edit"}
+            </button>
+            <button
+              className="bg-red-600 text-white py-2 px-6 rounded-md shadow-md transition-all duration-300 hover:bg-red-700"
+              onClick={handleDelete}
+            >
+              Delete Account
             </button>
           </div>
         </div>

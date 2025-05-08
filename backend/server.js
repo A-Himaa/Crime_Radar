@@ -31,15 +31,12 @@ connection.once("open", () => {
 const authRouter = require("./routes/auth.js");
 app.use("/auth", authRouter);
 
-const passwordResetRoutes = require("./routes/passwordReset");
-app.use("/password", passwordResetRoutes);
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found', path: req.originalUrl });
-});
-
 const userRouter = require("./routes/user.js");
-app.use("/auth", userRouter);
+app.use("/user", userRouter);
 
+
+
+  
 app.use(express.json());
 
 
