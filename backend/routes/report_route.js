@@ -67,11 +67,17 @@ router.route("/newcrime").post(upload.single('image'), (req, res) => {
 
 
     //Passing data to database(Create)
-    newCrime.save().then(()=>{
-        res.json("Crime Report added successfully")
-    }).catch((err)=>{
-        console.log(err);
-    })
+    newCrime.save()
+        .then((savedCrime) => {
+            res.status(201).json({
+                message: "Crime Report added successfully",
+                reportId: savedCrime._id 
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({ error: "Failed to save report" });
+        });
 
 })
 
@@ -264,7 +270,7 @@ writeStream.on('finish', () => {
 
 
 // Email Forwarding
-const SENDGRID_API_KEY = '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'; 
+const SENDGRID_API_KEY = ''; 
 
 router.post("/send-report", async (req, res) => {
   const { recipientEmail, id } = req.body;
@@ -327,6 +333,17 @@ router.get("/count", async (req, res) => {
   }
 });
 
+//Solved Report Count
+router.get("/resolved", async (req, res) => {
+  try {
+    const solvedCount = await ReportModel.countDocuments({ status: "Resolved" });
+    res.json({ count: solvedCount });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
 //Status Update for admin
 router.patch('/update/:id', async (req, res) => {
   try {
@@ -348,12 +365,56 @@ router.patch('/update/:id', async (req, res) => {
   }
 });
 
+//Delete Crime Report function
+router.route("/delete/:id").delete(async (req, res) => {
+  let reportid = req.params.id;
 
+  await ReportModel.findByIdAndDelete(reportid)
+  .then(() => {
+      res.status(200).send({status: "Report deleted"});
+  }).catch((err) => {
+      console.log(err.message);
+      res.status(500).send({status: "Cannot delete the Crime Report", error: err.message});
+  })
+})
 
+// Update an existing report
+router.put('/updateCrime/:id', upload.single('image'), async (req, res) => {
+  try {
+    const reportId = req.params.id;
 
+    const updateFields = {
+      anonymous: req.body.anonymous,
+      name: req.body.name,
+      email: req.body.email,
+      contactNo: req.body.contactNo,
+      NIC: req.body.NIC,
+      type: req.body.type,
+      severity: req.body.severity,
+      datetime: req.body.datetime,
+      district: req.body.district,
+      description: req.body.description,
+      updatedAt: Date.now(),
+    };
 
+    if (req.file) {
+      updateFields.image = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+      };
+    }
 
+    const updatedReport = await ReportModel.findByIdAndUpdate(reportId, updateFields, { new: true });
 
+    if (!updatedReport) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
 
+    res.status(200).json({ message: 'Report updated successfully', updatedReport });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update report', details: err.message });
+  }
+});
 
 module.exports = router;

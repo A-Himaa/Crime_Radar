@@ -87,18 +87,19 @@ return (
 
           {/* Table Header */}
           <div className="container bg-gray-200 bg-opacity-90 ">
-              <div className="grid grid-cols-6 gap-4  font-bold text-xl text-center p-4">
-                  <div>Report Number</div>
+              <div className="grid grid-cols-7 gap-4  font-bold text-xl text-center p-4">
+                  <div>No.</div>
                   <div>Type</div>
                   <div>Severity</div>
                   <div>Location</div>
                   <div>Reported On</div>
+                  <div>Status</div>
                   <div>Action</div>
               </div>
 
               {/* Table Data */}
               {filteredReports.map((report) => (
-                  <div key={report._id} className="grid grid-cols-6 gap-4 text-center py-2 bg-white border-b">
+                  <div key={report._id} className="grid grid-cols-7 gap-2 text-center py-2 bg-white border-b">
                       
                       {/* Generated Report Number */}
                       <div className="text-lg font-semibold">{report.reportNumber}</div>
@@ -114,6 +115,9 @@ return (
 
                       {/* Creation Date & Time */}
                       <div>{new Date(report.createdAt).toLocaleString()}</div>
+
+                      {/* Status */}
+                      <div>{report.status}</div>
 
                       {/* View More Details */}
                       <div>
