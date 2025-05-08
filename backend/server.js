@@ -32,7 +32,13 @@ const authRouter = require("./routes/auth.js");
 app.use("/auth", authRouter);
 
 const userRouter = require("./routes/user.js");
-app.use("/auth", userRouter);
+app.use("/user", userRouter);
+
+
+
+  
+app.use(express.json());
+
 
 //Himaa
 const reportRouter = require("./routes/report_route.js");
@@ -50,13 +56,7 @@ app.use('/map', mapRouter);
 const articleRouter = require("./routes/articleRoute.js");
 app.use("/article", articleRouter);
 
-
-
-
-
-
-
-//console.log("📌 Location routes are mounted at: /locationList"); 
+console.log("📌 Location routes are mounted at: /locationList"); 
 
 // server port allocation & server start
 app.listen(PORT, () => {

@@ -36,6 +36,11 @@ import LocationForm from "./Components/LocationForm.jsx";
 import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
+import AdminUserProfile from "./Components/AdminUserProfile.js";
+
+
+import AdminUserList from "./Components/AdminUserList.js";
+
 import UpdateLocation from "./Components/UpdateLocation.jsx";
 import CrimeYearLineChart from "./Components/CrimeYearLineChart.jsx";
 import CrimeTypePieChart from "./Components/CrimeTypePieChart.jsx";
@@ -62,8 +67,6 @@ function App() {
           <Route index element={<Overview />} />
           <Route path="crimeDetails" element={<CrimeDetails />} />
           <Route path="crimeDetails/:id" element={<ReportDetails />} />
-          
-          
         </Route>
 
 
@@ -88,6 +91,13 @@ function App() {
           <Route path="/drug" element={<DrugRelatedCrimes />} />
           <Route path="/robbery" element={<RobberyCrimes />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/adminuserlist" element={<AdminUserList />} />
+          <Route path="/adminuserprofile/:email" element={<AdminUserProfile />} />
+
+          
+
+
+
           <Route path="/newreport" element={<Report />} />
           <Route path="/crimeDetails/:id" element={<ReportDetails />} />
           <Route path="/view/:id" element={<ViewDetails />} />
