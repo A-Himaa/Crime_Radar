@@ -4,6 +4,7 @@ import logo from "../Images/Logo.png";
 import admin from "../Images/admin.png";
 import bell from "../Images/bell.png";
 
+
 const Admindb = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -26,7 +27,7 @@ const Admindb = () => {
           <li><Link to="/admin/crimeDetails" className="hover:text-amber-500">Reported Crimes</Link></li><hr className="border-gray-500"/>
           <li><Link to="/admin/awareadmin" className="hover:text-amber-500">Article Section</Link></li><hr className="border-gray-500" />
           <li><Link to="/Locationlist" className="hover:text-amber-500">Locations & Maps</Link></li><hr className="border-gray-500"/>
-          <li><Link to="" className="hover:text-amber-500">Users</Link></li><hr className="border-gray-500"/>
+          <li><Link to="/adminuserlist" className="hover:text-amber-500">Users</Link></li><hr className="border-gray-500"/>
         </ul>
       </div>
 

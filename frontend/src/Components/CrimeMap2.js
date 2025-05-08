@@ -63,7 +63,7 @@ export default function CrimeMap2() {
   const mapRef = useRef();
 
   useEffect(() => {
-    axios.get("http://localhost:8070/map/crimeDetails")
+    axios.get("http://localhost:8070/map/getBubbles")
       .then(res => setCrimes(res.data))
       .catch(err => console.error("Error fetching crimes:", err));
   }, []);
@@ -93,15 +93,29 @@ export default function CrimeMap2() {
   };
 
   const visibleCrimes = useMemo(() => {
-    return crimes.filter(c => {
-      if (!Array.isArray(c.coordinates) || c.coordinates.length !== 2) return false;
+    const filtered = crimes.filter(c => {
+      if (
+        !Array.isArray(c.coordinates) ||
+        c.coordinates.length !== 2 ||
+        typeof c.coordinates[0] !== "number" ||
+        typeof c.coordinates[1] !== "number" ||
+        isNaN(c.coordinates[0]) ||
+        isNaN(c.coordinates[1])
+      ) return false;
+  
       return (
         (!appliedFilters.severity || c.severity === appliedFilters.severity) &&
         (!appliedFilters.type     || c.type     === appliedFilters.type) &&
         (!appliedFilters.district || c.district === appliedFilters.district)
       );
     });
+  
+    console.log("Visible crimes count:", crimes.length, "After filter:", filtered.length);
+    console.log("First visible crime (if any):", filtered[0]);
+  
+    return filtered;
   }, [crimes, appliedFilters]);
+  
 
   const handleFilterChange = (field, value) => {
     setFilters(prev => ({ ...prev, [field]: value }));
@@ -114,7 +128,7 @@ export default function CrimeMap2() {
   };
 
   return (
-    <div className="mx-auto p-4 rounded shadow bg-gray-100 m-4" style={{
+    <div className="mx-auto p-4 rounded-2xl shadow bg-gray-100 m-4" style={{
       boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
     }}>
       <FilterPanel
