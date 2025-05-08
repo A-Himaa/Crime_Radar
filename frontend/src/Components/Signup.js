@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import backgroundvid from "../Images/background.mp4";
-import axios from "axios"; // Ensure axios is installed
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showTrustedForm, setShowTrustedForm] = useState(false);
 
-  // User details state
   const [userDetails, setUserDetails] = useState({
     firstName: "",
     lastName: "",
@@ -22,7 +21,6 @@ const Signup = () => {
     confirmPassword: "",
   });
 
-  // Trusted Person details state
   const [trustedPersonDetails, setTrustedPersonDetails] = useState({
     firstName: "",
     lastName: "",
@@ -31,9 +29,28 @@ const Signup = () => {
     nic: "",
   });
 
-  // Handle input change for both forms
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    const validateName = (val) => /^[A-Za-z]*$/.test(val);
+    const validateEmail = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    const validatePhone = (val) => /^[0-9]{0,10}$/.test(val);
+    const validateNIC = (val) => /^[0-9]{0,10}[Vv]?$/.test(val);
+
+    let isValid = true;
+
+    if (["firstName", "lastName"].includes(name)) {
+      isValid = validateName(value);
+    } else if (name === "email") {
+      isValid = validateEmail(value) || value === ""; // allow empty until submit
+    } else if (name === "phone") {
+      isValid = validatePhone(value);
+    } else if (name === "nic") {
+      isValid = validateNIC(value);
+    }
+
+    if (!isValid) return;
+
     if (showTrustedForm) {
       setTrustedPersonDetails((prev) => ({
         ...prev,
@@ -47,11 +64,13 @@ const Signup = () => {
     }
   };
 
-  // Move to the second form (Trusted Person Details)
   const handleNextClick = (e) => {
     e.preventDefault();
     if (
-      !userDetails.firstName || !userDetails.lastName || !userDetails.email || !userDetails.password
+      !userDetails.firstName ||
+      !userDetails.lastName ||
+      !userDetails.email ||
+      !userDetails.password
     ) {
       alert("Please fill in all required fields before proceeding.");
       return;
@@ -63,36 +82,49 @@ const Signup = () => {
     setShowTrustedForm(true);
   };
 
-  // Go back to the user details form
   const handleBackClick = () => {
     setShowTrustedForm(false);
   };
 
-  // Submit both forms together
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Clean up the userDetails (remove confirmPassword before sending to the backend)
-    const { confirmPassword, ...cleanedUserDetails } = userDetails;
-  
-    // Log cleaned user details and trusted person details for debugging
-    console.log("Cleaned user details:", cleanedUserDetails);
-    console.log("Trusted person details:", trustedPersonDetails);
-  
-    // Prepare data to send to the backend
+
+    const nameRegex = /^[A-Za-z]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^\d{10}$/;
+
+    const { firstName, lastName, email, phone, nic } = trustedPersonDetails;
+
+    if (!firstName || !lastName || !email || !phone || !nic) {
+      alert("Please fill in all Trusted Person fields.");
+      return;
+    }
+
+    if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+      alert("Trusted person's names must contain only letters.");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      alert("Please enter a valid email address for the trusted person.");
+      return;
+    }
+
+    if (!phoneRegex.test(phone)) {
+      alert("Trusted person's phone number must be exactly 10 digits.");
+      return;
+    }
+
     const dataToSend = {
       userDetails,
       trustedPersonDetails,
     };
-  
-    console.log("Sending data to backend:", dataToSend);
-  
+
     try {
       const response = await axios.post(
-        "http://localhost:8070/auth/signup",
+        "http://localhost:8070/user/signup",
         dataToSend
       );
-      console.log("Form submitted successfully:", response.data);
       alert("Signup successful!");
       navigate("/login");
     } catch (error) {
@@ -100,7 +132,6 @@ const Signup = () => {
       alert("Signup failed. Please try again.");
     }
   };
-  
 
   return (
     <div className="relative flex justify-center items-center h-full bg-black">
@@ -117,21 +148,27 @@ const Signup = () => {
         </video>
       </div>
 
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-[600px] z-10 mt-[20vh] mb-[5vh]">
-        <h2 className="text-4xl font-bold text-center mb-2">
-          {showTrustedForm ? ("Trusted Person Details") : (
-            <> <span className="text-amber-600">S</span>ign <span className="text-amber-600">U</span>p</>
+      <div className="relative bg-white/30 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-[600px] z-10 mt-[20vh] mb-[5vh] border border-white/20">
+        <h2 className="text-4xl font-bold text-center mb-2 text-white drop-shadow">
+          {showTrustedForm ? (
+            "Trusted Person Details"
+          ) : (
+            <>
+              {" "}
+              <span className="text-amber-600">S</span>ign{" "}
+              <span className="text-amber-600">U</span>p
+            </>
           )}
         </h2>
-        <p className="text-center text-xl text-gray-600 mb-4">
+        <p className="text-center text-lg text-gray-200 mb-4">
           {showTrustedForm ? "" : "Welcome to Crime Radar..!"}
         </p>
 
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700">
-                First Name <span className="text-red-700">*</span>
+              <label className="block text-white font-medium">
+                First Name <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
@@ -142,14 +179,13 @@ const Signup = () => {
                     : userDetails.firstName
                 }
                 onChange={handleInputChange}
-                placeholder=""
-                className="w-full p-2 border border-gray-300 rounded mt-1"
+                className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 required
               />
             </div>
             <div>
-              <label className="block text-gray-700">
-                Last Name <span className="text-red-700">*</span>
+              <label className="block text-white font-medium">
+                Last Name <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
@@ -160,15 +196,14 @@ const Signup = () => {
                     : userDetails.lastName
                 }
                 onChange={handleInputChange}
-                placeholder="Smith"
-                className="w-full p-2 border border-gray-300 rounded mt-1"
+                className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 required
               />
             </div>
           </div>
 
-          <label className="block text-gray-700 mt-4">
-            E-mail <span className="text-red-700">*</span>
+          <label className="block text-white font-medium mt-4">
+            E-mail <span className="text-red-400">*</span>
           </label>
           <input
             type="email"
@@ -176,20 +211,13 @@ const Signup = () => {
             value={
               showTrustedForm ? trustedPersonDetails.email : userDetails.email
             }
-            onKeyDown={(e) => {
-              const key = e.key;
-              const isEmailLetter = /^[a-zA-Z0-9._+@-]$/.test(key);
-              const isBackspace = key === "Backspace";
-              const isValid = isBackspace || isEmailLetter;
-            }}
             onChange={handleInputChange}
-            placeholder="example@gmail.com"
-            className="w-full p-2 border border-gray-300 rounded mt-1"
-            required={!showTrustedForm} // Required only in the first form
+            className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            required={!showTrustedForm}
           />
-          {/* Phone number------------------------------------------------- */}
-          <label className="block text-gray-700 mt-4">
-            Phone <span className="text-red-700">*</span>
+
+          <label className="block text-white font-medium mt-4">
+            Phone <span className="text-red-400">*</span>
           </label>
           <input
             type="text"
@@ -198,10 +226,7 @@ const Signup = () => {
               const key = e.key;
               const isDigit = /^[0-9]$/.test(key);
               const isBackspace = key === "Backspace";
-              const isValid = isBackspace || isDigit;
-              if (!isValid) {
-                e.preventDefault();
-              }
+              if (!isBackspace && !isDigit) e.preventDefault();
             }}
             minLength={10}
             maxLength={10}
@@ -209,38 +234,67 @@ const Signup = () => {
               showTrustedForm ? trustedPersonDetails.phone : userDetails.phone
             }
             onChange={handleInputChange}
-            placeholder="077-1234567"
-            className="w-full p-2 border border-gray-300 rounded mt-1"
+            className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
             required
           />
 
-          {/* NIC-------------------------------------------------------- */}
-          <label className="block text-gray-700 mt-4">
-            NIC <span className="text-red-700">*</span>
+          <label className="block text-white font-medium mt-4">
+            NIC <span className="text-red-400">*</span>
           </label>
           <input
-            type="text"
-            name="nic"
-            onKeyDown={(e) => {
-              const key = e.key;
-              const isnicDigit = /^[0-9Vv]$/.test(key);
-              const isBackspace = key === "Backspace";
-              const isValid = isBackspace || isnicDigit;
-              if (!isValid) {
-                e.preventDefault();
-              }
-            }}
-            value={showTrustedForm ? trustedPersonDetails.nic : userDetails.nic}
-            onChange={handleInputChange}
-            placeholder="19858788965 / 855478947V"
-            className="w-full p-2 border border-gray-300 rounded mt-1"
-            required
-          />
+  type="text"
+  name="nic"
+  value={showTrustedForm ? trustedPersonDetails.nic : userDetails.nic}
+  onChange={handleInputChange}
+  onKeyDown={(e) => {
+    const key = e.key;
+    const value = (showTrustedForm ? trustedPersonDetails.nic : userDetails.nic) || "";
+
+    // Allow Backspace and arrow keys
+    const isBackspace = key === "Backspace";
+    const isArrow = key.includes("Arrow") || key === "Tab" || key === "Delete";
+    if (isBackspace || isArrow) return;
+
+    // First 9 characters must be digits
+    if (value.length < 9 && !/^[0-9]$/.test(key)) {
+      e.preventDefault(); // Only digits allowed for the first 9 characters
+    }
+
+    // If the 10th character is a digit, allow up to 12 characters
+    else if (value.length === 9 && /^[0-9]$/.test(key)) {
+      if (value.length === 9) {
+        // Allow digits for the 10th character and the next characters (11th and 12th)
+        if (value.length < 12 && /^[0-9]$/.test(key)) {
+          // Allow max 12 characters if 10th is a digit
+        }
+      }
+    }
+
+    // If the 10th character is V/v, allow only 10 characters
+    else if (value.length === 9 && /^[Vv]$/.test(key)) {
+      if (value.length === 9) {
+        // If 10th character is V/v, stop at 10th character
+        if (value.length < 10 && /^[Vv]$/.test(key)) {
+          // Allow max 10 characters if 10th is V/v
+        }
+      }
+    }
+
+    // Prevent any invalid character input
+    else if (value.length > 12) {
+      e.preventDefault();
+    }
+  }}
+  maxLength={showTrustedForm ? (trustedPersonDetails.nic.length === 9 ? 10 : 12) : (userDetails.nic.length === 9 ? 10 : 12)}
+  className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
+  required
+/>
+
 
           {!showTrustedForm && (
             <>
-              <label className="block text-gray-700 mt-4">
-                Password <span className="text-red-700">*</span>
+              <label className="block text-white font-medium mt-4">
+                Password <span className="text-red-400">*</span>
               </label>
               <div className="relative">
                 <input
@@ -248,20 +302,19 @@ const Signup = () => {
                   name="password"
                   value={userDetails.password}
                   onChange={handleInputChange}
-                  placeholder="********"
-                  className="w-full p-2 border border-gray-300 rounded mt-1 pr-10"
+                  className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 pr-10 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   required
                 />
                 <span
-                  className="absolute right-3 top-3 text-gray-500 cursor-pointer"
+                  className="absolute right-3 top-3 text-gray-300 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </span>
               </div>
 
-              <label className="block text-gray-700 mt-4">
-                Confirm Password <span className="text-red-700">*</span>
+              <label className="block text-white font-medium mt-4">
+                Confirm Password <span className="text-red-400">*</span>
               </label>
               <div className="relative">
                 <input
@@ -269,12 +322,11 @@ const Signup = () => {
                   name="confirmPassword"
                   value={userDetails.confirmPassword}
                   onChange={handleInputChange}
-                  placeholder="********"
-                  className="w-full p-2 border border-gray-300 rounded mt-1 pr-10"
+                  className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 pr-10 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   required
                 />
                 <span
-                  className="absolute right-3 top-3 text-gray-500 cursor-pointer"
+                  className="absolute right-3 top-3 text-gray-300 cursor-pointer"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? (
@@ -287,12 +339,12 @@ const Signup = () => {
             </>
           )}
 
-          <div className="mt-4 flex justify-between">
+          <div className="mt-6 flex justify-between">
             {!showTrustedForm ? (
               <div className="flex justify-end w-full">
                 <button
                   onClick={handleNextClick}
-                  className="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5"
+                  className="bg-amber-600 hover:bg-amber-700 transition-colors text-white font-semibold py-2 px-5 rounded-lg shadow-md"
                 >
                   Next
                 </button>
@@ -302,13 +354,13 @@ const Signup = () => {
                 <button
                   type="button"
                   onClick={handleBackClick}
-                  className="bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700"
+                  className="bg-gray-700 hover:bg-gray-800 text-white font-semibold px-5 py-2 rounded-lg"
                 >
                   Back
                 </button>
                 <button
                   type="submit"
-                  className="bg-amber-500 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5"
+                  className="bg-amber-600 hover:bg-amber-700 transition-colors text-white font-semibold py-2 px-5 rounded-lg shadow-md"
                 >
                   Submit
                 </button>

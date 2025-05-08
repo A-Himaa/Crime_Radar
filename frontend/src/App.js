@@ -39,6 +39,8 @@ import Login from "./Components/Login.js";
 import Signup from "./Components/Signup.js";
 import Profile from "./Components/Profile.js";
 import AdminUserList from "./Components/AdminUserList.js";
+import AdminUserProfile from "./Components/AdminUserProfile.js";
+
 
 
 
@@ -70,6 +72,7 @@ function App() {
           <Route index element={<Overview />} />
           <Route path="crimeDetails" element={<CrimeDetails />} />
           <Route path="crimeDetails/:id" element={<ReportDetails />} />
+          
         </Route>
 
 
@@ -84,6 +87,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/adminuserlist" element={<AdminUserList />} />
+          <Route path="/userprofile/:email" element={<AdminUserProfile />} />
+
 
           
 

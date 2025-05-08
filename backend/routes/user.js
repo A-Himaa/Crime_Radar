@@ -96,7 +96,7 @@ router.post("/login", async (req, res) => {
 });
 
 // ✅ Fetch User Details by Email
-router.get("/user", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const email = req.query.email;
     if (!email) {
@@ -175,7 +175,7 @@ router.get("/users", async (req, res) => {
 
 // ✅ Fetch User Details by ID
 
-router.get("/auth/users/:email", async (req, res) => {
+router.get("/:email", async (req, res) => {
   const { email } = req.params;
   const user = await User.findOne({ email: email });
   if (user) {

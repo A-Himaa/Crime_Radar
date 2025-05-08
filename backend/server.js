@@ -33,12 +33,10 @@ app.use("/auth", authRouter);
 
 const passwordResetRoutes = require("./routes/passwordReset");
 app.use("/password", passwordResetRoutes);
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found', path: req.originalUrl });
-});
+
 
 const userRouter = require("./routes/user.js");
-app.use("/auth", userRouter);
+app.use("/user", userRouter);
 
 app.use(express.json());
 
@@ -53,7 +51,9 @@ const locationRouter = require("./routes/locations.js");
 app.use("/locations", locationRouter);
 
 console.log("📌 Location routes are mounted at: /locationList"); 
-
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found', path: req.originalUrl });
+});
 // server port allocation & server start
 app.listen(PORT, () => {
     console.log(`🚀Server is up and running at port: ${PORT}`);

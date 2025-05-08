@@ -71,7 +71,7 @@ const Header = () => {
           <a
             href="/newreport"
             className="hover:underline transition-all duration-300"
-            onClick={(e) => handleNavigation(e, "/newreport")}
+            //onClick={(e) => handleNavigation(e, "/newreport")}
           >
             QUICK REPORT
           </a>

@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react"; // Import icons
 import axios from "axios"; // Import axios for making HTTP requests
@@ -61,7 +63,6 @@ const Login = () => {
       }, 2000);
     }
   };
-  
 
   return (
     <div className="relative flex justify-center items-center h-full bg-black">
@@ -79,36 +80,36 @@ const Login = () => {
       </div>
 
       {/* Form Container */}
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh]">
-        <h2 className="text-5xl font-bold text-center mb-2"><span className ="text-amber-600">L</span>ogin</h2>
-        <p className="text-center text-xl text-gray-600 mb-4">Welcome Back! Login to get started</p>
+      <div className="relative bg-white/30 backdrop-blur-lg p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh] border border-white/20">
+        <h2 className="text-5xl font-bold text-center mb-2"><span className="text-amber-600">L</span>ogin</h2>
+        <p className="text-center text-xl text-black mb-4">Welcome Back! Login to get started</p>
 
         {/* Error message */}
         {errorMessage && (
-          <p className="text-green-700 text-center mb-4">{errorMessage}</p>
+          <p className="text-green-400 font-bold text-center mb-4">{errorMessage}</p>
         )}
 
         <form onSubmit={handleSubmit}>
-          <label className="block text-gray-700">Username</label>
+          <label className="block text-black">Username</label>
           <input
             type="email"
             name="email"
             value={email}
             onChange={handleInputChange}
             placeholder="example@gmail.com"
-            className="w-full p-2 border border-gray-300 rounded mt-1 mb-4"
-          />
+            className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            />
 
-          <label className="block text-gray-700">Password</label>
+          <label className="block text-black">Password</label>
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               value={password}
               onChange={handleInputChange}
-              placeholder="********"
-              className="w-full p-2 border border-gray-300 rounded mt-1 pr-10"
-            />
+              placeholder="***********"
+              className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              />
             <span
               className="absolute right-3 top-3 text-gray-500 cursor-pointer"
               onClick={() => setShowPassword(!showPassword)}
@@ -117,24 +118,21 @@ const Login = () => {
             </span>
           </div>
 
-          <div className="text-right text-sm text-blue-600 mt-2 cursor-pointer p-2">
+          <div className="text-right text-sm text-blue-300 mt-2 cursor-pointer p-2">
             Forgot Password?
           </div>
 
           <button
             type="submit"
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5"
+            className="w-full bg-amber-600 hover:bg-amber-700 text-black font-bold py-2 px-4 rounded-lg mr-5 transition-all shadow-lg hover:scale-105"
           >
             Login
           </button>
         </form>
 
-        {/* <p className="text-center mt-4 text-sm">
-          Not registered yet? <span onClick={() => navigate("/signup")} className="text-blue-600 cursor-pointer">Create an Account</span>
-        </p> */}
         <p className="text-center mt-4 text-sm">
           Not registered yet ?{" "}
-          <a href="/signup" className="text-blue-600 ">
+          <a href="/signup" className="text-blue-300">
             Create an account
           </a>
         </p>
