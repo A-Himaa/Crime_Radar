@@ -18,6 +18,8 @@ import LocationList from "./Components/LocationList";
 import LocationListUser from "./Components/LocationListUser.jsx"
 import CrimeMap from "./Components/CrimeMap";
 import CrimeDetails from "./Components/crimeDetails.js";
+import ViewDetails from "./Components/viewDetails.js";
+import UpdateCrimeReport from "./Components/updateReport.js";
 
 import AddArticle from "./Components/AddArticle.js";
 import ViewArticles from './Components/ViewArticles.js';
@@ -99,7 +101,9 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/newreport" element={<Report />} />
           <Route path="/crimeDetails/:id" element={<ReportDetails />} />
-          
+          <Route path="/view/:id" element={<ViewDetails />} />
+          <Route path="/updateCrime/:id" element={<UpdateCrimeReport />} />
+
         </Routes>
       </div>
     
