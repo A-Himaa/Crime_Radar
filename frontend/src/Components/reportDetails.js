@@ -1,6 +1,7 @@
 import React, { useState , useEffect} from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 function ReportDetails() {
     const { id } = useParams();
@@ -24,7 +25,12 @@ function ReportDetails() {
             })
             .catch((err) => {
                 console.error("Error fetching report:", err);
-                alert("Error in loading report details.");
+                Swal.fire({
+                    title: 'Error',
+                    text: 'This report does not exist.',
+                    icon: 'error',
+                    confirmButtonColor: '#d33',
+                });
             });
     }, [id]);
 
@@ -47,8 +53,13 @@ function ReportDetails() {
         })
 
         .catch((error) => {
-            console.error("Error generating report:", error);
-            alert("Error generating report.");
+                console.error("Error generating report:", error);
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Error in generating report.',
+                  icon: 'error',
+                  confirmButtonColor: '#d33',
+                });
         });
     };
 
@@ -68,12 +79,25 @@ function ReportDetails() {
       })
 
       .then((res) => {
-        alert("Report sent successfully.");
+        Swal.fire({
+            title: 'Success',
+            text: 'Report sent successfully.',
+            icon: 'success',
+            confirmButtonColor: '#9ca3af',
+          });
       })
 
       .catch((err) => {
         console.error("Error sending report:", err);
-        alert("Please generate the report before sending it.");
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'warning',
+            title: 'Please generate the report before sending it.',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+          });
 
       });
   };
@@ -81,7 +105,15 @@ function ReportDetails() {
   const handleForwardClick = () => {
     // Ensure recipient email is not empty
     if (!recipientEmail) {
-      alert("Please enter a valid recipient email.");
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'warning',
+            title: 'Please enter a valid recipient email address.',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+          });
       return;
     }
     forwardReport(recipientEmail);
@@ -92,12 +124,28 @@ function ReportDetails() {
   const updateStatus = (newStatus) => {
     axios.patch(`http://localhost:8070/report/update/${report._id}`, { status: newStatus })
       .then((res) => {
-        alert("Status updated successfully.");
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'success',
+            title: 'Status updated successfully.',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+          });
         setReport(res.data.report); 
       })
       .catch((err) => {
         console.error("Failed to update status:", err);
-        alert("Error updating status.");
+        Swal.fire({
+            toast: true,
+            position: 'top',
+            icon: 'warning',
+            title: 'Failed to update status.',
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true,
+          });
       });
   };
   

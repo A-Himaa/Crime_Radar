@@ -1,52 +1,21 @@
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
-const router = require("express").Router();
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const User = require('../models/User');
+const router = express.Router();
 
-const SECRET_KEY = process.env.SECRET_KEY;
-const ADMIN_EMAIL = "admin@example.com"; // Define the admin's email
-
-// Middleware to verify admin role
-const verifyAdmin = (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ message: "Unauthorized: No token provided" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-
-    if (decoded.role !== "admin") {
-      return res.status(403).json({ message: "Forbidden: Admin access required" });
-    }
-
-    req.user = decoded; // Attach user data to request
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: "Unauthorized: Invalid token" });
-  }
-};
-
-// ✅ SignUp Route
-router.post("/signup", async (req, res) => {
-  console.log("Received data from frontend:", req.body);
-
+// SignUp Route
+router.post('/signup', async (req, res) => {
   try {
     const { userDetails, trustedPersonDetails } = req.body;
 
     // Check if email already exists
     const existingUser = await User.findOne({ email: userDetails.email });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already exists!" });
+      return res.status(400).json({ message: 'Email already exists!' });
     }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(userDetails.password, 12);
-
-    // Assign role based on email
-    //const role = userDetails.email === ADMIN_EMAIL ? "admin" : "user";
 
     // Create new user instance
     const newUser = new User({
@@ -57,16 +26,15 @@ router.post("/signup", async (req, res) => {
       nic: userDetails.nic,
       password: hashedPassword,
       trustedPerson: trustedPersonDetails,
-     
     });
 
     // Save the user to the database
     await newUser.save();
 
-    return res.status(201).json({ message: "User signed up successfully!" });
+    return res.status(201).json({ message: 'User signed up successfully!' });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server error. Please try again later." });
+    return res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 });
 
@@ -96,7 +64,7 @@ router.post("/login", async (req, res) => {
 });
 
 // ✅ Fetch User Details by Email
-router.get("/", async (req, res) => {
+router.get("/user", async (req, res) => {
   try {
     const email = req.query.email;
     if (!email) {
@@ -175,7 +143,7 @@ router.get("/users", async (req, res) => {
 
 // ✅ Fetch User Details by ID
 
-router.get("/:email", async (req, res) => {
+router.get("/auth/users/:email", async (req, res) => {
   const { email } = req.params;
   const user = await User.findOne({ email: email });
   if (user) {

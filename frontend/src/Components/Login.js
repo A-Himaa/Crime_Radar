@@ -6,6 +6,7 @@ import axios from "axios"; // Import axios for making HTTP requests
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import backgroundvid from "../Images/background.mp4";
 
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState(""); // State for email
@@ -26,67 +27,62 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage("");
-    console.log("Submitting login request:", { email, password });
-  
+    setErrorMessage(""); 
+    console.log("Submitting login request:", { email, password }); // Debugging
+
     try {
       const response = await axios.post("http://localhost:8070/auth/login", {
         email,
         password,
       });
   
-      console.log("Login Response:", response.data);
+      console.log("Login Response:", response.data); // Debugging response
   
       if (response.data.success) {
-        setErrorMessage("Login successful!");
+        setErrorMessage("✅ Login successful! Redirecting...");
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userEmail", response.data.email); // Store email
-        localStorage.setItem("role", response.data.role); // Store role
   
-        // Delay navigation for UI feedback
+        // Delay navigation to allow the success message to be visible
         setTimeout(() => {
-          if (response.data.role === "admin") {
-            navigate("/admin"); // Redirect admin to admin page
+          if (email === "admin@example.com" && password === "admin123") {
+            navigate("/admin");
           } else {
-            navigate("/profile"); // Redirect user to dashboard
+            navigate("/");
           }
-        }, 2000);
+        }, 2000); // 2-second delay
       } else {
-        setErrorMessage("Unexpected error! Try again.");
+        setErrorMessage("⚠️ Unexpected error! Try again.");
       }
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
-      setErrorMessage("Invalid email or password.");
-  
+      setErrorMessage("❌ Invalid email or password.");
+      
+      // Hide the error message after 4 seconds
       setTimeout(() => {
         setErrorMessage("");
       }, 2000);
     }
   };
+  
 
   return (
     <div className="relative flex justify-center items-center h-full bg-black">
       {/* Video Background */}
       <div className="absolute top-0 left-0 w-full h-full">
-        <video
-          autoPlay
-          loop
-          muted
-          className="w-full h-full object-cover blur-[14px]"
-        >
+        <video autoPlay loop muted className="w-full h-full object-cover blur-[14px]">
           <source src={backgroundvid} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      </div>
+      </div> 
 
       {/* Form Container */}
-      <div className="relative bg-white/30 backdrop-blur-lg p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh] border border-white/20">
-        <h2 className="text-5xl font-bold text-center mb-2"><span className="text-amber-600">L</span>ogin</h2>
-        <p className="text-center text-xl text-black mb-4">Welcome Back! Login to get started</p>
+      <div className="relative bg-white p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh]">
+        <h2 className="text-5xl font-bold text-center mb-2"><span className ="text-amber-600">L</span>ogin</h2>
+        <p className="text-center text-xl text-gray-600 mb-4">Welcome Back! Login to get started</p>
 
         {/* Error message */}
         {errorMessage && (
-          <p className="text-green-400 font-bold text-center mb-4">{errorMessage}</p>
+          <p className="text-green-700 text-center mb-4">{errorMessage}</p>
         )}
 
         <form onSubmit={handleSubmit}>
@@ -124,15 +120,18 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-amber-600 hover:bg-amber-700 text-black font-bold py-2 px-4 rounded-lg mr-5 transition-all shadow-lg hover:scale-105"
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5"
           >
             Login
           </button>
         </form>
 
+        {/* <p className="text-center mt-4 text-sm">
+          Not registered yet? <span onClick={() => navigate("/signup")} className="text-blue-600 cursor-pointer">Create an Account</span>
+        </p> */}
         <p className="text-center mt-4 text-sm">
           Not registered yet ?{" "}
-          <a href="/signup" className="text-blue-300">
+          <a href="/signup" className="text-blue-600 ">
             Create an account
           </a>
         </p>
