@@ -1,143 +1,150 @@
-import React,{useState} from "react";
-import axios from "axios";
-import checkimg from "../Images/check.png"
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
-function Report(){
-    const [anonymous, setAnonymous] = useState(false);
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [contactNo, setcontactNo] = useState("");
-    const [NIC, setnic] = useState("");
-    const [type, setType] = useState("");
-    const [severity, setSevere] = useState("");
-    const [datetime, setDatetime] = useState("");
-    const [district, setDistrict] = useState("");
-    const [description, setDescription] = useState("");
-    const [image, setImage] = useState("");
+const UpdateCrimeReport = () => {
+  const { id } = useParams();
+  const isUpdateMode = !!id;
 
-    const [errormail, setemailError] = useState("");
-    const [errornum, setnumError] = useState("");
-    const [errnic, setnicError] = useState("");
+  const navigate = useNavigate();
 
-    const [showPopup, setShowPopup] = useState(false);
-    const [reportId, setReportId] = useState("");
-
-    const [showReportPopup, setShowReportPopup] = useState(false);
-    const [enteredReportId, setEnteredReportId] = useState("");
-
-    const navigate = useNavigate();
+  const [anonymous, setAnonymous] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [contactNo, setcontactNo] = useState('');
+  const [NIC, setnic] = useState('');
+  const [type, setType] = useState('');
+  const [severity, setSevere] = useState('');
+  const [datetime, setDatetime] = useState('');
+  const [district, setDistrict] = useState('');
+  const [description, setDescription] = useState('');
+  const [image,setImage] = useState('');
+  const [existingImageUrl, setExistingImageUrl] = useState('');
+  const [removeExistingImage, setRemoveExistingImage] = useState(false);
 
 
-    function submit(e) {
-        e.preventDefault();
-    
-        const form = e.target.closest('form');
-        if (!form.checkValidity()) {
-            Swal.fire({
-              title: 'Validation Error',
-              text: 'Please fill out all required fields.',
-              icon: 'warning',
-              confirmButtonColor: '#f39c12',
-            });
-            return;
-          }
-          
-    
-        const formData = new FormData();
-        formData.append("anonymous", anonymous);
-        formData.append("name", name);
-        formData.append("email", email);
-        formData.append("contactNo", contactNo);
-        formData.append("NIC", NIC);
-        formData.append("type", type);
-        formData.append("severity", severity);
-        formData.append("datetime", datetime);
-        formData.append("district", district);
-        formData.append("description", description);
-    
-        if (image) {
-            formData.append("image", image);
+
+  const [errormail, setemailError] = useState(false);
+  const [errornum, setnumError] = useState(false);
+  const [errnic, setnicError] = useState(false);
+
+
+//Retreiving crime details for update
+  useEffect(() => {
+    if (isUpdateMode) {
+      const fetchReport = async () => {
+        try {
+          const res = await fetch(`http://localhost:8070/report/crimeDetails/${id}`);
+          const data = await res.json();
+
+          setAnonymous(data.anonymous);
+          setName(data.name || '');
+          setEmail(data.email || '');
+          setcontactNo(data.contactNo || '');
+          setnic(data.NIC || '');
+          setType(data.type || '');
+          setSevere(data.severity || '');
+          setDatetime(data.datetime?.slice(0, 16) || '');
+          setDistrict(data.district || '');
+          setDescription(data.description || '');
+          setExistingImageUrl(data.image || '');
+
+        } catch (err) {
+          console.error("Error fetching report:", err);
         }
-    
-        axios.post("http://localhost:8070/report/newCrime", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            }
-        })
-        .then((res) => {
-            const id = res.data.reportId;
-            setReportId(id);
-            setShowPopup(true); 
-        })
-        .catch((err) => {
-            alert("Error: " + err.response?.data?.error || err.message);
-        });
-    }
-
-    //Fetch Report Function
-    const handleFetchReport = () => {
-    if (enteredReportId) {
-        navigate(`/view/${enteredReportId}`);
-    }
-    };
-
-    //Alert styling
-    const showCopyToast = () => {
-        Swal.fire({
-          toast: true,
-          position: 'top',
-          icon: 'success',
-          title: 'Report ID copied to clipboard!',
-          showConfirmButton: false,
-          timer: 2000,
-          timerProgressBar: true,
-        });
       };
 
+      fetchReport();
+    }
+  }, [id, isUpdateMode]);
 
-    return(
+//Insert new data
+  const submit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('anonymous', anonymous);
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('contactNo', contactNo);
+    formData.append('NIC', NIC);
+    formData.append('type', type);
+    formData.append('severity', severity);
+    formData.append('datetime', datetime);
+    formData.append('district', district);
+    formData.append('description', description);
+    if (image) {
+      formData.append('image', image);
+    } else if (removeExistingImage) {
+      formData.append('removeImage', 'true'); 
+    }
+    
+
+    try {
+      const url = isUpdateMode
+        ? `http://localhost:8070/report/updateCrime/${id}`
+        : `http://localhost:8070/report/newCrime`; 
+
+      const res = await fetch(url, {
+        method: isUpdateMode ? 'PUT' : 'POST',
+        body: formData,
+      });
+
+      
+
+      const result = await res.json();
+
+      if (res.ok) {
+        Swal.fire({
+          icon: 'success',
+          title: isUpdateMode ? 'Report Updated!' : 'Report Created!',
+          text: isUpdateMode
+            ? 'Your report was updated successfully.'
+            : 'Your report has been created successfully.',
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          navigate('/newreport');
+        })
+        
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: result.error || 'Cannot update your report. Please try again.',
+          confirmButtonColor: '#d33',
+          confirmButtonText: 'OK',
+        });
+        
+      }
+      
+    } catch (err) {
+      console.error("Submit error:", err);
+      alert("Failed to submit the form.");
+    }
+  };
+
+  return (
     <div className="w-full flex justify-center items-center bg-gradient-to-b from-stone-200 to-orange-50">
-
-        {/*----------Form Container---------*/}
-        <div className="bg-white rounded-xl shadow-xl px-8 py-6 w-[80vw] mt-[15vh] mb-[18vh]">
-        <div className="flex items-center justify-between mt-2 mb-4">
-            <h2 className="text-4xl font-bold text-gray-800 text-center flex-grow ml-24">
-                <span className="text-amber-600">R</span>eport <span className="text-amber-600">N</span>ow
-            </h2>
-            <button className="bg-gray-300 text-black py-3 px-5 rounded-md mr-10 ml-4"
-            onClick={() => setShowReportPopup(true)}>
-               View Past Reports
-            </button>
-        </div>
-
-            
-
-
-            {/*----------Form-------------*/}
-            <form className="text-gray-800 pl-8 pr-8" enctype="multipart/form-data">
-                
-                
-
-            {/*----------User Information----------*/}
-
-            <div className="flex justify-between">
+      <div className="bg-white rounded-xl shadow-xl px-8 py-6 w-[80vw] mt-[15vh] mb-[18vh]">
+        <h2 className="text-4xl font-bold text-gray-800 text-center mb-6">
+          <span className="text-amber-600">{isUpdateMode ? 'U' : 'R'}</span>{isUpdateMode ? 'pdate' : 'eport'} <span className="text-amber-600">N</span>ow
+        </h2>
+        <form className="text-gray-800 pl-8 pr-8" onSubmit={submit} encType="multipart/form-data">
+          <div className="flex justify-between mb-4">
             <h2 className="p-3 font-bold text-xl">User Information</h2>
-
-            <div className={`p-3 rounded-md transition duration-300 ${anonymous ? "opacity-50" : "opacity-100"}`}>
-                    <input type="checkbox"
-                           checked={anonymous}
-                           onChange={(e) => setAnonymous(e.target.checked)}
-                           className="w-5 h-5"/>
-
-                    <label className="pl-3 font-semibold">Anonymous</label>
-                </div>
+            <div className="p-3 rounded-md">
+              <input type="checkbox" checked={anonymous} onChange={(e) => setAnonymous(e.target.checked)} className="w-5 h-5" />
+              <label className="pl-3 font-semibold">Anonymous</label>
             </div>
+          </div>
 
-                
+          {/* Form Fields (same as you already have) */}
+          {/* Example: */}
+              
             {/*---------1st Row---------*/}
-                <div className={`flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3  ${anonymous ? "opacity-50" : ''}`}>
+            <div className={`flex justify-between grid grid-cols-2 gap-2 pl-3 pr-3 mt-3  ${anonymous ? "opacity-50" : ''}`}>
                     <label className="font-semibold">Name<span className="text-red-500"> *</span> :</label>
                     <label className="font-semibold">Email<span className="text-red-500"> *</span> :</label>
 
@@ -302,7 +309,10 @@ function Report(){
                     <label className="font-semibold">Severity<span className="text-red-500"> *</span> :</label>
 
                     {/* Crime Type */}
-                    <select className="border border-gray-300 rounded-md w-full p-2 " onChange={(e) => setType(e.target.value)} required>
+                    <select className="border border-gray-300 rounded-md w-full p-2 "
+                      value={type}
+                      onChange={(e) => setType(e.target.value)} required>
+
                         <option value=""/>
                         <option value="violence">Violence</option>
                         <option value="cyber">Cyber</option>
@@ -314,7 +324,9 @@ function Report(){
                     </select>
 
                     {/* Severity */}
-                    <select className="border border-gray-300 rounded-md w-full p-2 " onChange={(e) => setSevere(e.target.value)} required>
+                    <select className="border border-gray-300 rounded-md w-full p-2 "
+                      value={severity}
+                      onChange={(e) => setSevere(e.target.value)} required>
                         <option value=""/>
                         <option value="high">High</option>
                         <option value="medium">Medium</option>
@@ -328,10 +340,14 @@ function Report(){
                     <label className="font-semibold">Date & Time<span className="text-red-500"> *</span> :</label>
                     <label className="font-semibold">District<span className="text-red-500"> *</span> :</label>
 
-                    <input type="datetime-local" className="border border-gray-300 rounded-md w-full p-2" onChange={(e) => setDatetime(e.target.value)} required />  
+                    <input type="datetime-local" className="border border-gray-300 rounded-md w-full p-2" 
+                    value={datetime}
+                    onChange={(e) => setDatetime(e.target.value)} required />  
 
                     {/*--------Location-------*/}
-                    <select className="border border-gray-300 rounded-md w-full p-2 " onChange={(e) => setDistrict(e.target.value)} required >
+                    <select className="border border-gray-300 rounded-md w-full p-2 " 
+                    value={district}
+                    onChange={(e) => setDistrict(e.target.value)} required >
                             <option value=""/>
                             <option value="colombo">Colombo</option>
                             <option value="gampaha">Gampaha</option>
@@ -366,106 +382,56 @@ function Report(){
                 {/*---------3rd Row---------*/}
                 <div className="pl-3 pr-3 pt-3">
                     <label className="font-semibold">Description<span className="text-red-500"> *</span> :</label>
-                    <textarea className="border border-gray-300 rounded-md w-full p-2 mt-3" placeholder="Description about the incident" onChange={(e) => setDescription(e.target.value)} required />                    
+                    <textarea className="border border-gray-300 rounded-md w-full p-2 mt-3" placeholder="Description about the incident" 
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)} required />                    
                 </div>
 
                 {/*---------4th Row---------*/}
                 <div className="pl-3 pr-3 pb-3">
                     <label className="font-semibold">Images :</label>
-                    <input type="file" name="image" className="border border-gray-300 rounded-md w-full p-4 mt-3" placeholder="Description about the incident" onChange={(e) => setImage(e.target.files[0])} />                    
+                    {existingImageUrl && !removeExistingImage ? (
+                          <div className="mt-3">
+                            <p className="font-semibold">Previously uploaded image:</p>
+                            <img src={existingImageUrl} alt="Previously uploaded" className="w-48 rounded shadow mb-2" />
+                            <button
+                              type="button"
+                              onClick={() => setRemoveExistingImage(true)}
+                              className="text-red-600 underline"
+                            >
+                              Remove image
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="mt-3">
+                            <label className="font-semibold">Upload New Image:</label>
+                            <input
+                              type="file"
+                              name="image"
+                              className="border border-gray-300 rounded-md w-full p-4 mt-2"
+                              onChange={(e) => setImage(e.target.files[0])}
+                            />
+                          </div>
+                        )}
+ 
                 </div>
 
                 <div className="p-3 flex items-center">
                     <input type="checkbox" className="w-5 h-5" required/>
                     <label className="pl-3">I hereby confirm that all the information provided is accurate and true to the best of my knowledge.</label>
                 </div>
+          <div className="mt-4 flex justify-end">
+            <button
+              type="submit"
+              className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              {isUpdateMode ? "Update Report" : "Submit Report"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
 
-                <div className="flex justify-end">
-                <button value={submit} onClick={submit} className="bg-amber-800 text-white font-bold py-3 px-5 rounded-lg opacity-80 transition duration-300 ease-in-out transform hover:scale-105 mr-3 mt-4">
-                    Submit
-                </button>
-</div>
-
-           
-            </form>
-        </div>
-
-        {/*------- ReportID copy popup msg --------*/}
-
-        {showPopup && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-white p-6 rounded-xl shadow-lg text-center w-96">
-                <h3 className="text-2xl font-bold text-green-600 mb-2">Your Report Successfully Submitted</h3>
-                <img src={checkimg} className="w-24 mx-auto mt-5 mb-5" alt="Check" />
-                <p className="mb-2 text-semi-bold">Your Report ID:</p>
-                <div className="bg-gray-100 px-4 py-2 rounded font-mono text-sm break-words">
-                    {reportId}
-                </div>
-                <p  className="text-sm mt-2 opacity-50">Please copy your report ID for future reference.</p>
-                <div className="mt-4 flex items-center gap-4 ml-14">
-                <button
-                    onClick={() => {
-                    navigator.clipboard.writeText(reportId);
-                    showCopyToast();
-                    }}
-                    className="bg-gray-300 hover:bg-gray-400 text-black py-1 px-4 rounded-lg"
-                >
-                    Copy Report ID
-                </button>
-                <button
-                    onClick={() => window.location.reload()}
-                    className="bg-gray-300 hover:bg-gray-400 text-black py-1 px-4 rounded-lg"
-                >
-                    Close
-                </button>
-                </div>
-
-                </div>
-            </div>
-)}
-
-       {/*------Report ID entering space--------*/}
-
-        {showReportPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl p-6 shadow-xl text-center w-[90%] max-w-md">
-            <h2 className="text-xl font-bold mb-4 text-gray-800"> Enter Report ID :</h2>
-            <input
-                type="text"
-                value={enteredReportId}
-                onChange={(e) => setEnteredReportId(e.target.value)}
-                placeholder="Paste your Report ID here"
-                className="w-full border border-gray-300 rounded px-3 py-2 mb-4"
-                
-            />
-
-            <div className="flex justify-center gap-2">
-                <button
-                onClick={() => setShowReportPopup(false)}
-                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
-                >
-                Cancel
-                </button>
-                <button
-                onClick={handleFetchReport}
-                className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-800 opacity-80"
-                >
-                Submit
-                </button>
-            </div>
-            </div>
-        </div>
-        )}
-
-        
-
-
-
-        </div>
-        
-
-
-    );
-}
-
-export default Report;
+export default UpdateCrimeReport;
