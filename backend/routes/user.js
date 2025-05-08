@@ -143,47 +143,24 @@ router.put("/user/:id", async (req, res) => {
 
 // ✅ Delete User and Trusted Person
 router.delete("/user", async (req, res) => {
-  const email = req.query.email;
-
   try {
+    const email = req.query.email;
     if (!email) {
       return res.status(400).json({ message: "Email is required for deletion" });
     }
 
-    // First, delete the related data (if any)
-    
-    // Example: Deleting the trusted persons related to this user
-    const deletedTrustedPersons = await TrustedPersons.deleteMany({ userEmail: email });
-
-    if (deletedTrustedPersons.deletedCount === 0) {
-      console.log(`No trusted persons found for email: ${email}`);
-    } else {
-      console.log(`${deletedTrustedPersons.deletedCount} trusted persons deleted.`);
-    }
-
-    // Example: Deleting orders related to this user
-    const deletedOrders = await Orders.deleteMany({ userEmail: email });
-
-    if (deletedOrders.deletedCount === 0) {
-      console.log(`No orders found for email: ${email}`);
-    } else {
-      console.log(`${deletedOrders.deletedCount} orders deleted.`);
-    }
-
-    // Now, delete the user document
     const deletedUser = await User.findOneAndDelete({ email });
 
     if (!deletedUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ message: "User and related details deleted successfully!" });
+    res.status(200).json({ message: "User and trusted person details deleted successfully!" });
   } catch (error) {
-    console.error("Error deleting user:", error);
+    console.error("Delete Error:", error);
     res.status(500).json({ message: "Error deleting user", error });
   }
 });
-
 
 // ✅ Get All Users (No Admin Check)
 router.get("/users", async (req, res) => {
@@ -223,4 +200,7 @@ router.delete("/user/:id", async (req, res) => {
     res.status(500).json({ message: "Error deleting user", error });
   }
 });
+
+
+
 module.exports = router;

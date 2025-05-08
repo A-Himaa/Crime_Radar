@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import backgroundvid from "../Images/background.mp4";
 import { useNavigate, useParams } from "react-router-dom";
-import { User, Mail, Phone, IdCard, Users } from "lucide-react"; // icons from lucide-react
+import { User, Mail, Phone, IdCard } from "lucide-react"; // Icons from lucide-react
 
 const AdminUserProfile = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -16,7 +16,7 @@ const AdminUserProfile = () => {
 
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:8070/user?email=${email}`);
+        const response = await axios.get(`http://localhost:8070/user/${email}`);
         setUserDetails(response.data);
         setTrustedPersonDetails(response.data.trustedPerson || {}); // Ensure it's not null or undefined
       } catch (error) {
@@ -27,18 +27,17 @@ const AdminUserProfile = () => {
     fetchUserDetails();
   }, [email]);
 
-  const handleDeleteClick = () => {
-    setShowDeleteModal(true); // Just show the modal
+  const handleDeleteClick = async () => {
+    setShowDeleteModal(true); // Show confirmation modal
   };
 
   const handleConfirmDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8070/user/user?email=${email}`);
-  
+      const response = await axios.delete(`http://localhost:8070/user/user?email=${userDetails.email}`);
+
       if (response.status === 200) {
-        console.log("User and related data deleted successfully");
-        setShowDeleteModal(false); // Close the modal after deletion
-        navigate("/adminuserlist"); // Navigate after deletion
+        console.log("User deleted successfully");
+        navigate("/adminuserlist"); // Redirect after deletion
       }
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -74,77 +73,57 @@ const AdminUserProfile = () => {
 
       {/* Profile Card */}
       <div className="relative z-10 w-full max-w-4xl bg-white/10 backdrop-blur-md rounded-3xl border border-white/30 p-10 md:p-14 shadow-2xl animate-fade-in">
-        <h1 className="text-4xl md:text-5xl  font-bold text-center  mb-10">
-          👤           <span className="text-amber-600">U</span>ser <span className="text-amber-600">D</span>etails
+        <h1 className="text-4xl md:text-5xl font-bold text-center mb-10">
+          👤 <span className="text-amber-600">U</span>ser <span className="text-amber-600">D</span>etails
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-white text-lg leading-relaxed">
+          {/* User's Details */}
           <div className="space-y-4">
-            <p className="flex items-center gap-2 text-xl font-semibold text-amber-600 mb-2">
-              User's Details:
+            <p className="flex items-center gap-2 text-xl font-semibold text-amber-600 mb-2">User's Details:</p>
+            <p className="flex items-center gap-2">
+              <User className="text-amber-600" />
+              <span><strong>First Name:</strong> {userDetails.firstName}</span>
             </p>
             <p className="flex items-center gap-2">
-              <User className="text-amber-600" />{" "}
-              <span>
-                <strong>First Name:</strong> {userDetails.firstName}
-              </span>
+              <User className="text-amber-600" />
+              <span><strong>Last Name:</strong> {userDetails.lastName}</span>
             </p>
             <p className="flex items-center gap-2">
-              <User className="text-amber-600" />{" "}
-              <span>
-                <strong>Last Name:</strong> {userDetails.lastName}
-              </span>
+              <Mail className="text-amber-600" />
+              <span><strong>Email:</strong> {userDetails.email}</span>
             </p>
             <p className="flex items-center gap-2">
-              <Mail className="text-amber-600" />{" "}
-              <span>
-                <strong>Email:</strong> {userDetails.email}
-              </span>
+              <Phone className="text-amber-600" />
+              <span><strong>Phone:</strong> {userDetails.phone}</span>
             </p>
             <p className="flex items-center gap-2">
-              <Phone className="text-amber-600" />{" "}
-              <span>
-                <strong>Phone:</strong> {userDetails.phone}
-              </span>
-            </p>
-            <p className="flex items-center gap-2">
-              <IdCard className="text-amber-600" />{" "}
-              <span>
-                <strong>NIC:</strong> {userDetails.nic}
-              </span>
+              <IdCard className="text-amber-600" />
+              <span><strong>NIC:</strong> {userDetails.nic}</span>
             </p>
           </div>
 
+          {/* Trusted Person's Details */}
           <div className="space-y-4">
-            <p className="flex items-center gap-2 text-xl font-semibold text-amber-600 mb-2">
-              Trusted Person's Details:
-            </p>
-            <ul className="space-y-3 pl-2">
-              {trustedPersonDetails.firstName ? (
-                <>
-                  <p className="flex items-center gap-2">
-                    <User className="text-amber-600" />{" "}
-                    <span>
-                      <strong>First Name:</strong> {trustedPersonDetails.firstName}
-                    </span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <Phone className="text-amber-600" />{" "}
-                    <span>
-                      <strong>Phone:</strong> {trustedPersonDetails.phone}
-                    </span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <IdCard className="text-amber-600" />{" "}
-                    <span>
-                      <strong>NIC:</strong> {trustedPersonDetails.nic}
-                    </span>
-                  </p>
-                </>
-              ) : (
-                <p className="text-red-500">No trusted person details available.</p>
-              )}
-            </ul>
+            <p className="flex items-center gap-2 text-xl font-semibold text-amber-600 mb-2">Trusted Person's Details:</p>
+            {trustedPersonDetails.firstName ? (
+              <>
+                <p className="flex items-center gap-2">
+                  <User className="text-amber-600" />
+                  <span><strong>First Name:</strong> {trustedPersonDetails.firstName}</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <Phone className="text-amber-600" />
+                  <span><strong>Phone:</strong> {trustedPersonDetails.phone}</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <IdCard className="text-amber-600" />
+                  <span><strong>NIC:</strong> {trustedPersonDetails.nic}</span>
+                </p>
+              </>
+            ) : (
+              <p className="text-red-500">No trusted person details available.</p>
+            )}
           </div>
         </div>
 
@@ -157,7 +136,7 @@ const AdminUserProfile = () => {
           </button>
 
           <button
-            onClick={handleDeleteClick} // Just show the delete confirmation modal
+            onClick={handleDeleteClick}
             className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg transition duration-300"
           >
             Delete
