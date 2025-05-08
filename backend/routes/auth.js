@@ -1,40 +1,58 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken'); // For authentication token
-const User = require('../models/User'); // Import the User model
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 const router = express.Router();
 
-// Login Route
+const SECRET_KEY = "your_secret_key";
+
+// Hardcoded admin credentials
 const adminEmail = "admin@example.com";
 const adminPassword = "admin123";
 
 router.post('/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    console.log("Login attempt with:", email);
+  const { email, password } = req.body;
+  console.log("Login attempt with:", email);
 
-    // Check if the user exists
+  try {
+    // 🔒 Check for hardcoded admin first
+    if (email === adminEmail && password === adminPassword) {
+      const token = jwt.sign({ email, role: "admin" }, SECRET_KEY, { expiresIn: "2h" });
+
+      return res.status(200).json({
+        success: true,
+        token,
+        email,
+        role: "admin"
+      });
+    }
+
+    // 👤 Otherwise, check database for regular users
     const user = await User.findOne({ email });
+
     if (!user) {
       console.log("User not found!");
-      return res.status(400).json({ success: false, message: "User not found!" });
+      return res.status(404).json({ success: false, message: "User not found!" });
     }
-    console.log("User found:", user);
-    // Check if password is correct
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log("Password does not match!");
-      return res.status(400).json({ success: false, message: "Invalid credentials!" });
+      console.log("Password mismatch");
+      return res.status(401).json({ success: false, message: "Invalid credentials!" });
     }
-    const token = jwt.sign({ id: user._id }, "your_secret_key", { expiresIn: "1h" });
 
-    // Generate JWT Token (Optional: For authentication)
-    console.log("Login successful!");
-    return res.status(200).json({ success: true, token });
+    const token = jwt.sign({ email: user.email, role: user.role }, SECRET_KEY, { expiresIn: "2h" });
+
+    return res.status(200).json({
+      success: true,
+      token,
+      email: user.email,
+      role: user.role
+    });
 
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Server error. Please try again later." });
+    console.error("Login error:", error);
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
