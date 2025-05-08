@@ -41,7 +41,7 @@ const CrimeTypePieChart = () => {
   );
 
   return (
-    <div className="bg-white p-2 rounded-2xl shadow-lg h-[60vh] w-[30vw] my-6 ml-0"
+    <div className="bg-white p-2 rounded-2xl shadow-lg h-[vh] w-[30vw] my-6 ml-0"
     style={{
       boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
     }}>

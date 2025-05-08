@@ -89,7 +89,7 @@ const CrimeMap2 = () => {
   
 
   return (
-    <MapContainer center={[7.8731, 80.7718]} zoom={7} style={{ height: "80vh", width: "100%" }}>
+    <MapContainer center={[7.8731, 80.7718]} zoom={7} style={{ height: "80vh", width: "100%", boxShadow: '0 4px 4px rgba(31, 41, 55, 0.5)'}}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />

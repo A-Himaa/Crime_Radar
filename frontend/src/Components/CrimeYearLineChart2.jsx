@@ -48,7 +48,7 @@ const CrimeYearLineChart2 = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-2xl shadow-lg w-[92vw] my-6 ml-2"
+    <div className="bg-white p-4 rounded-2xl shadow-lg w-[88vw] my-6 ml-2"
     style={{
         boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
       }}>
