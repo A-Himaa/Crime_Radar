@@ -4,7 +4,6 @@ import axios from "axios"; // Import axios for making HTTP requests
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
 import backgroundvid from "../Images/background.mp4";
 
-
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState(""); // State for email
@@ -25,84 +24,90 @@ const Login = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); 
-    console.log("Submitting login request:", { email, password }); // Debugging
-
+    setErrorMessage("");
+    console.log("Submitting login request:", { email, password });
+  
     try {
       const response = await axios.post("http://localhost:8070/auth/login", {
         email,
         password,
       });
   
-      console.log("Login Response:", response.data); // Debugging response
+      console.log("Login Response:", response.data);
   
       if (response.data.success) {
-        setErrorMessage("✅ Login successful! Redirecting...");
+        setErrorMessage("Login successful!");
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userEmail", response.data.email); // Store email
+        localStorage.setItem("role", response.data.role); // Store role
   
-        // Delay navigation to allow the success message to be visible
+        // Delay navigation for UI feedback
         setTimeout(() => {
-          if (email === "admin@example.com" && password === "admin123") {
-            navigate("/admin");
+          if (response.data.role === "admin") {
+            navigate("/admin"); // Redirect admin to admin page
           } else {
-            navigate("/");
+            navigate("/profile"); // Redirect user to dashboard
           }
-        }, 2000); // 2-second delay
+        }, 2000);
       } else {
-        setErrorMessage("⚠️ Unexpected error! Try again.");
+        setErrorMessage("Unexpected error! Try again.");
       }
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
-      setErrorMessage("❌ Invalid email or password.");
-      
-      // Hide the error message after 4 seconds
+      setErrorMessage("Invalid email or password.");
+  
       setTimeout(() => {
         setErrorMessage("");
       }, 2000);
     }
   };
-  
-  
 
   return (
     <div className="relative flex justify-center items-center h-full bg-black">
       {/* Video Background */}
       <div className="absolute top-0 left-0 w-full h-full">
-        <video autoPlay loop muted className="w-full h-full object-cover blur-[14px]">
+        <video
+          autoPlay
+          loop
+          muted
+          className="w-full h-full object-cover blur-[14px]"
+        >
           <source src={backgroundvid} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-      </div> 
+      </div>
 
       {/* Form Container */}
-      <div className="relative bg-white p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh]">
-        <h2 className="text-5xl font-bold text-center mb-2"><span className ="text-amber-600 text-5xl">L</span>ogin</h2>
-        <p className="text-center text-xl text-gray-600 mb-4">Welcome Back! Login to get started</p>
+      <div className="relative bg-white/30 backdrop-blur-lg p-8 rounded-lg shadow-lg w-96 z-10 mt-[20vh] mb-[19vh] border border-white/20">
+        <h2 className="text-5xl font-bold text-center mb-2"><span className="text-amber-600">L</span>ogin</h2>
+        <p className="text-center text-xl text-black mb-4">Welcome Back! Login to get started</p>
 
         {/* Error message */}
-        {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
+        {errorMessage && (
+          <p className="text-green-400 font-bold text-center mb-4">{errorMessage}</p>
+        )}
 
         <form onSubmit={handleSubmit}>
-          <label className="block text-gray-700">Username</label>
+          <label className="block text-black">Username</label>
           <input
             type="email"
             name="email"
             value={email}
             onChange={handleInputChange}
             placeholder="example@gmail.com"
-            className="w-full p-2 border border-gray-300 rounded mt-1 mb-4"
-          />
+            className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            />
 
-          <label className="block text-gray-700">Password</label>
+          <label className="block text-black">Password</label>
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
               name="password"
               value={password}
               onChange={handleInputChange}
-              placeholder="********"
-              className="w-full p-2 border border-gray-300 rounded mt-1 pr-10"
-            />
+              placeholder="***********"
+              className="w-full px-4 py-2 bg-white/20 text-white placeholder:text-gray-300 border border-white/30 rounded-lg mt-1 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              />
             <span
               className="absolute right-3 top-3 text-gray-500 cursor-pointer"
               onClick={() => setShowPassword(!showPassword)}
@@ -111,19 +116,24 @@ const Login = () => {
             </span>
           </div>
 
-          <div className="text-right text-sm text-blue-600 mt-2 cursor-pointer p-2">
+          <div className="text-right text-sm text-blue-300 mt-2 cursor-pointer p-2">
             Forgot Password?
           </div>
 
-          <button type="submit" className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded mr-5">
+          <button
+            type="submit"
+            className="w-full bg-amber-600 hover:bg-amber-700 text-black font-bold py-2 px-4 rounded-lg mr-5 transition-all shadow-lg hover:scale-105"
+          >
             Login
           </button>
         </form>
 
-        {/* <p className="text-center mt-4 text-sm">
-          Not registered yet? <span onClick={() => navigate("/signup")} className="text-blue-600 cursor-pointer">Create an Account</span>
-        </p> */}
-        <p className="text-center mt-4 text-sm">Not registered yet ? <a href="/signup" className="text-blue-600 ">Create an account</a></p>
+        <p className="text-center mt-4 text-sm">
+          Not registered yet ?{" "}
+          <a href="/signup" className="text-blue-300">
+            Create an account
+          </a>
+        </p>
       </div>
     </div>
   );

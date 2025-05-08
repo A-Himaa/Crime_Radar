@@ -42,11 +42,11 @@ const LocationListUser = () => {
   </h1>
 
   {/* Flex container to align Map and Table side by side */}
-  <div className="flex flex-row gap-6">
+  <div className="flex flex-col md:flex-row gap-6">
     {/* Location List Table Section */}
-    <div className="w-1/2 overflow-x-auto" >
+    <div className="flex-1 overflow-auto" >
       {/* Search Bar */}
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-start mb-4 ml-4">
         <div className="relative w-full md:w-64">
           <input
             type="text"
@@ -60,10 +60,12 @@ const LocationListUser = () => {
       </div>
 
       {/* Table */}
-      <div ref={componentRef} className="overflow-x-auto"style={{
-      boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
-    }}>
-        <table className="bg-gray-800 text-white w-full rounded-lg overflow-hidden">
+      <div ref={componentRef} 
+      className="w-full md:w-[95%] mx-auto rounded-lg overflow-hidden">
+        <table className="bg-gray-800 text-white w-half rounded-lg overflow-hidden" 
+        style={{
+          boxShadow: '0 4px 12px rgba(31, 41, 55, 0.5)' // gray-800: rgb(31, 41, 55)
+      }}>
           <thead>
           <tr className="bg-gradient-to-r from-gray-800 via-gray-600 to-gray-500 hover:from-gray-600 hover:via-gray-500 hover:to-gray-400">
               <th className="px-4 py-3 text-left">Location</th>
@@ -85,7 +87,10 @@ const LocationListUser = () => {
     </div>
 
     {/* Crime Map Section */}
-    <div className="w-1/2 overflow-x-auto">
+
+    <div className="flex-1">
+      {/* <CrimeBubbleChart/> */}
+
       <CrimeMap2/>
       <CrimeTypePieChart2/>
     </div>
